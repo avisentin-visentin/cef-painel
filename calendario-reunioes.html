@@ -728,11 +728,16 @@ function showToast(msg) {
   window._toastTimer = setTimeout(() => { t.style.display = 'none'; }, 2200);
 }
 
-function ataLink(ataFile) {
-  if (!ataFile) return '';
+function openAta(ataFile) {
   const base = 'https://avisentin-visentin.github.io/cef-painel/atas/';
   const href = base + encodeURIComponent(ataFile);
-  return `<a class="mc-ata" href="${href}" onclick="window.open('${href}','_blank');return false;">✅ ATA enviada</a>`;
+  window.open(href, '_blank');
+}
+
+function ataLink(ataFile) {
+  if (!ataFile) return '';
+  const safe = ataFile.replace(/'/g, "\\'");
+  return `<button class="mc-ata" onclick="openAta('${safe}')">✅ ATA enviada</button>`;
 }
 
 // ─────────────────────────────────────────────
