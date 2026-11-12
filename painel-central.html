@@ -1168,7 +1168,7 @@
     </div>
 
     <!-- GANTT CHART -->
-    <div style="background:#fff;border:1px solid #dde3ed;border-radius:12px;overflow:hidden;margin-bottom:28px;" id="gantt-wrapper">
+    <div style="background:#fff;border:1px solid #dde3ed;border-radius:12px;overflow:visible;margin-bottom:28px;position:relative;" id="gantt-wrapper">
       <!-- Months header -->
       <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #dde3ed;background:#f5f7fa;" id="gantt-header">
         <div style="padding:10px 14px;font-size:11px;font-weight:700;color:#6b7a99;border-right:1px solid #dde3ed;"></div>
@@ -1183,204 +1183,157 @@
       <!-- Section: Casos de Uso -->
       <div style="padding:8px 14px 4px;background:#e8f0fb;border-bottom:1px solid #dde3ed;font-size:11px;font-weight:700;color:#003087;letter-spacing:.5px;">CASOS DE USO</div>
 
-      <!-- CU1: OUT(mid) → DEZ(~30%) implantação, DEZ(~30%) → JAN(fim) estabilização -->
-      <!-- Abordagem: usar grid-column span via posição absoluta interna -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;position:relative;" class="gantt-row cu-row">
+      <!-- CU1: Oferta de Crédito -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:48px;" class="gantt-row cu-row">
         <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
           <div style="width:22px;height:22px;border-radius:50%;background:#003087;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
           <span style="font-size:12px;font-weight:600;color:#1a2236;">Oferta de Crédito</span>
         </div>
-        <!-- col OUT: barra implantação começa no meio -->
-        <div style="padding:4px 2px;"><div style="background:#003087;border-radius:4px 0 0 4px;height:26px;margin-left:50%;display:flex;align-items:center;padding-left:6px;"><span style="font-size:10px;color:#fff;white-space:nowrap;">Oferta de Crédito</span></div></div>
-        <!-- col NOV: implantação full -->
-        <div style="padding:4px 2px;"><div style="background:#003087;height:26px;"></div></div>
-        <!-- col DEZ: implantação 30% + diamond + estabilização até fim -->
-        <div style="padding:4px 2px;position:relative;">
-          <div style="display:flex;height:26px;align-items:stretch;">
-            <div style="background:#003087;width:30%;height:26px;"></div>
-            <div style="width:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#f5c518;line-height:1;" title="Entrega dez/26">◆</div>
-            <div style="background:#b0c4de;flex:1;height:26px;display:flex;align-items:center;padding-left:6px;border-radius:0 4px 4px 0;">
-              <span style="font-size:10px;color:#555;white-space:nowrap;">Estabilização</span>
-            </div>
+        <div style="position:relative;">
+          <!-- implantação: OUT(50%) → DEZ(30%) left=8.33% right=61.67% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:8.33%;right:61.67%;background:#003087;border-radius:4px;display:flex;align-items:center;padding-left:8px;">
+            <span style="font-size:10px;color:#fff;white-space:nowrap;font-weight:600;">Oferta de Crédito</span>
+          </div>
+          <!-- diamond DEZ(30%) = 38.33% -->
+          <div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(38.33% - 8px);font-size:16px;color:#f5c518;z-index:2;">◆</div>
+          <!-- estabilização: DEZ(30%) → JAN(100%) left=38.33% right=33.33% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:38.33%;right:33.33%;background:#b0c4de;border-radius:4px;display:flex;align-items:center;padding-left:8px;">
+            <span style="font-size:10px;color:#555;white-space:nowrap;">Estabilização</span>
           </div>
         </div>
-        <!-- col JAN: estabilização termina fim do mês -->
-        <div style="padding:4px 2px;"><div style="background:#b0c4de;height:26px;border-radius:0 4px 4px 0;width:100%;"></div></div>
-        <div></div><div></div>
       </div>
 
-      <!-- CU2: OUT(mid) → FEV(fim) — barra contínua, diamond no fim de FEV -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;" class="gantt-row cu-row">
+      <!-- CU2: Real / Near Real Time -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:48px;" class="gantt-row cu-row">
         <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
           <div style="width:22px;height:22px;border-radius:50%;background:#c75000;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
           <span style="font-size:12px;font-weight:600;color:#1a2236;">Real / Near Real Time</span>
         </div>
-        <!-- OUT: começa meio -->
-        <div style="padding:4px 2px;"><div style="background:#c75000;border-radius:4px 0 0 4px;height:26px;margin-left:50%;display:flex;align-items:center;padding-left:6px;"><span style="font-size:10px;color:#fff;white-space:nowrap;">Real / Near Real Time</span></div></div>
-        <!-- NOV full -->
-        <div style="padding:4px 2px;"><div style="background:#c75000;height:26px;"></div></div>
-        <!-- DEZ full -->
-        <div style="padding:4px 2px;"><div style="background:#c75000;height:26px;"></div></div>
-        <!-- JAN full -->
-        <div style="padding:4px 2px;"><div style="background:#c75000;height:26px;"></div></div>
-        <!-- FEV: barra full + diamond no fim -->
-        <div style="padding:4px 2px;position:relative;">
-          <div style="display:flex;height:26px;align-items:stretch;">
-            <div style="background:#c75000;flex:1;height:26px;border-radius:0 4px 4px 0;"></div>
-            <div style="width:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#f5c518;line-height:1;" title="Entrega fev/27">◆</div>
+        <div style="position:relative;">
+          <!-- barra: OUT(50%) → FEV(100%) left=8.33% right=16.67% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:8.33%;right:16.67%;background:#c75000;border-radius:4px;display:flex;align-items:center;padding-left:8px;">
+            <span style="font-size:10px;color:#fff;white-space:nowrap;font-weight:600;">Real / Near Real Time</span>
           </div>
+          <!-- diamond FEV(100%) = 83.33% -->
+          <div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(83.33% - 8px);font-size:16px;color:#f5c518;z-index:2;">◆</div>
         </div>
-        <div></div>
       </div>
 
-      <!-- CU3: NOV(mid) → MAR(fim) — barra contínua, diamond no fim de MAR -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;" class="gantt-row cu-row">
+      <!-- CU3: Onboarding / Boas-vindas -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:48px;" class="gantt-row cu-row">
         <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
           <div style="width:22px;height:22px;border-radius:50%;background:#1a7f4e;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
           <span style="font-size:12px;font-weight:600;color:#1a2236;">Onboarding / Boas-vindas</span>
         </div>
-        <div></div>
-        <!-- NOV: começa meio -->
-        <div style="padding:4px 2px;"><div style="background:#1a7f4e;border-radius:4px 0 0 4px;height:26px;margin-left:50%;display:flex;align-items:center;padding-left:6px;"><span style="font-size:10px;color:#fff;white-space:nowrap;">Onboarding / Boas-vindas</span></div></div>
-        <!-- DEZ full -->
-        <div style="padding:4px 2px;"><div style="background:#1a7f4e;height:26px;"></div></div>
-        <!-- JAN full -->
-        <div style="padding:4px 2px;"><div style="background:#1a7f4e;height:26px;"></div></div>
-        <!-- FEV full -->
-        <div style="padding:4px 2px;"><div style="background:#1a7f4e;height:26px;"></div></div>
-        <!-- MAR: barra full + diamond no fim -->
-        <div style="padding:4px 2px;position:relative;">
-          <div style="display:flex;height:26px;align-items:stretch;">
-            <div style="background:#1a7f4e;flex:1;height:26px;border-radius:0 4px 4px 0;"></div>
-            <div style="width:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#f5c518;line-height:1;" title="Entrega mar/27">◆</div>
+        <div style="position:relative;">
+          <!-- barra: NOV(50%) → MAR(100%) left=25% right=0% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:25%;right:0%;background:#1a7f4e;border-radius:4px;display:flex;align-items:center;padding-left:8px;">
+            <span style="font-size:10px;color:#fff;white-space:nowrap;font-weight:600;">Onboarding / Boas-vindas</span>
           </div>
+          <!-- diamond MAR(100%) = borda direita -->
+          <div style="position:absolute;top:50%;transform:translateY(-50%);right:2px;font-size:16px;color:#f5c518;z-index:2;">◆</div>
         </div>
       </div>
 
-      <!-- CU4: NOV(mid) → MAR(fim) — barra contínua, diamond no fim de MAR -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;" class="gantt-row cu-row">
+      <!-- CU4: Private / Financial -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:48px;" class="gantt-row cu-row">
         <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
           <div style="width:22px;height:22px;border-radius:50%;background:#5c2d91;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
           <span style="font-size:12px;font-weight:600;color:#1a2236;">Private / Financial</span>
         </div>
-        <div></div>
-        <!-- NOV: começa meio -->
-        <div style="padding:4px 2px;"><div style="background:#5c2d91;border-radius:4px 0 0 4px;height:26px;margin-left:50%;display:flex;align-items:center;padding-left:6px;"><span style="font-size:10px;color:#fff;white-space:nowrap;">Private / Financial</span></div></div>
-        <!-- DEZ full -->
-        <div style="padding:4px 2px;"><div style="background:#5c2d91;height:26px;"></div></div>
-        <!-- JAN full -->
-        <div style="padding:4px 2px;"><div style="background:#5c2d91;height:26px;"></div></div>
-        <!-- FEV full -->
-        <div style="padding:4px 2px;"><div style="background:#5c2d91;height:26px;"></div></div>
-        <!-- MAR: barra full + diamond no fim -->
-        <div style="padding:4px 2px;position:relative;">
-          <div style="display:flex;height:26px;align-items:stretch;">
-            <div style="background:#5c2d91;flex:1;height:26px;border-radius:0 4px 4px 0;"></div>
-            <div style="width:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#f5c518;line-height:1;" title="Entrega mar/27">◆</div>
+        <div style="position:relative;">
+          <!-- barra: NOV(50%) → MAR(100%) left=25% right=0% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:25%;right:0%;background:#5c2d91;border-radius:4px;display:flex;align-items:center;padding-left:8px;">
+            <span style="font-size:10px;color:#fff;white-space:nowrap;font-weight:600;">Private / Financial</span>
           </div>
+          <!-- diamond MAR(100%) -->
+          <div style="position:absolute;top:50%;transform:translateY(-50%);right:2px;font-size:16px;color:#f5c518;z-index:2;">◆</div>
         </div>
       </div>
 
       <!-- Section: Entregáveis Contratuais -->
       <div style="padding:8px 14px 4px;background:#e6f5ee;border-bottom:1px solid #dde3ed;border-top:2px solid #dde3ed;font-size:11px;font-weight:700;color:#1a7f4e;letter-spacing:.5px;">ENTREGÁVEIS CONTRATUAIS (FASE 0)</div>
 
-      <!-- Marco 1: OUT full (entrega 14/10 = início de OUT) — barra curta na primeira metade -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 1<br><span style="color:#1a7f4e;font-size:10px;">✅ Aprovado · 14/10</span></div>
-        <div style="padding:3px 4px;">
-          <div style="background:#1a7f4e;border-radius:4px;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;min-height:36px;width:55%;">
-            <span style="font-size:9px;color:#fff;line-height:1.3;">Planejamento Estratégico</span>
-            <span style="font-size:9px;color:#c8f0dc;line-height:1.3;">Avaliação de Capacidades</span>
+      <!-- Marco 1: OUT(0%) → OUT(55%) left=0% right=90.83% -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 1<br><span style="color:#1a7f4e;font-size:10px;">✅ Aprovado · 14/10</span></div>
+        <div style="position:relative;">
+          <div style="position:absolute;top:8px;bottom:8px;left:0%;right:90.83%;background:#1a7f4e;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+            <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Planejamento Estratégico</span>
+            <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Avaliação de Capacidades</span>
           </div>
         </div>
-        <div></div><div></div><div></div><div></div><div></div>
       </div>
 
-      <!-- Marco 2: OUT(mid) → NOV(início ~30%) — barra única na cor principal -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 2<br><span style="color:#0e7490;font-size:10px;">✅ Entregue · 09/11</span></div>
-        <!-- OUT: começa metade -->
-        <div style="padding:3px 4px;"><div style="background:#0e7490;border-radius:4px 0 0 4px;height:36px;margin-left:50%;"></div></div>
-        <!-- NOV: barra termina ~30% do mês (dia 9 ≈ 30%) -->
-        <div style="padding:3px 4px;">
-          <div style="display:flex;align-items:center;height:36px;">
-            <div style="background:#0e7490;border-radius:0 4px 4px 0;height:36px;width:30%;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;min-width:80px;box-sizing:border-box;">
-              <span style="font-size:9px;color:#fff;line-height:1.3;white-space:nowrap;">Avaliação Técnica</span>
-              <span style="font-size:9px;color:#b2e0e8;line-height:1.3;white-space:nowrap;">Prep. Organizacional / CM</span>
-            </div>
+      <!-- Marco 2: OUT(50%) → NOV(30%) left=8.33% right=78.33% -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 2<br><span style="color:#0e7490;font-size:10px;">✅ Entregue · 09/11</span></div>
+        <div style="position:relative;">
+          <div style="position:absolute;top:8px;bottom:8px;left:8.33%;right:78.33%;background:#0e7490;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+            <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Avaliação Técnica</span>
+            <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Prep. Organizacional / CM</span>
           </div>
         </div>
-        <div></div><div></div><div></div><div></div>
       </div>
 
-      <!-- Marco 3: NOV(mid) → DEZ(início ~5%) — barra de NOV até início de DEZ -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 3<br><span style="color:#c75000;font-size:10px;">🔄 Em andamento · 02/12</span></div>
-        <div></div>
-        <!-- NOV: começa meio, vai até fim -->
-        <div style="padding:3px 4px;"><div style="background:#c75000;border-radius:4px 0 0 4px;height:36px;margin-left:50%;display:flex;flex-direction:column;justify-content:center;padding-left:6px;">
-          <span style="font-size:9px;color:#fff;line-height:1.3;white-space:nowrap;">Mapeamento de Experiência</span>
-          <span style="font-size:9px;color:#ffd0b0;line-height:1.3;white-space:nowrap;">Análise de Valor · Estratégia Dados</span>
-        </div></div>
-        <!-- DEZ: termina no dia 2 ≈ 5% -->
-        <div style="padding:3px 4px;"><div style="background:#c75000;border-radius:0 4px 4px 0;height:36px;width:8%;"></div></div>
-        <div></div><div></div><div></div>
-      </div>
-
-      <!-- Marco 4: DEZ full (entrega 30/12) -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 4<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 30/12</span></div>
-        <div></div><div></div>
-        <div style="padding:3px 4px;">
-          <div style="background:#c8d8f0;border-radius:4px;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;min-height:36px;">
-            <span style="font-size:9px;color:#003087;line-height:1.3;">Plano de Comunicação / RASIC</span>
-            <span style="font-size:9px;color:#446699;line-height:1.3;">Plano de Projeto com Baseline</span>
+      <!-- Marco 3: NOV(30%=09/11) → DEZ(8%=02/12) left=21.67% right=65.33% -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 3<br><span style="color:#c75000;font-size:10px;">🔄 Em andamento · 02/12</span></div>
+        <div style="position:relative;">
+          <div style="position:absolute;top:8px;bottom:8px;left:21.67%;right:65.33%;background:#c75000;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+            <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Mapeamento de Experiência</span>
+            <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Análise de Valor · Estratégia Dados</span>
           </div>
         </div>
-        <div></div><div></div><div></div>
       </div>
 
-      <!-- Marco 5: JAN (~22/01) — barra ~70% de JAN -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 5<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 22/01</span></div>
-        <div></div><div></div><div></div>
-        <div style="padding:3px 4px;">
-          <div style="background:#c8d8f0;border-radius:4px;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;min-height:36px;width:72%;">
-            <span style="font-size:9px;color:#003087;line-height:1.3;">Diagramas de Processo</span>
-            <span style="font-size:9px;color:#446699;line-height:1.3;">Histórias de Usuário (épicos)</span>
+      <!-- Marco 4: DEZ(8%=02/12) → DEZ(97%=30/12) left=34.67% right=50.5% -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 4<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 30/12</span></div>
+        <div style="position:relative;">
+          <div style="position:absolute;top:8px;bottom:8px;left:34.67%;right:50.5%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+            <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Plano de Comunicação / RASIC</span>
+            <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Plano de Projeto com Baseline</span>
           </div>
         </div>
-        <div></div><div></div>
       </div>
 
-      <!-- Marco 6: FEV (~19/02) — barra ~65% de FEV -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 6<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 19/02</span></div>
-        <div></div><div></div><div></div><div></div>
-        <div style="padding:3px 4px;">
-          <div style="background:#c8d8f0;border-radius:4px;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;min-height:36px;width:68%;">
-            <span style="font-size:9px;color:#003087;line-height:1.3;">Solução e Design Técnico</span>
-            <span style="font-size:9px;color:#446699;line-height:1.3;">Plano de Implementação</span>
+      <!-- Marco 5: DEZ(97%=30/12) → JAN(72%=22/01) left=49.5% right=38% -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 5<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 22/01</span></div>
+        <div style="position:relative;">
+          <div style="position:absolute;top:8px;bottom:8px;left:49.5%;right:38%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+            <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Diagramas de Processo</span>
+            <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Histórias de Usuário (épicos)</span>
           </div>
         </div>
-        <div></div>
       </div>
 
-      <!-- Marco 7: MAR (~19/03) — barra ~60% de MAR -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);align-items:center;min-height:52px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 7<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 19/03</span></div>
-        <div></div><div></div><div></div><div></div><div></div>
-        <div style="padding:3px 4px;">
-          <div style="background:#c8d8f0;border-radius:4px;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;min-height:36px;width:62%;">
-            <span style="font-size:9px;color:#003087;line-height:1.3;">Estimativa de Implementação</span>
-            <span style="font-size:9px;color:#446699;line-height:1.3;">Requisitos de Pessoas</span>
+      <!-- Marco 6: JAN(72%=22/01) → FEV(63%=19/02) left=62% right=22.83% -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 6<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 19/02</span></div>
+        <div style="position:relative;">
+          <div style="position:absolute;top:8px;bottom:8px;left:62%;right:22.83%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+            <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Solução e Design Técnico</span>
+            <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Plano de Implementação</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Marco 7: FEV(63%=19/02) → MAR(62%=19/03) left=77.17% right=6.33% -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 7<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 19/03</span></div>
+        <div style="position:relative;">
+          <div style="position:absolute;top:8px;bottom:8px;left:77.17%;right:6.33%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+            <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Estimativa de Implementação</span>
+            <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Requisitos de Pessoas</span>
           </div>
         </div>
       </div>
 
       <!-- Linha HOJE dinâmica via JS -->
-      <div id="hoje-line" style="position:absolute;top:0;bottom:0;width:2px;background:#e74c3c;pointer-events:none;z-index:10;">
-        <div style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;color:#e74c3c;white-space:nowrap;background:#fff3f3;border:1px solid #e74c3c;border-radius:4px;padding:1px 5px;" id="hoje-label">◀ Estamos aqui</div>
+      <div id="hoje-line" style="position:absolute;top:0;bottom:0;width:2px;background:#e74c3c;pointer-events:none;z-index:20;display:none;">
+        <div id="hoje-label" style="position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;color:#fff;white-space:nowrap;background:#e74c3c;border-radius:4px;padding:2px 7px;box-shadow:0 1px 4px rgba(0,0,0,0.2);">HOJE · 12/11</div>
       </div>
     </div>
 
@@ -1395,15 +1348,16 @@
   </div>
 
   <script>
-  // Linha HOJE dinâmica
-  (function() {
+  // Linha HOJE dinâmica — usa % para independer de DOM visibility
+  function posicionarLinhaHoje() {
+    const LABEL_W_PCT = 180; // px fixos do label
     const months = [
-      { key: 'OUT26', year: 2026, month: 9  },
-      { key: 'NOV26', year: 2026, month: 10 },
-      { key: 'DEZ26', year: 2026, month: 11 },
-      { key: 'JAN27', year: 2027, month: 0  },
-      { key: 'FEV27', year: 2027, month: 1  },
-      { key: 'MAR27', year: 2027, month: 2  }
+      { year: 2026, month: 9  },
+      { year: 2026, month: 10 },
+      { year: 2026, month: 11 },
+      { year: 2027, month: 0  },
+      { year: 2027, month: 1  },
+      { year: 2027, month: 2  }
     ];
     const today = new Date();
     const ty = today.getFullYear(), tm = today.getMonth(), td = today.getDate();
@@ -1417,28 +1371,25 @@
         break;
       }
     }
-    if (colIdx < 0) return;
-    const wrapper = document.getElementById('gantt-wrapper');
-    if (!wrapper) return;
-    wrapper.style.position = 'relative';
-    const header = document.getElementById('gantt-header');
-    const labelCol = header.children[0];
-    const labelW = labelCol.offsetWidth;
-    const totalW = wrapper.offsetWidth - labelW;
-    const colW = totalW / 6;
-    const left = labelW + colIdx * colW + pct * colW;
     const line = document.getElementById('hoje-line');
     const lbl  = document.getElementById('hoje-label');
-    if (line) {
-      line.style.left = left + 'px';
-      line.style.display = 'block';
-    }
+    if (!line) return;
+    if (colIdx < 0) { line.style.display = 'none'; return; }
+    // A área de barras começa em 180px fixos e ocupa o restante (100% - 180px)
+    // left = 180px + fracPos * (100% - 180px) = (1-fracPos)*180px + fracPos*100%
+    const fracPos = (colIdx + pct) / 6;
+    const fixedPx = (1 - fracPos) * LABEL_W_PCT;
+    line.style.left = 'calc(' + fracPos * 100 + '% + ' + fixedPx.toFixed(2) + 'px)';
+    line.style.display = 'block';
     if (lbl) {
       const day = String(td).padStart(2,'0');
       const mon = String(tm + 1).padStart(2,'0');
-      lbl.textContent = '◀ Estamos aqui · ' + day + '/' + mon;
+      lbl.textContent = 'HOJE · ' + day + '/' + mon;
     }
-  })();
+  }
+  // Roda imediatamente e também quando DOM estiver pronto
+  posicionarLinhaHoje();
+  document.addEventListener('DOMContentLoaded', posicionarLinhaHoje);
   </script>
   <div style="display:none;"><div style="display:none;">
     <div class="ev-section">
@@ -1798,6 +1749,7 @@
       casosView.style.display = 'flex';
     } else if (view === 'cronograma') {
       cronogramaView.style.display = 'flex';
+      setTimeout(posicionarLinhaHoje, 50);
     } else if (view === 'riscos') {
       riscosView.style.display = 'flex';
     }
