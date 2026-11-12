@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Consolidado de Ações — CEF MC SOW</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #1a1a2e; min-height: 100vh; }
+
+  .header {
+    background: linear-gradient(135deg, #003087 0%, #0070d2 100%);
+    color: white;
+    padding: 24px 32px 20px;
+    border-bottom: 4px solid #00a1e0;
+  }
+  .header .project-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 6px;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .header .subtitle {
+    font-size: 13px;
+    opacity: 0.85;
+    font-weight: 400;
+  }
+  .header .meta {
+    margin-top: 12px;
+    font-size: 11px;
+    opacity: 0.65;
+  }
+
+  .controls {
+    background: #fff;
+    border-bottom: 1px solid #e0e6ed;
+    padding: 14px 24px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .controls label { font-size: 12px; font-weight: 600; color: #555; }
+  .controls select, .controls input {
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #333;
+    background: #fafbfc;
+    outline: none;
+  }
+  .controls select:focus, .controls input:focus { border-color: #0070d2; }
+  .filter-group { display: flex; align-items: center; gap: 6px; }
+
+  .summary-bar {
+    background: #fff;
+    padding: 14px 24px;
+    border-bottom: 1px solid #e0e6ed;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f4f6f9;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid #e0e6ed;
+  }
+  .stat-chip .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .dot-futuro { background: #0070d2; }
+  .dot-andamento { background: #f4a400; }
+  .dot-concluido { background: #2e7d32; }
+  .dot-atrasado { background: #c62828; }
+  .dot-total { background: #555; }
+
+  .table-wrap {
+    padding: 20px 24px;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    font-size: 12.5px;
+  }
+  thead tr {
+    background: #003087;
+    color: white;
+  }
+  thead th {
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  thead th:last-child { border-right: none; }
+
+  tbody tr { border-bottom: 1px solid #eef1f5; transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f0f7ff; }
+  tbody tr.hidden-row { display: none; }
+
+  td {
+    padding: 10px 14px;
+    vertical-align: top;
+    border-right: 1px solid #f0f3f7;
+    color: #2a2a2a;
+    line-height: 1.45;
+  }
+  td:last-child { border-right: none; }
+
+  .td-num { font-weight: 700; color: #003087; font-size: 11px; width: 36px; text-align: center; }
+  .td-reuniao {
+    font-size: 11px;
+    color: #555;
+    white-space: nowrap;
+    width: 120px;
+    max-width: 120px;
+  }
+  .td-reuniao .reuniao-id { font-weight: 700; color: #0070d2; font-size: 12px; }
+  .td-reuniao .reuniao-nome { color: #444; font-size: 10px; margin-top: 2px; white-space: normal; }
+  .td-acao { min-width: 420px; }
+  .td-resp { font-size: 11.5px; width: 120px; max-width: 120px; }
+  .td-resp .resp-name { font-weight: 600; color: #1a1a2e; white-space: normal; }
+  .td-resp .resp-org { font-size: 10px; color: #777; }
+  .td-prazo { white-space: nowrap; font-size: 12px; font-weight: 600; color: #333; width: 75px; max-width: 75px; }
+  .td-prazo.atrasado { color: #c62828; }
+  .td-status { width: 110px; }
+  .td-concluido { width: 80px; text-align: center; }
+  .td-comentario { min-width: 160px; }
+
+  .badge {
+    display: inline-block;
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .badge-futuro { background: #e3f0fd; color: #0055ab; }
+  .badge-andamento { background: #fff8e1; color: #b76f00; border: 1px solid #ffe082; }
+  .badge-concluido { background: #e8f5e9; color: #1b5e20; }
+  .badge-atrasado { background: #ffebee; color: #b71c1c; }
+
+  .check-wrap { display: flex; justify-content: center; }
+  .check-box {
+    width: 18px; height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .check-box.checked { background: #2e7d32; border-color: #2e7d32; color: white; }
+
+  .comentario-input {
+    width: 100%;
+    border: 1px solid #e0e6ed;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 11.5px;
+    color: #333;
+    background: #fafbfc;
+    resize: none;
+    min-height: 32px;
+    font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  .comentario-input:focus { outline: none; border-color: #0070d2; background: #fff; }
+
+  .group-header td {
+    background: #e8edf5;
+    font-size: 11px;
+    font-weight: 700;
+    color: #003087;
+    padding: 7px 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #cdd5e0;
+  }
+
+  /* ── Tab navigation ── */
+  .tab-nav {
+    background: #fff;
+    border-bottom: 2px solid #e0e6ed;
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+  }
+  .tab-btn-main {
+    padding: 12px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    margin-bottom: -2px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn-main:hover { color: #0070d2; }
+  .tab-btn-main.active { color: #003087; border-bottom-color: #003087; }
+  .tab-btn-main .tab-count {
+    display: inline-block;
+    background: #e8edf5;
+    color: #003087;
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 11px;
+    margin-left: 6px;
+  }
+  .tab-btn-main.active .tab-count { background: #003087; color: #fff; }
+
+  .footer {
+    padding: 16px 24px;
+    text-align: right;
+    font-size: 11px;
+    color: #999;
+    border-top: 1px solid #e0e6ed;
+    background: #fff;
+  }
+  .export-btn {
+    background: #003087;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 12px;
+    transition: background 0.15s;
+  }
+  .export-btn:hover { background: #0055ab; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div style="margin-bottom:8px;">
+    <button onclick="window.location.href='https://avisentin-visentin.github.io/cef-painel/Painel%20Central%20-%20CEF%20Mov%20CRM.html'" style="background:#e8f0fb;color:#003087;border:none;border-radius:8px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;">← Voltar</button>
+  </div>
+  <div class="project-label">Salesforce Professional Services</div>
+  <h1>PROJETO CEF – MC – SOW – MULT-YEAR</h1>
+  <div class="subtitle">Painel Consolidado de Ações Pendentes das Reuniões e Alinhamentos Recentes</div>
+  <div class="meta" id="last-update">Atualizado em: 11/11/2026 &nbsp;|&nbsp; Reuniões cobertas: 04/11/2026 &nbsp;|&nbsp; Clique nos campos "Concluído" e "Comentário Caixa" para editar</div>
+</div>
+
+<div class="controls">
+  <div class="filter-group">
+    <label>Filtrar Status:</label>
+    <select id="filterStatus" onchange="applyFilters()">
+      <option value="">Todos</option>
+      <option value="Futuro">Futuro</option>
+      <option value="Em Andamento">Em Andamento</option>
+      <option value="Concluído">Concluído</option>
+      <option value="Atrasado">Atrasado</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Filtrar Reunião:</label>
+    <select id="filterReuniao" onchange="applyFilters()">
+      <option value="">Todas</option>
+      <option value="8.13">8.13 – SSO</option>
+      <option value="8.14">8.14 – Caso de Uso</option>
+      <option value="8.15">8.15 – Change Management</option>
+      <option value="8.16">8.16 – Arquitetura SDK</option>
+      <option value="8.17">8.17 – Private / FSC</option>
+      <option value="8.17b">8.17b – Biblioteca de Marcas</option>
+      <option value="8.18">8.18 – MVP FSC</option>
+      <option value="8.19">8.19 – Diagnóstico de Fontes/Dados</option>
+      <option value="8.21">8.21 – Canais de Ativação (App/WhatsApp/SMS)</option>
+      <option value="8.22">8.22 – Dados Agenda Técnica (Data Cloud/Blob Storage)</option>
+      <option value="8.23">8.23 – Envio de SMS e E-mails</option>
+      <option value="8.24">8.24 – Gestão de Acesso e SSO (continuação)</option>
+      <option value="8.25">8.25 – Integrações do Core (FSC Private)</option>
+      <option value="8.26">8.26 – Alinhamento Caso de Uso Finance</option>
+      <option value="8.27">8.27 – Limite de Crédito (Sem PUSH)</option>
+      <option value="8.28">8.28 – Alinhamento dos Squads</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Prazo até:</label>
+    <input type="date" id="filterPrazoAte" onchange="applyFilters()" style="padding:5px 8px;border:1px solid #d0d7e2;border-radius:6px;font-size:13px;color:#1a2236;">
+    <button onclick="document.getElementById('filterPrazoAte').value='';applyFilters();" title="Limpar filtro de prazo" style="margin-left:4px;padding:4px 8px;border:1px solid #d0d7e2;border-radius:6px;background:#f5f7fa;cursor:pointer;font-size:12px;color:#555;">✕</button>
+  </div>
+  <div class="filter-group">
+    <label>Buscar:</label>
+    <input type="text" id="searchInput" placeholder="Ação, responsável, prazo..." oninput="applyFilters()" style="width:220px">
+  </div>
+</div>
+
+<div class="tab-nav" id="tabNav">
+  <button class="tab-btn-main active" id="tabPendentes" onclick="switchTab('pendentes')">
+    ⏳ Pendentes <span class="tab-count" id="countPendentes">–</span>
+  </button>
+  <button class="tab-btn-main" id="tabConcluidos" onclick="switchTab('concluidos')">
+    ✅ Concluídos <span class="tab-count" id="countConcluidos">–</span>
+  </button>
+</div>
+
+<div class="summary-bar" id="summaryBar">
+  <!-- preenchido por JS -->
+</div>
+
+<div class="table-wrap">
+<table id="mainTable">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nome da Reunião</th>
+      <th>Ação Pendente</th>
+      <th>Responsável</th>
+      <th>Prazo</th>
+      <th>Status</th>
+      <th>Concluído</th>
+      <th>Comentário Caixa</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody">
+  </tbody>
+</table>
+</div>
+
+<div class="footer">
+  <span id="rowCount"></span>
+  <button class="export-btn" onclick="exportCSV()">⬇ Exportar CSV</button>
+</div>
+
+<script>
+const STORAGE_KEY = 'cef_acoes_painel_v1';
+let currentTab = 'pendentes';
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tabPendentes').classList.toggle('active', tab === 'pendentes');
+  document.getElementById('tabConcluidos').classList.toggle('active', tab === 'concluidos');
+  render();
+}
+
+const ACOES = [
+  // ── 8.13 SSO ─────────────────────────────────────────────────────────────────
+  {
+    id: 1,
+    reuniaoId: '8.13',
+    reuniaoNome: 'Gestão de Acesso e SSO',
+    reuniaoData: '03/11/2026',
+    acao: 'Confirmar suporte ao fluxo PKCE e Authorization Code Grant com parâmetros de escopo customizados no provedor de identidade (IdP) da Caixa.',
+    resp: 'Humphrey / Equipe Caixa (Arquitetura)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-09',
+    prazoDisplay: '09/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 2,
+    reuniaoId: '8.13',
+    reuniaoNome: 'Gestão de Acesso e SSO',
+    reuniaoData: '03/11/2026',
+    acao: 'Disponibilizar endpoint de metadados do IdP (discovery document ou JWKS URI) e credenciais de ambiente de homologação para integração SSO com Salesforce.',
+    resp: 'Humphrey (Caixa — Arquitetura)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-09',
+    prazoDisplay: '09/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 3,
+    reuniaoId: '8.13',
+    reuniaoNome: 'Gestão de Acesso e SSO',
+    reuniaoData: '03/11/2026',
+    acao: 'Mapear e documentar os perfis de usuário e grupos de permissão necessários para o FSC (bankers, superintendentes, suporte) e enviar para time SF modelar os Permission Sets.',
+    resp: 'Jeyson Cordeiro (Caixa — CRM)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-13',
+    prazoDisplay: '13/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 4,
+    reuniaoId: '8.13',
+    reuniaoNome: 'Gestão de Acesso e SSO',
+    reuniaoData: '03/11/2026',
+    acao: 'Configurar e testar o fluxo de SSO em sandbox Salesforce com as credenciais de homologação da Caixa, validando login, logout e renovação de token.',
+    resp: 'Samuel de Sena (Salesforce — TA)',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-18',
+    prazoDisplay: '18/Nov/2026',
+    status: 'Futuro'
+  },
+  // ── 8.14 Levantamento Caso de Uso ───────────────────────────────────────────
+  {
+    id: 5,
+    reuniaoId: '8.14',
+    reuniaoNome: 'Levantamento de Caso de Uso',
+    reuniaoData: '03/11/2026',
+    acao: 'Detalhar e documentar as regras de negócio do Caso de Uso 1 (Crédito): critérios de elegibilidade, segmentação, canais de disparo e KPIs de sucesso.',
+    resp: 'Fábio Grande / Juan Rigueiras (Caixa)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-13',
+    prazoDisplay: '13/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 6,
+    reuniaoId: '8.14',
+    reuniaoNome: 'Levantamento de Caso de Uso',
+    reuniaoData: '03/11/2026',
+    acao: 'Enviar sample de dados do Caso de Uso 1 (Crédito) para time SF — pendência há mais de 10 dias conforme cobrado a Bruno Aprioto.',
+    resp: 'Bruno Aprigio e Silva (Caixa — Gerente Nacional)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-09',
+    prazoDisplay: '09/Nov/2026',
+    status: 'Em Andamento'
+  },
+  {
+    id: 7,
+    reuniaoId: '8.14',
+    reuniaoNome: 'Levantamento de Caso de Uso',
+    reuniaoData: '03/11/2026',
+    acao: 'Enviar documentação da fila MQ, volumetria por cliente e regras de frequência para Caso de Uso 2.2 (Ofertas de Investimento).',
+    resp: 'Fábio Grande (Caixa — CRM/Dados)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-13',
+    prazoDisplay: '13/Nov/2026',
+    status: 'Futuro'
+  },
+  // ── 8.15 Change Management ──────────────────────────────────────────────────
+  {
+    id: 8,
+    reuniaoId: '8.15',
+    reuniaoNome: 'Change Management (Workshop Diagnóstico)',
+    reuniaoData: '04/11/2026',
+    acao: 'Consolidar a Versão 1.0 do Diagnóstico de Prontidão Organizacional com base nas notas e apontamentos da sessão, estruturando a matriz preliminar para composição do Marco 2.',
+    resp: 'Raquel Klafke / Mariana Izukawa (Salesforce — CM)',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-09',
+    prazoDisplay: '09/Nov/2026',
+    status: 'Em Andamento'
+  },
+  {
+    id: 9,
+    reuniaoId: '8.15',
+    reuniaoNome: 'Change Management (Workshop Diagnóstico)',
+    reuniaoData: '04/11/2026',
+    acao: 'Elaborar proposta de plano de ação e evolução da maturidade por alavanca, sugerindo atividades e entregáveis prioritários para o ciclo de Change Management.',
+    resp: 'Mariana Izukawa (Salesforce — CM)',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-13',
+    prazoDisplay: '13/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 10,
+    reuniaoId: '8.15',
+    reuniaoNome: 'Change Management (Workshop Diagnóstico)',
+    reuniaoData: '04/11/2026',
+    acao: 'Estruturar a estratégia de rastreabilidade de leads e atribuição de vendas nas ferramentas de atendimento da Caixa para identificar conversões originadas pelas inteligências do Move CRM.',
+    resp: 'Juan Rigueiras (Caixa) / Fábio Grande (Caixa) / Vittor (Salesforce)',
+    respOrg: 'Caixa + Salesforce',
+    prazo: '2026-11-18',
+    prazoDisplay: '18/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 11,
+    reuniaoId: '8.15',
+    reuniaoNome: 'Change Management (Workshop Diagnóstico)',
+    reuniaoData: '04/11/2026',
+    acao: 'Mapear os fluxos e definir o modelo de atendimento ágil de sustentação (Hypercare) pós-go-live, desenhando o escalonamento integrado entre ServiceNow (Serval) e canais corporativos de comunicação imediata.',
+    resp: 'Bruno Aprigio e Silva (Caixa — TI) / Jeyson Cordeiro (Caixa)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-20',
+    prazoDisplay: '20/Nov/2026',
+    status: 'Futuro'
+  },
+  // ── 8.16 Arquitetura SDK ─────────────────────────────────────────────────────
+  {
+    id: 12,
+    reuniaoId: '8.16',
+    reuniaoNome: 'Arquitetura de Integração com Super App (SDK e APIs)',
+    reuniaoData: '04/11/2026',
+    acao: 'Especificar o contrato técnico da API de push do CCPU (Swagger/JSON, payloads e parâmetros aceitos).',
+    resp: 'Humphrey Correa da Fonseca / Fábio Grande (Caixa)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-09',
+    prazoDisplay: '09/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 13,
+    reuniaoId: '8.16',
+    reuniaoNome: 'Arquitetura de Integração com Super App (SDK e APIs)',
+    reuniaoData: '04/11/2026',
+    acao: 'Desenhar a arquitetura e estimar o desenvolvimento da Custom Activity no Marketing Cloud para integração com o CCPU.',
+    resp: 'Samuel de Sena / Maciel Bombonato (Salesforce — TA)',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-13',
+    prazoDisplay: '13/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 14,
+    reuniaoId: '8.16',
+    reuniaoNome: 'Arquitetura de Integração com Super App (SDK e APIs)',
+    reuniaoData: '04/11/2026',
+    acao: 'Mapear o fluxo de retroalimentação de telemetria e eventos via Trilha de Auditoria / BigQuery para consolidação no Data Cloud.',
+    resp: 'Tamie Silva Takeda (Caixa) / Renan Polônio (Salesforce — Digital SA)',
+    respOrg: 'Caixa + Salesforce',
+    prazo: '2026-11-18',
+    prazoDisplay: '18/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 15,
+    reuniaoId: '8.16',
+    reuniaoNome: 'Arquitetura de Integração com Super App (SDK e APIs)',
+    reuniaoData: '04/11/2026',
+    acao: 'Formalizar o registro de exceção de arquitetura (Padrão Primeiro — P1) e risco de projeto no caderno do Marco 2 (Avaliação Técnica).',
+    resp: 'Adriana Visentin (Salesforce — PM) / Maciel Bombonato (Salesforce — TA)',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-09',
+    prazoDisplay: '09/Nov/2026',
+    status: 'Em Andamento'
+  },
+  // ── 8.17 Private / FSC ───────────────────────────────────────────────────────
+  {
+    id: 16,
+    reuniaoId: '8.17',
+    reuniaoNome: 'Pré-reserva: Alinhamento Private / FSC',
+    reuniaoData: '04/11/2026',
+    acao: 'Compartilhar o mockup de painel de gestão de carteira Private com o time Salesforce PS como referência de design.',
+    resp: 'Lino Raphael Brancaglion Muffato (Caixa — Estratégia Private)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-11',
+    prazoDisplay: '11/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 17,
+    reuniaoId: '8.17',
+    reuniaoNome: 'Pré-reserva: Alinhamento Private / FSC',
+    reuniaoData: '04/11/2026',
+    acao: 'Elaborar proposta funcional do painel FSC para bankers Private com base nos inputs coletados (visão 360, grupos, marcas, feed de oportunidades, mobile), para apresentação em agenda futura.',
+    resp: 'Camila Pacheco / Karina Santos (Salesforce — SA FSC)',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-25',
+    prazoDisplay: '25/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 18,
+    reuniaoId: '8.17',
+    reuniaoNome: 'Pré-reserva: Alinhamento Private / FSC',
+    reuniaoData: '04/11/2026',
+    acao: 'Mapear as integrações necessárias para viabilizar a visão 360 consolidada no FSC (plataforma.caixa, previdência, fundos, cartão, Quantum equivalente).',
+    resp: 'Karina Santos (Salesforce — SA FSC) / Fábio Grande (Caixa — CRM/Dados)',
+    respOrg: 'Salesforce + Caixa',
+    prazo: '2026-11-25',
+    prazoDisplay: '25/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 19,
+    reuniaoId: '8.17',
+    reuniaoNome: 'Pré-reserva: Alinhamento Private / FSC',
+    reuniaoData: '04/11/2026',
+    acao: 'Formalizar solicitação de exceção junto à área de arquitetura da Caixa para uso transacional do Salesforce FSC (conforme política plataforma.caixa).',
+    resp: 'Jeyson Cordeiro (Caixa — CRM) / Adriana Visentin (Salesforce — PM)',
+    respOrg: 'Caixa + Salesforce',
+    prazo: '2026-11-30',
+    prazoDisplay: '30/Nov/2026',
+    status: 'Futuro'
+  },
+  // ── 8.17b Biblioteca de Marcas ──────────────────────────────────────────────
+  {
+    id: 20,
+    reuniaoId: '8.17b',
+    reuniaoNome: 'Levantamento CU — Biblioteca de Marcas',
+    reuniaoData: '04/11/2026',
+    acao: 'Compartilhar catálogo completo da Biblioteca de Marcas em formato Excel (ficha técnica, regras de negócio, fontes, cadência, classificação LGPD).',
+    resp: 'Suelen / Fábio Grande (Caixa — CRM/Dados)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-06',
+    prazoDisplay: '06/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 21,
+    reuniaoId: '8.17b',
+    reuniaoNome: 'Levantamento CU — Biblioteca de Marcas',
+    reuniaoData: '04/11/2026',
+    acao: 'Revisar o catálogo da Biblioteca de Marcas e mapear marcas prioritárias para cada caso de uso (CU1 — Crédito e CU2 — Tempo Real), devolvendo lista de prioridades para curadoria da Caixa.',
+    resp: 'Samuel de Sena / Renan Polônio (Salesforce — TA/Digital SA)',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-13',
+    prazoDisplay: '13/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 22,
+    reuniaoId: '8.17b',
+    reuniaoNome: 'Levantamento CU — Biblioteca de Marcas',
+    reuniaoData: '04/11/2026',
+    acao: 'Definir cadência de reuniões quinzenais de acompanhamento da evolução da Biblioteca de Marcas (novas marcas aprovadas, mudanças de cadência, evolução do catálogo).',
+    resp: 'Fábio Grande (Caixa) / Adriana Visentin (Salesforce — PM)',
+    respOrg: 'Caixa + Salesforce',
+    prazo: '2026-11-13',
+    prazoDisplay: '13/Nov/2026',
+    status: 'Futuro'
+  },
+  // ── 8.18 MVP Financial Services Cloud ────────────────────────────────────────
+  {
+    id: 23,
+    reuniaoId: '8.18',
+    reuniaoNome: 'MVP Financial Services Cloud',
+    reuniaoData: '05/11/2026',
+    acao: 'Estruturar lista formal de funcionalidades do MVP FSC em formato de épicos para validação com a Caixa (com base nos 4 blocos: Visão 360, Visão Carteira, Insights com IA, Apoio Agêntico).',
+    resp: 'Camila Pacheco / Karina Santos (Salesforce — SA FSC)',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-18',
+    prazoDisplay: '18/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 24,
+    reuniaoId: '8.18',
+    reuniaoNome: 'MVP Financial Services Cloud',
+    reuniaoData: '05/11/2026',
+    acao: 'Compartilhar painel mockup da Estratégia Private com o time Salesforce PS como referência de design para o FSC.',
+    resp: 'Lino Raphael Brancaglion Muffato (Caixa — Estratégia Private)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-12',
+    prazoDisplay: '12/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 25,
+    reuniaoId: '8.18',
+    reuniaoNome: 'MVP Financial Services Cloud',
+    reuniaoData: '05/11/2026',
+    acao: 'Conduzir o "deparo" formal — mapeamento de equivalência entre objetos do relacionamento.caixa e objetos do Financial Services Cloud, identificando o que precisa ser exportado/migrado.',
+    resp: 'Jeyson Cordeiro (Caixa — CRM) / Karina Santos (Salesforce — SA FSC)',
+    respOrg: 'Caixa + Salesforce',
+    prazo: '2026-11-25',
+    prazoDisplay: '25/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 26,
+    reuniaoId: '8.18',
+    reuniaoNome: 'MVP Financial Services Cloud',
+    reuniaoData: '05/11/2026',
+    acao: 'Designar Product Owner (PO) da Caixa dedicado ao FSC — perfil com conhecimento do dia a dia dos bankers Private e autonomia para decisões de backlog e histórias de usuário.',
+    resp: 'Lino Raphael Brancaglion Muffato (Caixa — Estratégia Private)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-18',
+    prazoDisplay: '18/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 27,
+    reuniaoId: '8.18',
+    reuniaoNome: 'MVP Financial Services Cloud',
+    reuniaoData: '05/11/2026',
+    acao: 'Confirmar viabilidade e fonte de dados para integração de previdência na Visão 360 (único produto de investimento fora das APIs atuais do relacionamento.caixa).',
+    resp: 'Fábio Grande (Caixa — CRM/Dados) / Karina Santos (Salesforce — SA FSC)',
+    respOrg: 'Caixa + Salesforce',
+    prazo: '2026-11-18',
+    prazoDisplay: '18/Nov/2026',
+    status: 'Futuro'
+  },
+  // ── 8.19 Diagnóstico de Fontes, Qualidade & Duplicidade ──────────────────────
+  {
+    id: 28,
+    reuniaoId: '8.19',
+    reuniaoNome: 'Diagnóstico de Fontes, Qualidade & Duplicidade de Dados',
+    reuniaoData: '05/11/2026',
+    acao: 'Remarcar reunião de definição da estratégia de conexão Data Cloud → Databricks/GCP com presença obrigatória de Eugênio e/ou Rafael Xavier (Suarte/TI Caixa).',
+    resp: 'Bruno Aniceto de Araújo (Salesforce — MuleSoft) / Fábio Grande (Caixa — CRM/Dados)',
+    respOrg: 'Salesforce + Caixa',
+    prazo: '2026-11-12',
+    prazoDisplay: '12/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 29,
+    reuniaoId: '8.19',
+    reuniaoNome: 'Diagnóstico de Fontes, Qualidade & Duplicidade de Dados',
+    reuniaoData: '05/11/2026',
+    acao: 'Enviar para Bruno Aniceto o estudo e documentação da prova de conceito de Service Principal + Delta Share já realizada no contexto do projeto SAS.',
+    resp: 'Ronaldo Francisco Pereira da Silva (Caixa — TI)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-09',
+    prazoDisplay: '09/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 30,
+    reuniaoId: '8.19',
+    reuniaoNome: 'Diagnóstico de Fontes, Qualidade & Duplicidade de Dados',
+    reuniaoData: '05/11/2026',
+    acao: 'Abrir acionamento formal junto à Suarte (Eugênio/Rafael Xavier) para deliberação sobre estratégia de conexão, apresentando as três opções mapeadas e a POC existente.',
+    resp: 'Bruno Aniceto de Araújo (Salesforce — MuleSoft/Dados)',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-12',
+    prazoDisplay: '12/Nov/2026',
+    status: 'Em Andamento'
+  },
+  // ── 8.20b Agenda Diária: Canais de Ativação (App, WhatsApp, SMS) ─────────────
+  {
+    id: 31,
+    reuniaoId: '8.21',
+    reuniaoNome: 'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',
+    reuniaoData: '06/11/2026',
+    acao: 'Compartilhar Swagger da API de orquestração de push (nova) e das demais APIs de canal (carrossel, mensagem de relacionamento, splash screen, posse/oferta).',
+    resp: 'Fábio Grande (Caixa — CRM/Dados)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'Urgente — a definir',
+    status: 'Futuro'
+  },
+  {
+    id: 32,
+    reuniaoId: '8.21',
+    reuniaoNome: 'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',
+    reuniaoData: '06/11/2026',
+    acao: 'Agendar reunião com a área de Gênesis para mapeamento das possibilidades de transbordo de WhatsApp antes de definir arquitetura de canal.',
+    resp: 'Fábio Grande (Caixa — CRM/Dados)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  {
+    id: 33,
+    reuniaoId: '8.21',
+    reuniaoNome: 'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',
+    reuniaoData: '06/11/2026',
+    acao: 'Mapear e consolidar todas as possibilidades de canais (ativos, receptivos, transbordo, integração Gênesis) e apresentar à Caixa.',
+    resp: 'Renan Polônio (Salesforce — Digital SA)',
+    respOrg: 'Salesforce',
+    prazo: null,
+    prazoDisplay: 'Antes da próxima reunião de caso de uso',
+    status: 'Futuro'
+  },
+  {
+    id: 34,
+    reuniaoId: '8.21',
+    reuniaoNome: 'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',
+    reuniaoData: '06/11/2026',
+    acao: 'Participar de reunião técnica de SMS para definir estratégia de envio — InfoBip vs. envio via Salesforce Marketing Cloud (short codes já contratados).',
+    resp: 'Fábio Grande (Caixa) + Renan Polônio (Salesforce)',
+    respOrg: 'Caixa/Salesforce',
+    prazo: '2026-11-10',
+    prazoDisplay: '10/Nov/2026 às 15h',
+    status: 'Futuro'
+  },
+  {
+    id: 35,
+    reuniaoId: '8.21',
+    reuniaoNome: 'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',
+    reuniaoData: '06/11/2026',
+    acao: 'Envolver Juan (gestor de marketing digital do CRM) para alinhamento de guideline de conteúdo e configuração de layout das campanhas no Super App (dimensões de imagem, limites de caracteres, deep links).',
+    resp: 'Josie Roque Vecchi (Caixa) / Renan Polônio (Salesforce)',
+    respOrg: 'Caixa/Salesforce',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  {
+    id: 36,
+    reuniaoId: '8.21',
+    reuniaoNome: 'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',
+    reuniaoData: '06/11/2026',
+    acao: 'Agendar agenda específica por caso de uso para detalhar regras de negócio de cada caso (solicitado por Vitor Raymundo).',
+    resp: 'Adriana Visentin (Salesforce — PM)',
+    respOrg: 'Salesforce',
+    prazo: null,
+    prazoDisplay: 'A agendar',
+    status: 'Futuro'
+  },
+  // ── 8.22 Dados Agenda Técnica: Estratégia Conexão Data Cloud ↔ Databricks/Blob ─
+  {
+    id: 37,
+    reuniaoId: '8.22',
+    reuniaoNome: 'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',
+    reuniaoData: '09/11/2026',
+    acao: 'Confirmar suporte de File Federation (Delta Sharing) via Private Connect Azure — verificar compatibilidade com os modelos de Private Connect padrão e Multicloud.',
+    resp: 'Renan Polônio / Juliano Polito (Salesforce)',
+    respOrg: 'Salesforce',
+    prazo: null,
+    prazoDisplay: 'Urgente',
+    status: 'Futuro'
+  },
+  {
+    id: 38,
+    reuniaoId: '8.22',
+    reuniaoNome: 'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',
+    reuniaoData: '09/11/2026',
+    acao: 'Confirmar requisitos de autenticação/autorização do Blob Storage Azure com time de segurança (Túlio — COI/Suarte).',
+    resp: 'Bruno Aprigio e Silva (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Em Andamento'
+  },
+  {
+    id: 39,
+    reuniaoId: '8.22',
+    reuniaoNome: 'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',
+    reuniaoData: '09/11/2026',
+    acao: 'Atualizar demanda de arquitetura já aberta com Túlio (Suarte) incluindo todas as possibilidades de conexão: conector nativo Data Cloud + MuleSoft como alternativa, para evitar nova demanda futura.',
+    resp: 'Bruno Aniceto (Salesforce) + Bruno Aprigio (Caixa)',
+    respOrg: 'Caixa/Salesforce',
+    prazo: null,
+    prazoDisplay: 'Urgente',
+    status: 'Futuro'
+  },
+  {
+    id: 40,
+    reuniaoId: '8.22',
+    reuniaoNome: 'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',
+    reuniaoData: '09/11/2026',
+    acao: 'Levantar com Fábio Grande (CRM) os nomes exatos dos produtos de dados para o MVP (Caso de Uso 1 e demais) e passar para Rafael Xavier (Vitec) para informar volumetria e formato dos arquivos Parquet.',
+    resp: 'Karina Curvina (Salesforce) / Fábio Grande (Caixa)',
+    respOrg: 'Caixa/Salesforce',
+    prazo: null,
+    prazoDisplay: 'Urgente — meta produção Dez/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 41,
+    reuniaoId: '8.22',
+    reuniaoNome: 'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',
+    reuniaoData: '09/11/2026',
+    acao: 'Incluir Bruno Aniceto e Juliano Polito (Salesforce) na agenda com time de segurança (Túlio) quando convocada pela Caixa.',
+    resp: 'Bruno Aprigio e Silva (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'Ao agendar reunião com Túlio',
+    status: 'Futuro'
+  },
+  {
+    id: 42,
+    reuniaoId: '8.22',
+    reuniaoNome: 'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',
+    reuniaoData: '09/11/2026',
+    acao: 'Avaliar pertinência e, se confirmado, agendar sessão de onboarding de Data Cloud para Rafael Xavier e time do Lakehouse (Vitec).',
+    resp: 'Rafael Carneiro (Salesforce) / Rafael Xavier (Caixa)',
+    respOrg: 'Caixa/Salesforce',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  // ── 8.23 Envio de SMS e E-mails ─────────────────────────────────────────────
+  {
+    id: 43,
+    reuniaoId: '8.23',
+    reuniaoNome: 'Envio de SMS e E-mails',
+    reuniaoData: '10/11/2026',
+    acao: 'Agendar reunião urgente com Edvaldo e Renato Jambeiro (JACDI) para alinhamento sobre uso dos canais nativos Salesforce para marketing e coexistência com o SIGMS (transacional).',
+    resp: 'Fábio Netto Pinheiro Grande (Caixa)',
+    respOrg: 'Caixa',
+    prazo: new Date('2026-11-11'),
+    prazoDisplay: '11/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 44,
+    reuniaoId: '8.23',
+    reuniaoNome: 'Envio de SMS e E-mails',
+    reuniaoData: '10/11/2026',
+    acao: 'Enviar material com regras de nomenclatura para definição do from name do SMS (Caixa será 2º cliente da América Latina a adotar a funcionalidade).',
+    resp: 'Samuel Sena / Karina Curvina (Salesforce)',
+    respOrg: 'Salesforce',
+    prazo: null,
+    prazoDisplay: 'Breve',
+    status: 'Futuro'
+  },
+  {
+    id: 45,
+    reuniaoId: '8.23',
+    reuniaoNome: 'Envio de SMS e E-mails',
+    reuniaoData: '10/11/2026',
+    acao: 'Enviar material de boas práticas de aquecimento de IP para e-mail, incluindo sugestão de plano B/C com base em percentuais das bases dos casos de uso.',
+    resp: 'Karina Curvina (Salesforce)',
+    respOrg: 'Salesforce',
+    prazo: null,
+    prazoDisplay: 'Breve',
+    status: 'Futuro'
+  },
+  {
+    id: 46,
+    reuniaoId: '8.23',
+    reuniaoNome: 'Envio de SMS e E-mails',
+    reuniaoData: '10/11/2026',
+    acao: 'Definir subdomínio(s) desejados para configuração de e-mail (ex: comunicacao.caixa.gov.br, renegociacao.caixa.gov.br) — Cenário A recomendado pela Salesforce.',
+    resp: 'Fábio Netto / Ronaldo / Marketing (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'Urgente',
+    status: 'Futuro'
+  },
+  {
+    id: 47,
+    reuniaoId: '8.23',
+    reuniaoNome: 'Envio de SMS e E-mails',
+    reuniaoData: '10/11/2026',
+    acao: 'Iniciar processo interno de criação de DNS e certificados SSL para e-mail junto às áreas CEPRO (segurança cibernética) e CESTEI (nuvem pública). Prazo estimado: 1–2 semanas.',
+    resp: 'Ronaldo Francisco Pereira da Silva (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'Urgente — iniciar semana 10/11',
+    status: 'Futuro'
+  },
+  {
+    id: 48,
+    reuniaoId: '8.23',
+    reuniaoNome: 'Envio de SMS e E-mails',
+    reuniaoData: '10/11/2026',
+    acao: 'Conduzir aprovação de fraseologia do from name do SMS junto à JACDI e GEPUP, considerando a nova identidade visual da Caixa.',
+    resp: 'Fábio Netto / Ronaldo (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  {
+    id: 49,
+    reuniaoId: '8.23',
+    reuniaoNome: 'Envio de SMS e E-mails',
+    reuniaoData: '10/11/2026',
+    acao: 'Enviar lista completa de tabelas de dados (todos os produtos da primeira onda de casos de uso, não só CU1) para análise de volumetria e definição de arquitetura de conectividade com Data Cloud.',
+    resp: 'Fábio Netto Pinheiro Grande (Caixa)',
+    respOrg: 'Caixa',
+    prazo: new Date('2026-11-10'),
+    prazoDisplay: '10/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 50,
+    reuniaoId: '8.23',
+    reuniaoNome: 'Envio de SMS e E-mails',
+    reuniaoData: '10/11/2026',
+    acao: 'Configurar monitoramento de saúde do IP via Google Postmaster e SNDS (Microsoft) — para IPs Salesforce e IPs atuais da Caixa — a fim de garantir visibilidade durante o aquecimento.',
+    resp: 'Salesforce + TI Caixa',
+    respOrg: 'Caixa/Salesforce',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  // ── 8.24 Gestão de Acesso e SSO (continuação) ────────────────────────────────
+  {
+    id: 51,
+    reuniaoId: '8.24',
+    reuniaoNome: 'Gestão de Acesso e SSO (continuação)',
+    reuniaoData: '10/11/2026',
+    acao: 'Compartilhar a nomenclatura definitiva dos grupos criados no EntraID com Bruno Aniceto para atualização da documentação de mapeamento de grupos (Anypoint Platform ↔ EntraID). O mapeamento é feito por Object ID — mudança de nome exige atualização interna.',
+    resp: 'Danilo Pedroso de Moraes (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'Breve',
+    status: 'Futuro'
+  },
+  {
+    id: 52,
+    reuniaoId: '8.24',
+    reuniaoNome: 'Gestão de Acesso e SSO (continuação)',
+    reuniaoData: '10/11/2026',
+    acao: 'Remover acessos diretos pré-SSO das plataformas MuleSoft e Salesforce Core, migrando todos os usuários para autenticação exclusiva via SSO/EntraID.',
+    resp: 'Bruno Aniceto de Araújo (Salesforce)',
+    respOrg: 'Salesforce',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  {
+    id: 53,
+    reuniaoId: '8.24',
+    reuniaoNome: 'Gestão de Acesso e SSO (continuação)',
+    reuniaoData: '10/11/2026',
+    acao: 'Adicionar demais usuários do projeto nos grupos do EntraID conforme necessidade de acesso (processo contínuo). Requisito mínimo: identificador interno, e-mail corporativo, nome e sobrenome preenchidos no perfil AD.',
+    resp: 'Danilo Pedroso de Moraes (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'Contínuo',
+    status: 'Em Andamento'
+  },
+  {
+    id: 54,
+    reuniaoId: '8.25',
+    reuniaoNome: 'Integrações do Core (FSC Private)',
+    reuniaoData: '10/11/2026',
+    acao: 'Enviar planilha de integrações FSC Private (versão atual) para Fábio Netto revisar pontos abertos e anotar dúvidas antes da próxima sessão.',
+    resp: 'Karina Santos (Salesforce)',
+    respOrg: 'Salesforce',
+    prazo: new Date('2026-11-11'),
+    prazoDisplay: '11/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 55,
+    reuniaoId: '8.25',
+    reuniaoNome: 'Integrações do Core (FSC Private)',
+    reuniaoData: '10/11/2026',
+    acao: 'Agendar nova sessão de ~30 minutos para finalizar itens restantes da lista de integrações FSC Private (Planejamento de Visitas e demais pendentes).',
+    resp: 'Adriana Visentin (Salesforce) / Andryelle Verissimo (Orange)',
+    respOrg: 'Salesforce',
+    prazo: new Date('2026-11-12'),
+    prazoDisplay: '12/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 56,
+    reuniaoId: '8.25',
+    reuniaoNome: 'Integrações do Core (FSC Private)',
+    reuniaoData: '10/11/2026',
+    acao: 'Agendar sessão com Jeyson e time de dados Caixa para decidir fonte definitiva de dados cadastrais e carteiramento (SICL direto via API vs. Databricks) para o MVP FSC Private.',
+    resp: 'Fábio Netto Pinheiro Grande (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  {
+    id: 57,
+    reuniaoId: '8.25',
+    reuniaoNome: 'Integrações do Core (FSC Private)',
+    reuniaoData: '10/11/2026',
+    acao: 'Levantar com Lima/Jeyson: (a) se débito automático e adesão SMS são "produtos" no FSC, (b) onde ficam dados de interesses pessoais, (c) onde ficam marcações de impedimento (bloqueio judicial, CPF irregular).',
+    resp: 'Fábio Netto Pinheiro Grande (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  {
+    id: 58,
+    reuniaoId: '8.25',
+    reuniaoNome: 'Integrações do Core (FSC Private)',
+    reuniaoData: '10/11/2026',
+    acao: 'Confirmar regra de membro não-private dentro de grupo econômico de cliente private: qual status recebe no FSC? Verificar com time Caixa.',
+    resp: 'Fábio Netto Pinheiro Grande (Caixa) / Karina Santos (Salesforce)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  {
+    id: 59,
+    reuniaoId: '8.25',
+    reuniaoNome: 'Integrações do Core (FSC Private)',
+    reuniaoData: '10/11/2026',
+    acao: 'Agendar sessão com Lino para entender escopo de indicadores/metas no Alcance para o contexto Private e viabilidade do espelhamento consultivo no FSC.',
+    resp: 'Fábio Netto Pinheiro Grande (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  {
+    id: 60,
+    reuniaoId: '8.26',
+    reuniaoNome: 'Alinhamento Caso de Uso Finance',
+    reuniaoData: '11/11/2026',
+    acao: 'Enviar material de pesquisa interna Caixa (levantamento de dores do segmento private pela própria rede) por e-mail para a equipe Salesforce.',
+    resp: 'Lino Raphael Brancaglion Muffato (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'Breve',
+    status: 'Futuro'
+  },
+  {
+    id: 61,
+    reuniaoId: '8.26',
+    reuniaoNome: 'Alinhamento Caso de Uso Finance',
+    reuniaoData: '11/11/2026',
+    acao: 'Criar grupo de WhatsApp FSC Private (Salesforce + Caixa) e adicionar Lino como ADM para incluir os demais membros da Caixa.',
+    resp: 'Adriana Visentin (Salesforce)',
+    respOrg: 'Salesforce',
+    prazo: new Date('2026-11-11'),
+    prazoDisplay: '11/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 62,
+    reuniaoId: '8.26',
+    reuniaoNome: 'Alinhamento Caso de Uso Finance',
+    reuniaoData: '11/11/2026',
+    acao: 'Construir pré-estrutura dos grupos de entrevistas de personas (tarefas, segmentos de usuários, perguntas-guia) para alinhamento com Lino antes da agenda de quinta-feira.',
+    resp: 'Mariana Izukawa (Salesforce)',
+    respOrg: 'Salesforce',
+    prazo: new Date('2026-11-12'),
+    prazoDisplay: '12/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 63,
+    reuniaoId: '8.26',
+    reuniaoNome: 'Alinhamento Caso de Uso Finance',
+    reuniaoData: '11/11/2026',
+    acao: 'Enviar invites para as agendas de Acessos/Encarteiramento (qui 12/11) e Personas/Grupos (sex 13/11), das 14h às 15h.',
+    resp: 'Adriana Visentin (Salesforce)',
+    respOrg: 'Salesforce',
+    prazo: new Date('2026-11-11'),
+    prazoDisplay: '11/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 64,
+    reuniaoId: '8.26',
+    reuniaoNome: 'Alinhamento Caso de Uso Finance',
+    reuniaoData: '11/11/2026',
+    acao: 'Indicar colegas da rede private para as entrevistas de personas: grupos presenciais em São Paulo (Paulista) e remotos para outras regiões (Campinas, Goiânia, etc.).',
+    resp: 'Lino Raphael Brancaglion Muffato (Caixa)',
+    respOrg: 'Caixa',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  {
+    id: 65,
+    reuniaoId: '8.26',
+    reuniaoNome: 'Alinhamento Caso de Uso Finance',
+    reuniaoData: '11/11/2026',
+    acao: 'Adicionar integração com sistema Gênesis na lista de integrações FSC Private.',
+    resp: 'Karina Santos (Salesforce)',
+    respOrg: 'Salesforce',
+    prazo: null,
+    prazoDisplay: 'Breve',
+    status: 'Futuro'
+  },
+  {
+    id: 66,
+    reuniaoId: '8.26',
+    reuniaoNome: 'Alinhamento Caso de Uso Finance',
+    reuniaoData: '11/11/2026',
+    acao: 'Agendar visita presencial ao escritório da Paulista (São Paulo) para conduzir entrevistas de personas com gerentes private.',
+    resp: 'Camila Pacheco / Mariana Izukawa (Salesforce)',
+    respOrg: 'Salesforce',
+    prazo: null,
+    prazoDisplay: 'A definir',
+    status: 'Futuro'
+  },
+  // ── 8.27 Agenda Diária — Limite de Crédito (Validação Novo Fluxo sem PUSH) ──
+  {
+    id: 67,
+    reuniaoId: '8.27',
+    reuniaoNome: 'Limite de Crédito (Sem PUSH)',
+    reuniaoData: '11/11/2026',
+    acao: 'Enviar documento consolidado da jornada alternativa do CU1 (fluxo sem PUSH) + apresentação visual com opções de canal para a equipe Caixa.',
+    resp: 'Josie (Salesforce — MC)',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-11',
+    prazoDisplay: '11/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 68,
+    reuniaoId: '8.27',
+    reuniaoNome: 'Limite de Crédito (Sem PUSH)',
+    reuniaoData: '11/11/2026',
+    acao: 'Confirmar fonte de telefone de contato principal para uso nos canais WhatsApp e SMS — verificar se é SICL (Cicli) ou outra fonte (EC - contato principal). Conversar com Edvaldo.',
+    resp: 'Fábio Grande (Caixa)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-12',
+    prazoDisplay: '12/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 69,
+    reuniaoId: '8.27',
+    reuniaoNome: 'Limite de Crédito (Sem PUSH)',
+    reuniaoData: '11/11/2026',
+    acao: 'Confirmar volumetria das tabelas complementares necessárias além do Limite de Crédito (e-mail, telefone e demais campos exigidos pelos novos canais).',
+    resp: 'Fábio Grande (Caixa)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-12',
+    prazoDisplay: '12/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 70,
+    reuniaoId: '8.27',
+    reuniaoNome: 'Limite de Crédito (Sem PUSH)',
+    reuniaoData: '11/11/2026',
+    acao: 'Confirmar aplicação do modelo de qualidade de e-mail (filtro de hard bounce e domínios inválidos) antes da ingestão da base para o canal e-mail.',
+    resp: 'Fábio Grande (Caixa)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-12',
+    prazoDisplay: '12/Nov/2026',
+    status: 'Futuro'
+  },
+  // ── 8.28 Alinhamento dos Squads e Dailys do Projeto ──────────────────────
+  {
+    id: 71,
+    reuniaoId: '8.28',
+    reuniaoNome: 'Alinhamento dos Squads',
+    reuniaoData: '11/11/2026',
+    acao: 'Formatar o documento de estrutura de squads (com nomes, papéis e casos de uso) e enviar para todos os participantes do projeto.',
+    resp: 'Bruno Aprigio (Caixa)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-12',
+    prazoDisplay: '12/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 72,
+    reuniaoId: '8.28',
+    reuniaoNome: 'Alinhamento dos Squads',
+    reuniaoData: '11/11/2026',
+    acao: 'Configurar a ferramenta de acompanhamento por squad (Microsoft Planner ou equivalente) antes de convocar os times para o kickoff.',
+    resp: 'Bruno Aprigio / Fábio Grande (Caixa)',
+    respOrg: 'Caixa',
+    prazo: '2026-11-12',
+    prazoDisplay: '12/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 73,
+    reuniaoId: '8.28',
+    reuniaoNome: 'Alinhamento dos Squads',
+    reuniaoData: '11/11/2026',
+    acao: 'Enviar invite do Kickoff de Estrutura de Squads (13/11 às 14h) para os times Salesforce e Orange.',
+    resp: 'Adriana Visentin / Andryelle Verissimo',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-12',
+    prazoDisplay: '12/Nov/2026',
+    status: 'Futuro'
+  },
+  {
+    id: 74,
+    reuniaoId: '8.28',
+    reuniaoNome: 'Alinhamento dos Squads',
+    reuniaoData: '11/11/2026',
+    acao: 'Realinhar agenda com Lino (Squad Financial/Private) para outro horário na sexta 13/11, pois conflita com o Kickoff de Squads das 14h.',
+    resp: 'Adriana Visentin / Bruno Aprigio',
+    respOrg: 'Salesforce',
+    prazo: '2026-11-12',
+    prazoDisplay: '12/Nov/2026',
+    status: 'Futuro'
+  }
+];
+
+const TODAY = new Date('2026-11-11');
+const STORAGE = {};
+
+function loadStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      Object.assign(STORAGE, data);
+    }
+  } catch(e) {}
+}
+
+function saveStorage() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(STORAGE)); } catch(e) {}
+}
+
+function getState(id) {
+  return STORAGE[id] || { checked: false, comentario: '', status: null };
+}
+
+function setState(id, key, value) {
+  if (!STORAGE[id]) STORAGE[id] = { checked: false, comentario: '', status: null };
+  STORAGE[id][key] = value;
+  saveStorage();
+}
+
+function getEffectiveStatus(acao) {
+  const st = getState(acao.id);
+  if (st.checked) return 'Concluído';
+  if (st.status) return st.status;
+  // check if overdue
+  const prazoDate = new Date(acao.prazo);
+  if (acao.status !== 'Concluído' && prazoDate < TODAY) return 'Atrasado';
+  return acao.status;
+}
+
+function badgeHTML(status) {
+  const map = {
+    'Futuro': 'badge-futuro',
+    'Em Andamento': 'badge-andamento',
+    'Concluído': 'badge-concluido',
+    'Atrasado': 'badge-atrasado'
+  };
+  return `<span class="badge ${map[status] || 'badge-futuro'}">${status}</span>`;
+}
+
+function render() {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+
+  // Update tab counts
+  let cPend = 0, cConc = 0;
+  ACOES.forEach(a => {
+    const s = getEffectiveStatus(a);
+    if (s === 'Concluído') cConc++; else cPend++;
+  });
+  document.getElementById('countPendentes').textContent = cPend;
+  document.getElementById('countConcluidos').textContent = cConc;
+
+  let lastReuniaoId = null;
+  let seq = 1;
+
+  ACOES.forEach(acao => {
+    const st = getState(acao.id);
+    const effStatus = getEffectiveStatus(acao);
+    const prazoDate = new Date(acao.prazo);
+    const isAtrasado = effStatus === 'Atrasado';
+    const isConcluido = effStatus === 'Concluído';
+
+    // Filter by active tab
+    if (currentTab === 'pendentes' && isConcluido) return;
+    if (currentTab === 'concluidos' && !isConcluido) return;
+
+    // group header
+    if (acao.reuniaoId !== lastReuniaoId) {
+      const ghRow = document.createElement('tr');
+      ghRow.className = 'group-header';
+      ghRow.setAttribute('data-reuniao', acao.reuniaoId);
+      ghRow.innerHTML = `<td colspan="8">${acao.reuniaoId} &nbsp;—&nbsp; ${acao.reuniaoNome} &nbsp;(${acao.reuniaoData})</td>`;
+      tbody.appendChild(ghRow);
+      lastReuniaoId = acao.reuniaoId;
+    }
+
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-id', acao.id);
+    tr.setAttribute('data-reuniao', acao.reuniaoId);
+    tr.setAttribute('data-status', effStatus);
+    tr.setAttribute('data-prazo', acao.prazo || '');
+    tr.setAttribute('data-search', (acao.acao + acao.resp + acao.prazoDisplay + effStatus).toLowerCase());
+
+    tr.innerHTML = `
+      <td class="td-num">${seq++}</td>
+      <td class="td-reuniao">
+        <div class="reuniao-id">${acao.reuniaoId}</div>
+        <div class="reuniao-nome">${acao.reuniaoNome}</div>
+      </td>
+      <td class="td-acao">${acao.acao}</td>
+      <td class="td-resp">
+        <div class="resp-name">${acao.resp}</div>
+        <div class="resp-org">${acao.respOrg}</div>
+      </td>
+      <td class="td-prazo${isAtrasado ? ' atrasado' : ''}">${acao.prazoDisplay}</td>
+      <td class="td-status">
+        <select class="comentario-input" style="resize:none;min-height:auto;padding:4px 6px;" onchange="changeStatus(${acao.id}, this.value)">
+          <option value="Futuro" ${effStatus === 'Futuro' ? 'selected' : ''}>🔵 Futuro</option>
+          <option value="Em Andamento" ${effStatus === 'Em Andamento' ? 'selected' : ''}>🟡 Em Andamento</option>
+          <option value="Concluído" ${effStatus === 'Concluído' ? 'selected' : ''}>🟢 Concluído</option>
+          <option value="Atrasado" ${effStatus === 'Atrasado' ? 'selected' : ''}>🔴 Atrasado</option>
+        </select>
+      </td>
+      <td class="td-concluido">
+        <div class="check-wrap">
+          <div class="check-box ${st.checked ? 'checked' : ''}" onclick="toggleCheck(${acao.id}, this)">${st.checked ? '✓' : ''}</div>
+        </div>
+      </td>
+      <td class="td-comentario">
+        <textarea class="comentario-input" rows="2" placeholder="Comentário da Caixa..." onblur="saveComentario(${acao.id}, this.value)">${st.comentario || ''}</textarea>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  updateSummary();
+  applyFilters(true);
+  updateRowCount();
+}
+
+function toggleCheck(id, el) {
+  const current = el.classList.contains('checked');
+  el.classList.toggle('checked', !current);
+  el.textContent = !current ? '✓' : '';
+  setState(id, 'checked', !current);
+  if (!current) setState(id, 'status', 'Concluído');
+  render();
+}
+
+function changeStatus(id, value) {
+  setState(id, 'status', value);
+  if (value === 'Concluído') setState(id, 'checked', true);
+  render();
+}
+
+function saveComentario(id, value) {
+  setState(id, 'comentario', value);
+}
+
+function updateSummary() {
+  const counts = { 'Futuro': 0, 'Em Andamento': 0, 'Concluído': 0, 'Atrasado': 0 };
+  ACOES.forEach(a => {
+    const s = getEffectiveStatus(a);
+    if (counts[s] !== undefined) counts[s]++;
+  });
+  const total = ACOES.length;
+  document.getElementById('summaryBar').innerHTML = `
+    <div class="stat-chip"><div class="dot dot-total"></div> Total: <strong>${total}</strong></div>
+    <div class="stat-chip"><div class="dot dot-futuro"></div> Futuro: <strong>${counts['Futuro']}</strong></div>
+    <div class="stat-chip"><div class="dot dot-andamento"></div> Em Andamento: <strong>${counts['Em Andamento']}</strong></div>
+    <div class="stat-chip"><div class="dot dot-concluido"></div> Concluído: <strong>${counts['Concluído']}</strong></div>
+    <div class="stat-chip"><div class="dot dot-atrasado"></div> Atrasado: <strong>${counts['Atrasado']}</strong></div>
+  `;
+}
+
+function applyFilters(skipRender) {
+  const filterStatus = document.getElementById('filterStatus').value;
+  const filterReuniao = document.getElementById('filterReuniao').value;
+  const filterPrazoAte = document.getElementById('filterPrazoAte').value; // 'YYYY-MM-DD' or ''
+  const search = document.getElementById('searchInput').value.toLowerCase().trim();
+
+  let visibleRows = 0;
+  const tbody = document.getElementById('tableBody');
+  const rows = tbody.querySelectorAll('tr');
+
+  // track which group headers have visible rows
+  const groupVisible = {};
+
+  rows.forEach(tr => {
+    if (tr.classList.contains('group-header')) return;
+    const rId = tr.getAttribute('data-reuniao');
+    const status = tr.getAttribute('data-status');
+    const prazo = tr.getAttribute('data-prazo') || '';
+    const searchText = tr.getAttribute('data-search') || '';
+
+    let show = true;
+    if (filterStatus && status !== filterStatus) show = false;
+    if (filterReuniao && rId !== filterReuniao) show = false;
+    if (filterPrazoAte && prazo && prazo > filterPrazoAte) show = false;
+    if (filterPrazoAte && !prazo) show = false; // sem prazo definido fica oculto quando filtro ativo
+    if (search && !searchText.includes(search)) show = false;
+
+    tr.classList.toggle('hidden-row', !show);
+    if (show) {
+      visibleRows++;
+      groupVisible[rId] = true;
+    }
+  });
+
+  // hide group headers with no visible rows
+  rows.forEach(tr => {
+    if (!tr.classList.contains('group-header')) return;
+    const rId = tr.getAttribute('data-reuniao');
+    tr.classList.toggle('hidden-row', !groupVisible[rId]);
+  });
+
+  document.getElementById('rowCount').textContent = `Exibindo ${visibleRows} de ${ACOES.length} ações`;
+}
+
+function updateRowCount() {
+  document.getElementById('rowCount').textContent = `${ACOES.length} ações no total`;
+}
+
+function exportCSV() {
+  const headers = ['#','Reunião ID','Nome da Reunião','Ação Pendente','Responsável','Org','Prazo','Status','Concluído','Comentário Caixa'];
+  const rows = ACOES.map((a, i) => {
+    const st = getState(a.id);
+    const eff = getEffectiveStatus(a);
+    return [
+      i+1,
+      a.reuniaoId,
+      a.reuniaoNome,
+      '"' + a.acao.replace(/"/g,'""') + '"',
+      '"' + a.resp.replace(/"/g,'""') + '"',
+      a.respOrg,
+      a.prazoDisplay,
+      eff,
+      st.checked ? 'Sim' : 'Não',
+      '"' + (st.comentario || '').replace(/"/g,'""') + '"'
+    ].join(',');
+  });
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'CEF_Acoes_Pendentes_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+loadStorage();
+render();
+</script>
+</body>
+</html>

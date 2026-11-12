@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Reuniões — CEF Mov CRM</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f0f4f8;
+    color: #1a202c;
+    font-size: 13px;
+  }
+  header {
+    background: #003087;
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  header h1 { font-size: 17px; font-weight: 700; letter-spacing: 0.3px; }
+  header span { font-size: 11px; opacity: 0.75; }
+
+  /* ── TABS ── */
+  .tabs-bar {
+    display: flex;
+    background: #002070;
+    padding: 0 24px;
+    gap: 2px;
+    overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 10px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.65);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+    font-family: inherit;
+  }
+  .tab-btn:hover { color: rgba(255,255,255,0.9); }
+  .tab-btn.active { color: #fff; border-bottom-color: #5b9bd5; }
+  .tab-count {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: 10px;
+    margin-left: 6px;
+    font-weight: 700;
+  }
+  .tab-btn.active .tab-count { background: rgba(255,255,255,0.3); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    padding: 8px 24px;
+    background: #e8edf3;
+    border-bottom: 1px solid #d1d9e0;
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #444; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .dot-done { background: #2d7d46; }
+  .dot-pending { background: #b07d12; }
+  .dot-future { background: #718096; }
+
+  .container { padding: 16px 24px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    margin-bottom: 16px;
+  }
+  thead tr { background: #003087; color: white; }
+  thead th {
+    padding: 9px 10px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid #f0f4f8; transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f7fafc; }
+  td { padding: 8px 10px; vertical-align: top; line-height: 1.45; }
+  .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-done { background: #d4edda; color: #155724; }
+  .badge-pending { background: #fff3cd; color: #856404; }
+  .badge-future { background: #e2e8f0; color: #4a5568; }
+  .meeting-name { font-weight: 600; color: #1a202c; font-size: 12px; }
+  .participants { font-size: 11px; color: #4a5568; }
+  .participants span { display: block; }
+  .ata-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #003087;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 3px 7px;
+    background: #ebf0fa;
+    border-radius: 4px;
+    border: 1px solid #c3d0f0;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .ata-link:hover { background: #d6e0f7; }
+  #toast {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2d7d46;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 9999;
+    white-space: nowrap;
+  }
+  .ata-none { font-size: 11px; color: #a0aec0; font-style: italic; }
+  .obs-cell { min-width: 180px; }
+  .obs-display { font-size: 11px; color: #4a5568; line-height: 1.5; white-space: pre-wrap; }
+  .obs-display:empty::before { content: '—'; color: #cbd5e0; }
+  .edit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 4px;
+    font-size: 10px;
+    color: #718096;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 2px 4px;
+    border-radius: 3px;
+    transition: background 0.15s;
+  }
+  .edit-btn:hover { background: #edf2f7; color: #2d3748; }
+  .obs-editor { display: none; }
+  .obs-editor textarea {
+    width: 100%;
+    min-height: 60px;
+    font-size: 11px;
+    font-family: inherit;
+    border: 1px solid #c3cfdc;
+    border-radius: 4px;
+    padding: 5px 7px;
+    resize: vertical;
+    color: #2d3748;
+    line-height: 1.5;
+  }
+  .obs-editor textarea:focus { outline: none; border-color: #003087; box-shadow: 0 0 0 2px rgba(0,48,135,0.1); }
+  .obs-actions { display: flex; gap: 6px; margin-top: 4px; }
+  .btn-save {
+    font-size: 10px;
+    padding: 3px 9px;
+    background: #003087;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .btn-save:hover { background: #00256e; }
+  .btn-cancel {
+    font-size: 10px;
+    padding: 3px 9px;
+    background: white;
+    color: #718096;
+    border: 1px solid #d1d9e0;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .btn-cancel:hover { background: #f7fafc; }
+  .folder-config {
+    background: white;
+    border: 1px solid #d1d9e0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .folder-config label { font-size: 12px; font-weight: 600; color: #2d3748; white-space: nowrap; }
+  .folder-config input {
+    flex: 1;
+    min-width: 220px;
+    font-size: 12px;
+    padding: 6px 10px;
+    border: 1px solid #c3cfdc;
+    border-radius: 4px;
+    color: #2d3748;
+  }
+  .folder-config input:focus { outline: none; border-color: #003087; }
+  .folder-config button {
+    font-size: 12px;
+    padding: 6px 14px;
+    background: #003087;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .folder-config button:hover { background: #00256e; }
+  .folder-note { font-size: 10px; color: #718096; width: 100%; }
+  .date-col { white-space: nowrap; font-size: 11px; }
+  .date-main { font-weight: 600; color: #2d3748; }
+  .date-time { color: #718096; margin-top: 1px; }
+  .summary-bar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .summary-card {
+    background: white;
+    border-radius: 8px;
+    padding: 12px 18px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 120px;
+  }
+  .summary-card .num { font-size: 24px; font-weight: 700; color: #003087; }
+  .summary-card .lbl { font-size: 11px; color: #718096; }
+  .num-done { color: #2d7d46 !important; }
+  .num-pending { color: #b07d12 !important; }
+  .num-future { color: #718096 !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📋 Painel de Reuniões Técnicas — CEF Mov CRM</h1>
+  <span>Período: 26/10/2026 → 13/11/2026</span>
+</header>
+
+<!-- TABS BAR -->
+<div class="tabs-bar" id="tabs-bar"></div>
+
+<div id="toast"></div>
+
+<!-- Folder config + summary (global) -->
+<div class="container" style="padding-bottom:0">
+  <div class="folder-config">
+    <label>📁 Pasta das ATAs:</label>
+    <input type="text" id="folderPath" placeholder="Ex: /Users/avisentin/Documents/ATAs CEF" />
+    <button onclick="saveFolder()">Salvar</button>
+    <div class="folder-note">Configure o caminho da pasta onde os PDFs das ATAs estão salvos. Os links serão gerados automaticamente.</div>
+  </div>
+  <div class="summary-bar">
+    <div class="summary-card"><span class="num" id="cnt-total">—</span><span class="lbl">Reuniões cadastradas</span></div>
+    <div class="summary-card"><span class="num num-done" id="cnt-done">—</span><span class="lbl">Realizadas com ATA</span></div>
+    <div class="summary-card"><span class="num num-pending" id="cnt-pending">—</span><span class="lbl">Realizadas sem ATA</span></div>
+    <div class="summary-card"><span class="num num-future" id="cnt-future">—</span><span class="lbl">Futuras / Previstas</span></div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="dot dot-done"></div> Realizada com ATA enviada</div>
+    <div class="legend-item"><div class="dot dot-pending"></div> Realizada — ATA pendente</div>
+    <div class="legend-item"><div class="dot dot-future"></div> Futura / Prevista</div>
+  </div>
+</div>
+
+<!-- TAB PANELS -->
+<div id="tab-panels"></div>
+
+<script>
+const STORAGE_KEY = 'cef_painel_v2';
+
+const meetings = [
+  {
+    id: '8.5',
+    status: 'done',
+    date: '28/10/2026',
+    time: '15h00',
+    week: 1,
+    name: 'Salesforce — Arquitetura de Convivência com Legado',
+    caixa: ['Bruno Aprigio (Gerente Nacional)', 'Jeyson Cordeiro (Gerente)', 'Fábio Grande (Dados)', 'Frederico Cerdeira', 'Rafael Xavier'],
+    salesforce: ['Juliana Achiles (PM)', 'Adriana Visentin (PM Backup)', 'Samuel de Sena (TA)', 'Maciel Bombonato (TA)', 'Renan Polonio (Digital SA)', 'Bruno Aniceto (MuleSoft)', 'Alex Siqueira (AE)'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Diego Freitas (Head Op.)', 'Hudson Minervini'],
+    ataFile: 'ATA 2026-10-28 - 15h - Salesforce - Arquitetura convivência legado.pdf',
+    obs: 'Bruno Aprigio respondeu em 29/10: foco do levantamento de volumetria deve ser nos acessos do Super App (canal digital prioritário), não apenas nas APIs de sistemas legados.'
+  },
+  {
+    id: '8.6',
+    status: 'done',
+    date: '28/10/2026',
+    time: '16h00–17h00',
+    week: 1,
+    name: 'Agenda Diária — Levantamento de Caso de Uso (Marketing Cloud Personalization)',
+    caixa: ['Bruno Aprigio (Gerente Nacional)', 'Jeyson Cordeiro (Gerente)', 'Fábio Grande (Dados)', 'Frederico Cerdeira'],
+    salesforce: ['Juliana Achiles (PM)', 'Adriana Visentin (PM Backup)', 'Samuel de Sena (TA)', 'Maciel Bombonato (TA)', 'Renan Polonio (Digital SA)', 'Karina Curvina (SA)', 'Karina Santos (Financial SA)', 'Alex Siqueira (AE)'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Diego Freitas', 'Hudson Minervini'],
+    ataFile: 'ATA 2026-10-28 - 17h - Agenda diária - Levantamento de Caso de Uso.pdf',
+    obs: ''
+  },
+  {
+    id: '8.7',
+    status: 'done',
+    date: '29/10/2026',
+    time: '15h00–16h00',
+    week: 1,
+    name: 'Salesforce — Integração Databricks',
+    caixa: ['Bruno Aprigio (Gerente Nacional)', 'Fábio Grande (Dados)', 'Frederico Cerdeira', 'Rafael Xavier', 'Ronaldo Francisco (TI)', 'Thiago Soares', 'Gabriel Cruz'],
+    salesforce: ['Juliana Achiles (PM)', 'Samuel de Sena (TA)', 'Maciel Bombonato (TA)', 'Renan Polonio (Digital SA)', 'Bruno Aniceto (MuleSoft)', 'Andreas Miller (Diretor)', 'Alex Siqueira (AE)'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Diego Freitas'],
+    ataFile: 'ATA 2026-10-29 15h - Salesforce - Integração Databricks.pdf',
+    obs: ''
+  },
+  {
+    id: '8.8',
+    status: 'done',
+    date: '29/10/2026',
+    time: '16h00–17h00',
+    week: 1,
+    name: 'Tour pelo relacionamento.caixa (CRM Departamental)',
+    caixa: ['Jeyson Cordeiro (Gerente)', 'Fábio Grande (Dados)', 'Frederico Cerdeira'],
+    salesforce: ['Adriana Visentin (PM)', 'Samuel de Sena (TA)', 'Maciel Bombonato (TA)', 'Renan Polonio (Digital SA)', 'Karina Curvina (SA)', 'Karina Santos (Financial SA)', 'Raul Rocha', 'Vitor Raymundo'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Hudson Minervini'],
+    ataFile: 'ATA 2026-10-29 16h - Tour pelo relacionamento.caixa.pdf',
+    obs: ''
+  },
+  {
+    id: '8.9',
+    status: 'done',
+    date: '30/10/2026',
+    time: '10h00–11h00',
+    week: 1,
+    name: 'Salesforce — Arquitetura Canal PJ, Integrações MuleSoft e SDK',
+    caixa: ['Antonio Paiva', 'Bruno Aprigio (Gerente Nacional)', 'Carolina Pedroso', 'Daiane Costa (Fóton)', 'Leandro Pitta', 'Odante Swerts', 'F514189 / F624984 / F675089'],
+    salesforce: ['Adriana Visentin (PM)', 'Bruno Aniceto (MuleSoft)', 'Camila Pacheco (SA Financial)', 'Karina Curvina (SA)', 'Karina Santos (Financial SA)', 'Maciel Bombonato (TA)', 'Raul Rocha', 'Renan Polonio (Digital SA)', 'Samuel de Sena (TA)', 'Vitor Raymundo', 'Alex Siqueira (AE)'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Hudson Minervini'],
+    ataFile: 'ATA 2026-10-30 10h - Salesforce - Arquitetura Canal PJ, integrações Mulesoft e SDK.pdf',
+    obs: ''
+  },
+  {
+    id: '8.10',
+    status: 'done',
+    date: '30/10/2026',
+    time: '14h00–15h56',
+    week: 1,
+    name: 'Salesforce — Dados (Produtos de Dados, Chave CCP e APIs Open Finance)',
+    caixa: ['Fábio Grande (Dados)', 'Ronaldo Francisco (TI)', 'Emerson Fabiano Ferreira (TI/Databricks)', 'Leonardo Soares Blanda (Dados)', 'Frederico Cerdeira', 'Rafael Xavier', 'Thiago Soares', 'Gabriel Cruz', 'Pedro Soares'],
+    salesforce: ['Adriana Visentin (PM)', 'Samuel de Sena (TA)', 'Maciel Bombonato (TA)', 'Renan Polonio (Digital SA)', 'Karina Curvina (SA)', 'Karina Santos (Financial SA)', 'Camila Pacheco (SA Financial)', 'Raul Rocha', 'Vitor Raymundo', 'Alex Siqueira (AE)'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Hudson Minervini', 'Diego Freitas', 'Bruno Correia'],
+    ataFile: 'ATA 2026-10-30 14h - Salesforce - Dados.pdf',
+    obs: ''
+  },
+  {
+    id: '8.11',
+    status: 'done',
+    date: '30/10/2026',
+    time: '16h00–17h23',
+    week: 1,
+    name: 'Agenda Diária GERAL — Apresentação da Plataforma MuleSoft, Rede e Segurança',
+    caixa: ['Jeyson Cordeiro (Gerente)', 'Fábio Grande (Dados)', 'Ronaldo Francisco (TI)', 'Frederico Cerdeira', 'Arthur Garcia Takahashi', 'Pedro Soares', 'Jamila Spegiorin Moreno Suehara (Rede — incorporada ao vivo)'],
+    salesforce: ['Adriana Visentin (PM)', 'Bruno Aniceto (MuleSoft)', 'Samuel de Sena (TA)', 'Maciel Bombonato (TA)', 'Thati Freire', 'Alex Siqueira (AE)', 'Renata Dezan'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Hudson Minervini', 'Diego Freitas', 'Bruno Correia'],
+    ataFile: 'ATA 2026-10-30 16h - Agenda diária - GERAL - Apresentação da arquitetura da plataforma Mulesoft e descoberta.pdf',
+    obs: ''
+  },
+  // ── SEMANA 2: 03/11 a 11/11 ──────────────────────────────────────────
+  {
+    id: '8.12',
+    status: 'done',
+    date: '03/11/2026',
+    time: '14h00–15h34',
+    week: 2,
+    name: 'Salesforce — Gestão de Acesso e SSO',
+    caixa: ['Bruno Aprigio e Silva (Gerente Nacional)', 'Frederico Cerdeira', 'Wellington de Souza Mendes (TI/Entra ID)', 'Danilo Pedroso de Moraes (TI — executor AD)', 'Jeyson Cordeiro (Gerente)'],
+    salesforce: ['Samuel de Sena (TA)', 'Karina Santos (Financial SA)', 'Andreas Miller (Diretor)', 'Alex Siqueira (AE)'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Bruno Correia'],
+    ataFile: 'ATA 2026-11-03 14h - Salesforce - Gestão de acesso e SSO @ Tue, Nov 3, 2026',
+    obs: ''
+  },
+  {
+    id: '8.13',
+    status: 'pending',
+    date: '03/11/2026',
+    time: '15h00',
+    week: 2,
+    name: 'Visão Macro Caixa — Segmentos, Produtos & Sinergia de Áreas',
+    caixa: ['A confirmar'],
+    salesforce: ['Adriana Visentin (PM)', 'Time Salesforce'],
+    orange: ['Andryelle Verissimo (PM Orange)'],
+    ataFile: '',
+    obs: ''
+  },
+  {
+    id: '8.14',
+    status: 'done',
+    date: '03/11/2026',
+    time: '16h00–18h04',
+    week: 2,
+    name: 'Agenda Diária — Levantamento de Caso de Uso (CU1 — CDC / Limite de Crédito)',
+    caixa: ['Fábio Grande (CRM/Dados)', 'Eduardo Oliveira de Carvalho (CRM — especialista CDN)', 'Bruno Aprigio e Silva (Gerente Nacional — pontual)', 'Marcelo Werhmuller'],
+    salesforce: ['Maciel Bombonato (TA)', 'Karina Santos (Financial SA)', 'Raul Rocha', 'Alex Siqueira (AE)', 'Renata Dezan (CSM)', 'Andreas Miller (Diretor)'],
+    orange: ['Andryelle Verissimo (PM Orange)'],
+    ataFile: 'ATA 2026-11-03 16h - Agenda Diária - Levantamento de Caso de Uso (CU1) @ Tue, Nov 3, 2026',
+    obs: ''
+  },
+  {
+    id: '8.15',
+    status: 'done',
+    date: '04/11/2026',
+    time: '09h00–10h31',
+    week: 2,
+    name: 'Salesforce — Change Management (Workshop Diagnóstico)',
+    caixa: ['Bruno Aprigio e Silva (Gerente Nacional)', 'Jeyson Cordeiro (Gerente)', 'Fábio Grande (CRM/Dados)', 'Frederico Cerdeira', 'Gabriel Cruz', 'Juan Pablo Rigueiras (Martech/CRM)', 'Ronaldo Francisco'],
+    salesforce: ['Raquel Klafke (CM Lead)', 'Mariana Izukawa (CM)', 'Adriana Visentin (PM)', 'Andreas Miller (Diretor)', 'Camila Pacheco (SA FSC)', 'Renata Dezan (CSM)', 'Vitor Raymundo (TA Digital)'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Letícia (MuleSoft/TI)', 'Bruno R. Correia', 'Tony Trindade (Sócio Orange Door)', 'Diego Lima de Freitas (Head TI)'],
+    ataFile: 'ATA - Salesforce - Change Management @ Wed, Nov 4, 2026',
+    obs: ''
+  },
+  {
+    id: '8.16',
+    status: 'done',
+    date: '04/11/2026',
+    time: '11h00–12h00',
+    week: 2,
+    name: 'Salesforce — Arquitetura de Integração com Super App (SDK e APIs)',
+    caixa: ['Humphrey Correa da Fonseca (Arquiteto Super App)', 'Fábio Netto Pinheiro Grande (CRM/Dados)', 'Bruno Aprigio e Silva (Gerente Nacional)', 'Tamie Silva Takeda (Martech/Dados)', 'Gabriel Nazareno Barreto Cunha da Cruz'],
+    salesforce: ['Samuel de Sena (TA)', 'Renan Polônio (Digital SA)', 'Maciel Bombonato (TA)', 'Clayton Kohiyama'],
+    orange: ['Andryelle Verissimo (PM Orange)'],
+    ataFile: 'ATA - Salesforce - Arquitetura de integração com Super APP (SDK e APIs) @ Wed, Nov 4, 2026',
+    obs: 'Decisão: push via API CCPU (sem SDK). Custom Activity a desenvolver. MCP Personalization acelerado via API server-side.'
+  },
+  {
+    id: '8.17',
+    status: 'done',
+    date: '04/11/2026',
+    time: '14h00–16h51',
+    week: 2,
+    name: 'Salesforce — Pré-reserva: Alinhamento com Segmento Private (FSC)',
+    caixa: ['Jeyson Leyser Cordeiro (Gerente CRM)', 'Lino Raphael Brancaglion Muffato (Estratégia Private)', 'Eduardo Borges Correia da Costa (Superintendente Rede Private)', 'Robson Mendonça Cerqueira (Superintendente MG)', 'Rodolfo Balestieri dos Santos (Superintendente Sul)', 'Edneia Kroneis (Superintendente SP Interior)', 'Renato Pimenta da Silveira (Banker/GCN)', 'Nathália Perona Silva Sarmento (Estratégia Clientes)', 'Izadora Fruet Raimundo (Getati/Tático)', 'Bruno Cavalcanti', 'Bruno Aprigio e Silva (Gerente Nacional)', 'Fábio Grande (CRM/Dados)'],
+    salesforce: ['Camila Pacheco (SA Financial Services)', 'Karina Santos (SA FSC Técnica)', 'Raul Rocha (Arquiteto Estratégia)', 'Adriana Visentin (PM)', 'Andreas Miller (Diretor PS)', 'Mariana Izukawa (UX/CM)', 'Rafael Carneiro (AE)'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Tony Rebello Trindade (Sócio Orange Door)', 'Hudson Minervini (Organizador)'],
+    ataFile: 'ATA - Salesforce - Alinhamento Segmento Private (FSC) @ Wed, Nov 4, 2026',
+    obs: 'Discovery FSC: dores dos bankers Private (50% operacional, 7 sistemas sem visão 360, sem mobile), casos de uso levantados, mockup de painel apresentado por Lino. AUM R$140bi, 20k clientes, 86 bankers.'
+  },
+  {
+    id: '8.17b',
+    status: 'done',
+    date: '04/11/2026',
+    time: '16h00–16h25',
+    week: 2,
+    name: 'Salesforce — Agenda Diária: Levantamento de Caso de Uso (Biblioteca de Marcas)',
+    caixa: ['Fábio Grande (CRM/Dados)', 'Suelen (Dados/BI — Biblioteca de Marcas)', 'Jeyson Cordeiro (mencionado)'],
+    salesforce: ['Samuel de Sena (TA)', 'Renan Polônio (Digital SA)', 'Tamie (mencionada)'],
+    orange: [],
+    ataFile: 'ATA - Salesforce - Biblioteca de Marcas @ Wed, Nov 4, 2026',
+    obs: 'Apresentação da Biblioteca de Marcas (~40 marcas, Data Bricks). Data Cloud consome dado pronto. Caixa enviará catálogo em Excel. CPF→CCP em migração.'
+  },
+  {
+    id: '8.18',
+    status: 'done',
+    date: '05/11/2026',
+    time: '11h00–12h32',
+    week: 2,
+    name: 'Salesforce — MVP Financial Services Cloud (Definição de Escopo)',
+    caixa: ['Jeyson Cordeiro (Gerente CRM)', 'Lino Raphael Brancaglion Muffato (Estratégia Private)', 'Nathalia Perona Silva Sarmento (Estratégia Clientes)', 'Fábio Grande (CRM/Dados)', 'Max (relacionamento.caixa)', 'Monaliza Collaco'],
+    salesforce: ['Adriana Visentin (PM)', 'Camila Pacheco (SA Financial)', 'Karina Santos (SA FSC)', 'Alex Siqueira (AE)', 'Juliano Polito', 'Renata Dezan (CSM)'],
+    orange: ['Andryelle Verissimo (PM Orange)'],
+    ataFile: 'ATA - Salesforce - MVP Financial Services Cloud @ Thu, Nov 5, 2026',
+    obs: 'MVP FSC — 4 blocos (lousa): (1) Visão 360° (investimentos, grupos, posse produtos, agenda gerente, dados cadastrais, histórico, oportunidades, marcas, interesses); (2) Visão Carteira (lista clientes/grupos, gestão grupos, escritório/nacional, desempenho/metas, gestão carteira); (3) Insights com IA (alertas: venc. aplicações, impedimentos, momento captação; ficha resumo, análise agenda, planejamento visitas); (4) Apoio Agêntico (registro interações/visita, relatório invest. consolidado, controle agenda). Previdência fora das APIs → integração pendente. PO Caixa a designar.'
+  },
+  {
+    id: '8.19',
+    status: 'done',
+    date: '05/11/2026',
+    time: '14h00–14h37',
+    week: 2,
+    name: 'Salesforce — Diagnóstico de Fontes, Qualidade & Duplicidade de Dados',
+    caixa: ['Fábio Grande (CRM/Dados)', 'Jeyson Cordeiro (Gerente CRM)', 'Thiago Faria Soares (Arquiteto Dados/Databricks)', 'Ronaldo Francisco Pereira da Silva (TI)', 'Frederico Cerdeira'],
+    salesforce: ['Bruno Aniceto de Araújo (MuleSoft/Dados)', 'Alex Siqueira (AE)', 'Marcelo Werhmuller', 'Andreas Miller (Diretor PS)', 'Juliano Polito'],
+    orange: ['Andryelle Verissimo (PM Orange)'],
+    ataFile: 'ATA - Salesforce - Diagnóstico de Fontes, Qualidade & Duplicidade de Dados @ Thu, Nov 5, 2026',
+    obs: '⚠️ Encerrada antecipadamente — Eugênio/Rafael Xavier (Suarte/TI) ausentes. Decisão pendente: estratégia de conexão Data Cloud → Databricks/GCP (3 opções: Parquet, conector GCP direto, Service Principal+Delta Share). Qualidade de dados: sem bloqueios — Produtos de Dados já abstraem duplicidades. Remarcar com TI.'
+  },
+  {
+    id: '8.20',
+    status: 'pending',
+    date: '05/11/2026',
+    time: '15h00',
+    week: 2,
+    name: 'Visita Presencial a uma Unidade do Private — Brasília',
+    caixa: ['Gerentes Private (unidade Brasília)'],
+    salesforce: ['Adriana Visentin (PM)', 'Camila Pacheco (SA Financial)', 'Karina Santos (Financial SA)'],
+    orange: ['A confirmar'],
+    ataFile: '',
+    obs: ''
+  },
+  {
+    id: '8.21',
+    status: 'done',
+    date: '06/11/2026',
+    time: '16h00–17h12',
+    week: 2,
+    name: 'Salesforce — Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',
+    caixa: ['Fábio Netto Pinheiro Grande (CRM/Dados)', 'Josie Roque Vecchi (CRM — integrações app/canais)'],
+    salesforce: ['Adriana Visentin (PM)', 'Renan Polônio (Digital SA)', 'Bruno Aniceto de Araújo (MuleSoft)', 'Marcelo Werhmuller', 'Samuel de Sena (TA)', 'Vitor Raymundo', 'Alex Siqueira (AE)'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Hudson Minervini'],
+    ataFile: 'ATA - Salesforce - Agenda Diária Canais de Ativação (App, WhatsApp, SMS) @ Fri, Nov 6, 2026',
+    obs: 'Canal priorizado para MVP: Campanha Carrossel. Mapeadas 4 APIs do Super App (mensagem relacionamento, carrossel, posse/oferta, splash screen). WhatsApp: 3 opções de transbordo — decisão aguarda reunião com Gênesis. SMS: reunião técnica agendada para 10/11 às 15h. API de orquestração de push (nova) — Fábio enviará Swagger.'
+  },
+  {
+    id: '8.22',
+    status: 'done',
+    date: '09/11/2026',
+    time: '15h00–16h10',
+    week: 2,
+    name: 'Salesforce — Dados (Agenda Técnica): Estratégia de Conexão Data Cloud ↔ Databricks/Blob Storage',
+    caixa: ['Bruno Aprigio e Silva (Gerente Nacional)', 'Rafael Xavier Fernandes (Arquiteto Dados — Vitec/Lakehouse)', 'Rodrigo Galdino Alves dos Reis (Engenheiro Dados — Vitec/Lakehouse)'],
+    salesforce: ['Adriana Visentin (PM)', 'Renan Polônio (Digital SA)', 'Bruno Aniceto de Araújo (MuleSoft/Dados)', 'Raul Rocha (Arquiteto)', 'Juliano Polito (Especialista Data Cloud)', 'Karina Curvina (SA)', 'Maciel Bombonato (TA)', 'Samuel de Sena (TA)', 'Alex Siqueira (AE)', 'Rafael Carneiro (AE)', 'Osvaldo Melo'],
+    orange: ['Andryelle Verissimo (PM Orange)'],
+    ataFile: 'ATA - Salesforce - Dados (Agenda Técnica) Estratégia Conexão Data Cloud Databricks @ Mon, Nov 9, 2026',
+    obs: 'Direção: ingestão via Azure Blob Storage Connector (não Zero Copy), dadas restrições de rede privada Equinix. File Federation (Delta Share) via Private Connect Azure a confirmar. Ingestão: full refresh paliativo → migrar para delta incremental (requer timestamp por registro). Demanda de arquitetura já aberta com Túlio (Suarte). Produtos de dados MVP a levantar com Fábio Grande → Rafael Xavier.'
+  },
+  {
+    id: '8.23',
+    status: 'done',
+    date: '10/11/2026',
+    time: '10h00–11h06',
+    week: 2,
+    name: 'Salesforce — Envio de SMS e E-mails',
+    caixa: ['Bruno Aprigio e Silva (Gerente Nacional)', 'Fábio Netto Pinheiro Grande (Gerente)', 'Ronaldo Francisco Pereira da Silva (Especialista TI)'],
+    salesforce: ['Andreas Miller (Diretor)', 'Samuel Sena (SE)', 'Karina Curvina (SA)', 'Renata Dezan (Salesforce)', 'Maciel Bombonato (TA)', 'Adriana Visentin (PM)'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Hudson Minervini (Gerente de Relacionamento)'],
+    ataFile: 'ATA - Salesforce - Envio de SMS e E-mails @ Tue, Nov 10, 2026',
+    obs: 'SMS: shortcode em provisionamento; from name (2º cliente AL) solicitado — unidirecional inicialmente. Bloqueador: SIGMS (sistema corporativo Caixa) no limite de 400–500 req/s; reunião urgente com Jambeiro/Edvaldo agendada para 11/11. E-mail: Cenário A (subdomínio) recomendado; DNS/certificados (CEPRO+CESTEI) 1–2 semanas; aquecimento de IP obrigatório. Diretriz: canais nativos Salesforce para marketing; SIGMS mantém transacional.'
+  },
+  {
+    id: '8.24',
+    status: 'done',
+    date: '10/11/2026',
+    time: '14h00–17h00',
+    week: 2,
+    name: 'Salesforce — Gestão de Acesso e SSO (continuação)',
+    caixa: ['Bruno Aprigio e Silva (Gerente Nacional)', 'Fábio Netto Pinheiro Grande (Gerente)', 'Danilo Pedroso de Moraes (TI — executor AD/EntraID)', 'Wellington de Souza Mendes (TI — EntraID)', 'Gabriel Cruz', 'Ronaldo Francisco Pereira da Silva'],
+    salesforce: ['Bruno Aniceto de Araújo (MuleSoft)', 'Karina Santos (Financial SA)', 'Adriana Visentin (PM)', 'Alex Siqueira (AE)', 'Rafael Carneiro (AE)'],
+    orange: ['Hudson Minervini (Gerente de Relacionamento)', 'Andryelle Verissimo (PM Orange)'],
+    ataFile: 'ATA - Salesforce - Gestão de Acesso e SSO (continuação) @ Tue, Nov 10, 2026',
+    obs: 'SSO concluído nas 3 plataformas: Marketing Cloud (03/11), Salesforce Core e MuleSoft (10/11). Método: EntraID (Azure AD) com SAML. Group Claims adicionados. Mapeamento grupos Anypoint ↔ EntraID por Object ID. Novos acessos via inclusão no grupo AD — sem provisionamento manual.'
+  },
+  {
+    id: '8.25',
+    status: 'done',
+    date: '10/11/2026',
+    time: '16h38–18h00',
+    week: 2,
+    name: 'Integrações do Core (FSC Private)',
+    caixa: ['Fábio Netto Pinheiro Grande (Gerente)'],
+    salesforce: ['Karina Santos (Financial SA)', 'Camila Pacheco (Financial SA)', 'Bruno Aniceto de Araújo (MuleSoft)', 'Adriana Corsino Visentin (PM)'],
+    orange: [],
+    ataFile: 'ATA - Salesforce - Integrações do Core @ Mon, Nov 10, 2026',
+    obs: 'Mapeamento de ~30 integrações FSC Private. Fonte primária: Databricks. Arquitetura: MuleSoft loop por CPF (20k clientes). Pull-only no MVP. Open Finance para investimentos/contas, feed de inteligência via Databricks, alertas de depósito via MQ (CU2), suitability via SIGPI, agente Coworker Teams no roadmap.'
+  },
+  {
+    id: '8.26',
+    status: 'done',
+    date: '11/11/2026',
+    time: '11h06–12h00',
+    week: 2,
+    name: 'Alinhamento Caso de Uso Finance (FSC Private)',
+    caixa: ['Lino Raphael Brancaglion Muffato (Segmento Private)', 'Fábio Netto Pinheiro Grande (Gerente)', 'Nathalia Perona Silva Sarmento', 'Jaqueline Rivas Paredes'],
+    salesforce: ['Camila Pacheco (Financial SA)', 'Karina Santos (Financial SA)', 'Mariana Izukawa (CX/Change Management)', 'Raul Rocha (Consultor)', 'Adriana Corsino Visentin (PM)'],
+    orange: [],
+    ataFile: 'ATA - Salesforce - Alinhamento Caso de Uso Finance @ Wed, Nov 11, 2026',
+    obs: 'Revisão escopo MVP: visão 360 como ponto de entrada, foco em Bankers e Assistentes. Personas a mapear (jobs to be done). Entrevistas presenciais em SP (Paulista). Material interno Caixa de dores da rede compartilhado por Lino. Gênesis adicionada ao backlog de integrações. Grupo WhatsApp criado. Agendas qui/sex 14h.'
+  },
+  {
+    id: '8.27',
+    status: 'done',
+    date: '11/11/2026',
+    time: '14h00–15h00',
+    week: 2,
+    name: 'Agenda Diária — Limite de Crédito (Validação do Novo Fluxo sem PUSH)',
+    caixa: ['Fábio Grande (Dados/CRM)', 'Fábio (Fabinho)'],
+    salesforce: ['Josie (MC Consultant)', 'Karina (Salesforce)', 'Adriana Visentin (PM)'],
+    orange: [],
+    ataFile: 'ATA - Salesforce - Agenda Diária Limite de Crédito (Validação Novo Fluxo sem PUSH) @ Wed, Nov 11, 2026',
+    obs: 'Jornada CU1 redesenhada sem SDK/Push. Canais: primeiro habilitado dispara MVP — WhatsApp, SMS, e-mail ou Banner/Personalization. Lógica: se cliente acessou app nos últimos 15 dias → banner; caso contrário → canal externo. KPIs definidos. Débito técnico: consulta real-time API Open Finance. Pendências: fonte de telefone (SICL ou EC), volumetria tabelas complementares e qualidade de e-mail (Fábio Grande — até 12/11).'
+  },
+  {
+    id: '8.28',
+    status: 'done',
+    date: '11/11/2026',
+    time: '16h03–17h12',
+    week: 2,
+    name: 'Salesforce — Alinhamento dos Squads e Dailys do Projeto',
+    caixa: ['Bruno Aprigio (Gerente Nacional)', 'Jeyson Cordeiro (Gerente)', 'Fábio Grande (Dados/CRM)'],
+    salesforce: ['Adriana Visentin (PM)', 'Andreas (Diretor)', 'Karina Curvina (SA)', 'Karina Santos (FSC)', 'Samuel de Sena (TA)', 'Ronaldo (Orange/SF)'],
+    orange: ['Andryelle Verissimo (PM Orange)', 'Diego Freitas (Head de Op.)', 'Alex Siqueira (AP)'],
+    ataFile: 'ATA - Salesforce - Alinhamento dos Squads e Dailys do Projeto @ Wed, Nov 11, 2026',
+    obs: 'Estrutura de squads formalizada: 4 squads de casos de uso (CU1-Batch, CU4-FSC, CU2-NRT, CU3-Onboarding) + 2 squads transversais (Integração de Canais e Dados/Foundation). Agendas genéricas extintas e substituídas por dailys por squad. POs autônomos dentro do escopo; escaladas ao Squad Core. Kickoff de squads: 13/11 às 14h. Risco: disponibilidade de Lino (2h/semana) para FSC Private — sugestão de proxy operacional.'
+  },
+  // ── SEMANA 3: 12/11 a 13/11 ──────────────────────────────────────────
+  {
+    id: '8.29',
+    status: 'future',
+    date: '12/11/2026',
+    time: '11h00',
+    week: 3,
+    name: 'Salesforce — Trackamento no Super App',
+    caixa: ['A confirmar'],
+    salesforce: ['Renan Polonio (Digital SA)', 'Samuel de Sena (TA)', 'Maciel Bombonato (TA)'],
+    orange: ['A confirmar'],
+    ataFile: '',
+    obs: ''
+  },
+  {
+    id: '8.30',
+    status: 'future',
+    date: '12/11/2026',
+    time: '16h00',
+    week: 3,
+    name: 'Agenda Diária — UC2 Carrinho Abandonado',
+    caixa: ['Fábio Grande (Dados)', 'A confirmar'],
+    salesforce: ['Renan Polonio (Digital SA)', 'Samuel de Sena (TA)', 'Maciel Bombonato (TA)'],
+    orange: ['A confirmar'],
+    ataFile: '',
+    obs: ''
+  },
+  {
+    id: '8.31',
+    status: 'future',
+    date: '13/11/2026',
+    time: '16h00',
+    week: 3,
+    name: 'Agenda Diária — UC2 Depósito (Validação do Novo Fluxo sem PUSH)',
+    caixa: ['Fábio Grande (Dados)', 'A confirmar'],
+    salesforce: ['Renan Polonio (Digital SA)', 'Samuel de Sena (TA)', 'Maciel Bombonato (TA)'],
+    orange: ['A confirmar'],
+    ataFile: '',
+    obs: ''
+  }
+];
+
+const WEEKS = [
+  { id: 1, label: 'Semana 1 — 26/10 a 30/10', sublabel: '26 a 30 de outubro de 2026' },
+  { id: 2, label: 'Semana 2 — 03/11 a 11/11', sublabel: '3 a 11 de novembro de 2026' },
+  { id: 3, label: 'Semana 3 — 12/11 a 13/11', sublabel: '12 e 13 de novembro de 2026 (previstas)' },
+];
+
+let folderPath = '';
+let savedObs = {};
+let activeWeek = 1;
+// global row index across all rendered tables (for edit btn targeting)
+let rowIndex = 0;
+
+function loadStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      folderPath = data.folderPath || '';
+      savedObs = data.obs || {};
+      if (data.activeWeek) activeWeek = data.activeWeek;
+    }
+  } catch(e) {}
+  if (folderPath) document.getElementById('folderPath').value = folderPath;
+}
+
+function saveFolder() {
+  folderPath = document.getElementById('folderPath').value.trim();
+  persistStorage();
+  renderAll();
+}
+
+function persistStorage() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ folderPath, obs: savedObs, activeWeek }));
+}
+
+function getAtaPath(ataFile) {
+  if (!folderPath || !ataFile) return null;
+  let base = folderPath;
+  if (!base.endsWith('/')) base += '/';
+  return base + ataFile;
+}
+
+function copyAtaPath(ataFile) {
+  const path = getAtaPath(ataFile);
+  if (!path) return;
+  navigator.clipboard.writeText(path).then(() => {
+    const toast = document.getElementById('toast');
+    toast.textContent = '✅ Caminho copiado! Cole no Finder (⌘+Shift+G) ou no Terminal.';
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3500);
+  }).catch(() => { prompt('Copie o caminho abaixo:', path); });
+}
+
+function statusBadge(status) {
+  if (status === 'done')    return '<span class="status-badge badge-done">✓ ATA enviada</span>';
+  if (status === 'pending') return '<span class="status-badge badge-pending">⏳ ATA pendente</span>';
+  return '<span class="status-badge badge-future">📅 Prevista</span>';
+}
+
+function tableHeader() {
+  return `<thead><tr>
+    <th style="width:90px">#</th>
+    <th style="width:105px">Data / Hora</th>
+    <th>Reunião</th>
+    <th>Participantes Caixa</th>
+    <th>Participantes Salesforce</th>
+    <th>Participantes Orange</th>
+    <th>ATA</th>
+    <th class="obs-cell">Obs. pós-envio</th>
+  </tr></thead>`;
+}
+
+function escapeHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function buildWeekPanel(weekId) {
+  const group = meetings.filter(m => m.week === weekId);
+  const panel = document.createElement('div');
+  panel.id = 'week-panel-' + weekId;
+  panel.className = 'tab-panel container' + (weekId === activeWeek ? ' active' : '');
+
+  const table = document.createElement('table');
+  table.innerHTML = tableHeader();
+  const tbody = document.createElement('tbody');
+
+  group.forEach(m => {
+    const idx = rowIndex++;
+    const obsValue = savedObs[m.id] !== undefined ? savedObs[m.id] : m.obs;
+    const ataPath = getAtaPath(m.ataFile);
+    const ataLabel = m.ataFile ? (m.ataFile.length > 38 ? m.ataFile.substring(0,36)+'…' : m.ataFile) : '';
+    const ataHtml = m.ataFile
+      ? (ataPath
+          ? `<button class="ata-link" onclick="copyAtaPath('${m.ataFile.replace(/'/g,"\\'")}')">📄 ${ataLabel}</button>`
+          : `<span class="ata-none">📄 Configure a pasta →</span>`)
+      : `<span class="ata-none">—</span>`;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div style="font-weight:700;color:#003087;font-size:12px;">Instrução ${m.id}</div>
+        <div style="margin-top:4px">${statusBadge(m.status)}</div>
+      </td>
+      <td class="date-col">
+        <div class="date-main">${m.date}</div>
+        <div class="date-time">${m.time}</div>
+      </td>
+      <td><div class="meeting-name">${m.name}</div></td>
+      <td class="participants">${m.caixa.map(p=>`<span>• ${p}</span>`).join('')}</td>
+      <td class="participants">${m.salesforce.map(p=>`<span>• ${p}</span>`).join('')}</td>
+      <td class="participants">${m.orange.map(p=>`<span>• ${p}</span>`).join('')}</td>
+      <td>${ataHtml}</td>
+      <td class="obs-cell">
+        <div class="obs-display" id="obs-display-${idx}">${escapeHtml(obsValue)}</div>
+        <button class="edit-btn" id="edit-btn-${idx}" onclick="startEdit(${idx})">✏️ editar</button>
+        <div class="obs-editor" id="obs-editor-${idx}">
+          <textarea id="obs-ta-${idx}">${escapeHtml(obsValue)}</textarea>
+          <div class="obs-actions">
+            <button class="btn-save" onclick="saveObs(${idx}, '${m.id}')">Salvar</button>
+            <button class="btn-cancel" onclick="cancelEdit(${idx})">Cancelar</button>
+          </div>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  panel.appendChild(table);
+  return panel;
+}
+
+function renderAll() {
+  rowIndex = 0;
+  // Build tabs
+  const tabsBar = document.getElementById('tabs-bar');
+  tabsBar.innerHTML = '';
+  WEEKS.forEach(w => {
+    const count = meetings.filter(m => m.week === w.id).length;
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (w.id === activeWeek ? ' active' : '');
+    btn.innerHTML = w.label + `<span class="tab-count">${count}</span>`;
+    btn.onclick = () => switchTab(w.id);
+    tabsBar.appendChild(btn);
+  });
+
+  // Build panels
+  const panelsEl = document.getElementById('tab-panels');
+  panelsEl.innerHTML = '';
+  WEEKS.forEach(w => {
+    panelsEl.appendChild(buildWeekPanel(w.id));
+  });
+
+  // Summary counters
+  const cntDone    = meetings.filter(m => m.status === 'done').length;
+  const cntPending = meetings.filter(m => m.status === 'pending').length;
+  const cntFuture  = meetings.filter(m => m.status === 'future').length;
+  document.getElementById('cnt-total').textContent   = meetings.length;
+  document.getElementById('cnt-done').textContent    = cntDone;
+  document.getElementById('cnt-pending').textContent = cntPending;
+  document.getElementById('cnt-future').textContent  = cntFuture;
+}
+
+function switchTab(weekId) {
+  activeWeek = weekId;
+  persistStorage();
+  // update tab buttons
+  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', WEEKS[i].id === weekId);
+  });
+  // show/hide panels
+  WEEKS.forEach(w => {
+    const panel = document.getElementById('week-panel-' + w.id);
+    if (panel) panel.classList.toggle('active', w.id === weekId);
+  });
+}
+
+function startEdit(idx) {
+  document.getElementById('obs-display-' + idx).style.display = 'none';
+  document.getElementById('edit-btn-' + idx).style.display = 'none';
+  document.getElementById('obs-editor-' + idx).style.display = 'block';
+  document.getElementById('obs-ta-' + idx).focus();
+}
+
+function cancelEdit(idx) {
+  document.getElementById('obs-display-' + idx).style.display = '';
+  document.getElementById('edit-btn-' + idx).style.display = '';
+  document.getElementById('obs-editor-' + idx).style.display = 'none';
+}
+
+function saveObs(idx, meetingId) {
+  const val = document.getElementById('obs-ta-' + idx).value;
+  savedObs[meetingId] = val;
+  persistStorage();
+  document.getElementById('obs-display-' + idx).textContent = val;
+  cancelEdit(idx);
+}
+
+loadStorage();
+renderAll();
+</script>
+</body>
+</html>
