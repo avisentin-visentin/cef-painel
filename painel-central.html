@@ -923,7 +923,7 @@
             <td></td>
             <td>02/12/2026</td>
             <td>Análise Quantificada de Valor de Negócio</td>
-            <td>Andreas Miller</td>
+            <td>Raul Rocha</td>
             <td><span class="badge-progress">🔄 Em andamento</span></td>
           </tr>
           <tr>
@@ -1784,7 +1784,7 @@ const CAL_MEETINGS = [
   { id:'8.26', status:'done',    date:'11/11/2026', time:'11h00', week:2, name:'Alinhamento Caso de Uso Finance (FSC Private)', ataFile:'ATA 2026-11-11 11h- Alinhamento Caso de Uso Finance @ Wed, Nov 11, 2026 11_00am – 12_00pm (GMT-3).pdf' },
   { id:'8.27', status:'done',    date:'11/11/2026', time:'14h00', week:2, name:'Agenda Diária — Limite de Crédito (Validação Novo Fluxo sem PUSH)', ataFile:'ATA 2026-11-11 14h- Agenda diária - Limite de Crédito (Validaçao no novo Fluxo sem PUSH) @ Wed, Nov 11, 2026 2_00pm – 3_00pm (GMT-3).pdf' },
   { id:'8.28', status:'done',    date:'11/11/2026', time:'16h00', week:2, name:'Salesforce — Alinhamento dos Squads e Dailys do Projeto', duration:'1h10', ataFile:'ATA 2026-11-11 16h - Salesforce - Alinhamento dos squads e dailys do projeto @ Wed, Nov 11, 2026 4_00pm – 5_00pm (GMT-3).pdf' },
-  { id:'8.29', status:'future',  date:'12/11/2026', time:'11h00', week:3, name:'Salesforce — Trackamento no Super App', ataFile:'' },
+  { id:'8.29', status:'done',    date:'12/11/2026', time:'11h00', week:3, name:'Salesforce — Trackamento no Super App', ataFile:'' },
   { id:'8.37', status:'future',  date:'17/11/2026', time:'11h00', week:4, name:'Acessos/Encarteiramento', ataFile:'' },
   { id:'8.31', status:'future',  date:'13/11/2026', time:'14h00', week:3, name:'Salesforce — Kickoff Estrutura Squads', duration:'1h', ataFile:'' },
   { id:'8.36', status:'future',  date:'13/11/2026', time:'16h00', week:3, name:'Agenda Diária — UC2 Depósito (Validação do Novo Fluxo sem PUSH)', ataFile:'' },
@@ -2114,7 +2114,11 @@ const AC_ACOES = [
   {id:71,reuniaoId:'8.28',reuniaoNome:'Alinhamento dos Squads',reuniaoData:'11/11/2026',acao:'Formatar o documento de estrutura de squads (com nomes, papéis e casos de uso) e enviar para todos os participantes do projeto.',resp:'Bruno Aprigio (Caixa)',respOrg:'Caixa',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
   {id:72,reuniaoId:'8.28',reuniaoNome:'Alinhamento dos Squads',reuniaoData:'11/11/2026',acao:'Configurar a ferramenta de acompanhamento por squad (Microsoft Planner ou equivalente) antes de convocar os times para o kickoff.',resp:'Bruno Aprigio / Fábio Grande (Caixa)',respOrg:'Caixa',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
   {id:73,reuniaoId:'8.28',reuniaoNome:'Alinhamento dos Squads',reuniaoData:'11/11/2026',acao:'Enviar invite do Kickoff de Estrutura de Squads (13/11 às 14h) para os times Salesforce e Orange.',resp:'Adriana Visentin / Andryelle Verissimo',respOrg:'Salesforce',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
-  {id:74,reuniaoId:'8.28',reuniaoNome:'Alinhamento dos Squads',reuniaoData:'11/11/2026',acao:'Realinhar agenda com Lino (Squad Financial/Private) para outro horário na sexta 13/11, pois conflita com o Kickoff de Squads das 14h.',resp:'Adriana Visentin / Bruno Aprigio',respOrg:'Salesforce',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'}
+  {id:74,reuniaoId:'8.28',reuniaoNome:'Alinhamento dos Squads',reuniaoData:'11/11/2026',acao:'Realinhar agenda com Lino (Squad Financial/Private) para outro horário na sexta 13/11, pois conflita com o Kickoff de Squads das 14h.',resp:'Adriana Visentin / Bruno Aprigio',respOrg:'Salesforce',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
+  {id:75,reuniaoId:'8.29',reuniaoNome:'Trackamento no Super App',reuniaoData:'12/11/2026',acao:'Compartilhar dicionário de eventos e parâmetros do Firebase (atualizado) com o time Salesforce.',resp:'Tam (Caixa — TI Superapp)',respOrg:'Caixa',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Futuro'},
+  {id:76,reuniaoId:'8.29',reuniaoNome:'Trackamento no Super App',reuniaoData:'12/11/2026',acao:'Agendar reunião de arquitetura do Superapp + Firebase com Humfrey (TI Caixa) e Bruno Aniceto (Salesforce MuleSoft).',resp:'Adriana Visentin (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-16',prazoDisplay:'16/Nov/2026',status:'Futuro'},
+  {id:77,reuniaoId:'8.29',reuniaoNome:'Trackamento no Super App',reuniaoData:'12/11/2026',acao:'Agendar reunião para apresentação das APIs de personalização do CRM da Caixa com o time responsável (Fábio T.).',resp:'Adriana Visentin (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-16',prazoDisplay:'16/Nov/2026',status:'Futuro'},
+  {id:78,reuniaoId:'8.29',reuniaoNome:'Trackamento no Super App',reuniaoData:'12/11/2026',acao:'Avaliar inclusão da jornada de contratação de cartão de crédito como caso de uso de abandono de carrinho, envolvendo o gestor do produto.',resp:'Adriana Visentin / Renan (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Futuro'}
 ];
 acLoadStorage();
 
