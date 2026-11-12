@@ -683,7 +683,8 @@ const weeks = [
 
 const HOUR_SLOTS_MORNING   = ['09h00','10h00','11h00'];
 const HOUR_SLOTS_AFTERNOON = ['14h00','15h00','16h00','17h00'];
-const TODAY_STR = '11/11/2026';
+const _now = new Date();
+const TODAY_STR = `${String(_now.getDate()).padStart(2,'0')}/${String(_now.getMonth()+1).padStart(2,'0')}/${_now.getFullYear()}`;
 const STORAGE_KEY = 'cef_cal_folder_v1';
 
 // ─────────────────────────────────────────────
