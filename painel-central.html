@@ -575,6 +575,197 @@
     background: #fff;
     text-align: right;
   }
+
+  /* ── CALENDÁRIO DE REUNIÕES ─────────────────────────── */
+  .cal-tabs-bar {
+    display: flex; background: #002070; padding: 0 24px; gap: 2px; overflow-x: auto;
+  }
+  .cal-tab-btn {
+    padding: 10px 20px; font-size: 12px; font-weight: 600;
+    color: rgba(255,255,255,0.65); background: transparent; border: none; cursor: pointer;
+    border-bottom: 3px solid transparent; white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s; font-family: inherit;
+  }
+  .cal-tab-btn:hover { color: rgba(255,255,255,0.9); }
+  .cal-tab-btn.active { color: #fff; border-bottom-color: #5b9bd5; }
+  .cal-tab-panel { display: none; }
+  .cal-tab-panel.active { display: block; }
+  .cal-legend {
+    display: flex; gap: 16px; padding: 8px 24px; background: #e8edf3;
+    border-bottom: 1px solid #d1d9e0; flex-wrap: wrap;
+  }
+  .cal-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #444; }
+  .cal-leg-box { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+  .cal-leg-done    { background: #c6f0d4; border: 1px solid #6fc98a; }
+  .cal-leg-pending { background: #fff3cd; border: 1px solid #ffc107; }
+  .cal-leg-future  { background: #e9ecef; border: 1px solid #ced4da; }
+  .cal-wrapper { padding: 16px 24px; overflow-x: auto; }
+  .cal-table { width: 100%; border-collapse: collapse; min-width: 700px; table-layout: fixed; }
+  .cal-table thead th {
+    background: #003087; color: white; font-size: 12px; font-weight: 700;
+    padding: 10px 8px; text-align: center; border: 1px solid #002070;
+  }
+  .cal-table thead th.th-hour { background: #002070; width: 60px; font-size: 11px; }
+  .cal-table thead th .day-name { display: block; font-size: 13px; font-weight: 700; }
+  .cal-table thead th .day-date { display: block; font-size: 11px; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+  .cal-cell-hour {
+    background: #edf2f7; color: #4a5568; font-size: 11px; font-weight: 700;
+    text-align: center; vertical-align: middle; border: 1px solid #d1d9e0;
+    padding: 6px 4px; white-space: nowrap;
+  }
+  .cal-cell-hour.morning { background: #ebf4fb; color: #2c5282; }
+  .cal-cell-hour.afternoon { background: #fef9ec; color: #744210; }
+  .cal-period-row td {
+    background: #e2e8f0; font-size: 10px; font-weight: 700; color: #718096;
+    text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 8px;
+    border: 1px solid #d1d9e0; text-align: center;
+  }
+  .cal-cell-day {
+    border: 1px solid #d1d9e0; padding: 4px; background: #fafbfc;
+    height: 72px; position: relative;
+  }
+  .cal-cell-day.today { background: #fffbf0; border-color: #e6b800; }
+  .cal-meeting-card {
+    border-radius: 5px; padding: 5px 7px; line-height: 1.35;
+    position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px;
+    overflow: hidden; box-sizing: border-box;
+  }
+  .cal-meeting-card.done { background: #d4edda; border-left: 3px solid #28a745; }
+  .cal-meeting-card.pending { background: #fff3cd; border-left: 3px solid #ffc107; }
+  .cal-meeting-card.future { background: #e9ecef; border-left: 3px solid #adb5bd; }
+  .cal-mc-time { font-size: 10px; font-weight: 700; color: #555; margin-bottom: 2px; }
+  .cal-mc-name { font-size: 11px; font-weight: 600; color: #1a202c; line-height: 1.3; }
+  .cal-mc-name.future-name { color: #555; }
+  .mc-ata {
+    display: inline-flex; align-items: center; gap: 3px; margin-top: 4px;
+    font-size: 10px; font-weight: 600; color: #155724; background: #c3e6cb;
+    border: 1px solid #97d3a8; border-radius: 3px; padding: 2px 6px;
+    cursor: pointer; transition: background 0.15s; white-space: nowrap;
+  }
+  .mc-ata:hover { background: #a8ddb9; }
+  .cal-mc-no-ata { font-size: 9px; color: #999; font-style: italic; margin-top: 3px; display: block; }
+  .cal-summary-bar { display: flex; gap: 12px; padding: 12px 24px 0; flex-wrap: wrap; }
+  .cal-summary-card {
+    background: white; border-radius: 8px; padding: 10px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07); display: flex; align-items: center; gap: 10px;
+  }
+  .cal-summary-card .cal-num { font-size: 22px; font-weight: 700; }
+  .cal-summary-card .cal-lbl { font-size: 11px; color: #718096; }
+  .cal-num-done   { color: #28a745; }
+  .cal-num-pending{ color: #ffc107; }
+  .cal-num-future { color: #adb5bd; }
+  .cal-num-total  { color: #003087; }
+
+  /* ── PAINEL DE AÇÕES ────────────────────────────────── */
+  .ac-controls {
+    background: #fff; border-bottom: 1px solid #e0e6ed;
+    padding: 14px 24px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  }
+  .ac-controls label { font-size: 12px; font-weight: 600; color: #555; }
+  .ac-controls select, .ac-controls input {
+    border: 1px solid #d0d7de; border-radius: 6px; padding: 6px 10px;
+    font-size: 12px; color: #333; background: #fafbfc; outline: none;
+  }
+  .ac-controls select:focus, .ac-controls input:focus { border-color: #0070d2; }
+  .ac-filter-group { display: flex; align-items: center; gap: 6px; }
+  .ac-summary-bar {
+    background: #fff; padding: 14px 24px; border-bottom: 1px solid #e0e6ed;
+    display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  .ac-stat-chip {
+    display: flex; align-items: center; gap: 8px; background: #f4f6f9;
+    border-radius: 20px; padding: 6px 14px; font-size: 12px;
+    font-weight: 500; border: 1px solid #e0e6ed;
+  }
+  .ac-stat-chip .ac-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .ac-dot-futuro    { background: #0070d2; }
+  .ac-dot-andamento { background: #f4a400; }
+  .ac-dot-concluido { background: #2e7d32; }
+  .ac-dot-atrasado  { background: #c62828; }
+  .ac-dot-total     { background: #555; }
+  .ac-table-wrap { padding: 20px 24px; overflow-x: auto; }
+  .ac-table {
+    width: 100%; border-collapse: separate; border-spacing: 0; background: #fff;
+    border-radius: 10px; box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    overflow: hidden; font-size: 12.5px;
+  }
+  .ac-table thead tr { background: #003087; color: white; }
+  .ac-table thead th {
+    padding: 11px 14px; text-align: left; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.5px; text-transform: uppercase; white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .ac-table thead th:last-child { border-right: none; }
+  .ac-table tbody tr { border-bottom: 1px solid #eef1f5; transition: background 0.15s; }
+  .ac-table tbody tr:last-child { border-bottom: none; }
+  .ac-table tbody tr:hover { background: #f0f7ff; }
+  .ac-table tbody tr.ac-hidden { display: none; }
+  .ac-table td {
+    padding: 10px 14px; vertical-align: top;
+    border-right: 1px solid #f0f3f7; color: #2a2a2a; line-height: 1.45;
+  }
+  .ac-table td:last-child { border-right: none; }
+  .ac-td-num { font-weight: 700; color: #003087; font-size: 11px; width: 36px; text-align: center; }
+  .ac-td-reuniao { font-size: 11px; color: #555; white-space: nowrap; width: 120px; }
+  .ac-td-reuniao .ac-rid { font-weight: 700; color: #0070d2; font-size: 12px; }
+  .ac-td-reuniao .ac-rnom { color: #444; font-size: 10px; margin-top: 2px; white-space: normal; }
+  .ac-td-acao { min-width: 320px; }
+  .ac-td-resp { font-size: 11.5px; width: 120px; }
+  .ac-td-resp .ac-rname { font-weight: 600; color: #1a1a2e; white-space: normal; }
+  .ac-td-resp .ac-rorg  { font-size: 10px; color: #777; }
+  .ac-td-prazo { white-space: nowrap; font-size: 12px; font-weight: 600; color: #333; width: 75px; }
+  .ac-td-prazo.atrasado { color: #c62828; }
+  .ac-td-status { width: 110px; }
+  .ac-td-concluido { width: 80px; text-align: center; }
+  .ac-td-comentario { min-width: 140px; }
+  .ac-badge { display: inline-block; border-radius: 12px; padding: 3px 10px; font-size: 10.5px; font-weight: 600; }
+  .ac-badge-futuro    { background: #e3f0fd; color: #0055ab; }
+  .ac-badge-andamento { background: #fff8e1; color: #b76f00; border: 1px solid #ffe082; }
+  .ac-badge-concluido { background: #e8f5e9; color: #1b5e20; }
+  .ac-badge-atrasado  { background: #ffebee; color: #b71c1c; }
+  .ac-check-wrap { display: flex; justify-content: center; }
+  .ac-check-box {
+    width: 18px; height: 18px; border: 2px solid #ccc; border-radius: 4px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; transition: all 0.15s; user-select: none;
+  }
+  .ac-check-box.checked { background: #2e7d32; border-color: #2e7d32; color: white; }
+  .ac-comentario-input {
+    width: 100%; border: 1px solid #e0e6ed; border-radius: 6px; padding: 5px 8px;
+    font-size: 11.5px; color: #333; background: #fafbfc; resize: none;
+    min-height: 32px; font-family: inherit; transition: border-color 0.15s;
+  }
+  .ac-comentario-input:focus { outline: none; border-color: #0070d2; background: #fff; }
+  .ac-group-header td {
+    background: #e8edf5; font-size: 11px; font-weight: 700; color: #003087;
+    padding: 7px 14px; letter-spacing: 0.5px; text-transform: uppercase;
+    border-bottom: 1px solid #cdd5e0;
+  }
+  .ac-tab-nav {
+    background: #fff; border-bottom: 2px solid #e0e6ed; padding: 0 24px; display: flex;
+  }
+  .ac-tab-btn-main {
+    padding: 12px 24px; font-size: 13px; font-weight: 600; color: #666;
+    background: none; border: none; border-bottom: 3px solid transparent;
+    cursor: pointer; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s;
+  }
+  .ac-tab-btn-main:hover { color: #0070d2; }
+  .ac-tab-btn-main.active { color: #003087; border-bottom-color: #003087; }
+  .ac-tab-count {
+    display: inline-block; background: #e8edf5; color: #003087;
+    border-radius: 10px; padding: 1px 7px; font-size: 11px; margin-left: 6px;
+  }
+  .ac-tab-btn-main.active .ac-tab-count { background: #003087; color: #fff; }
+  .ac-footer {
+    padding: 16px 24px; text-align: right; font-size: 11px; color: #999;
+    border-top: 1px solid #e0e6ed; background: #fff;
+  }
+  .ac-export-btn {
+    background: #003087; color: white; border: none; border-radius: 6px;
+    padding: 7px 16px; font-size: 12px; font-weight: 600; cursor: pointer;
+    margin-left: 12px; transition: background 0.15s;
+  }
+  .ac-export-btn:hover { background: #0055ab; }
 </style>
 </head>
 <body>
@@ -992,156 +1183,204 @@
       <!-- Section: Casos de Uso -->
       <div style="padding:8px 14px 4px;background:#e8f0fb;border-bottom:1px solid #dde3ed;font-size:11px;font-weight:700;color:#003087;letter-spacing:.5px;">CASOS DE USO</div>
 
-      <!-- CU1 -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;position:relative;" class="gantt-row">
+      <!-- CU1: OUT(mid) → DEZ(~30%) implantação, DEZ(~30%) → JAN(fim) estabilização -->
+      <!-- Abordagem: usar grid-column span via posição absoluta interna -->
+      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;position:relative;" class="gantt-row cu-row">
         <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
           <div style="width:22px;height:22px;border-radius:50%;background:#003087;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
           <span style="font-size:12px;font-weight:600;color:#1a2236;">Oferta de Crédito</span>
         </div>
-        <!-- OUT: starts mid -->
+        <!-- col OUT: barra implantação começa no meio -->
+        <div style="padding:4px 2px;"><div style="background:#003087;border-radius:4px 0 0 4px;height:26px;margin-left:50%;display:flex;align-items:center;padding-left:6px;"><span style="font-size:10px;color:#fff;white-space:nowrap;">Oferta de Crédito</span></div></div>
+        <!-- col NOV: implantação full -->
+        <div style="padding:4px 2px;"><div style="background:#003087;height:26px;"></div></div>
+        <!-- col DEZ: implantação 30% + diamond + estabilização até fim -->
         <div style="padding:4px 2px;position:relative;">
-          <div style="background:#003087;border-radius:4px 0 0 4px;height:26px;margin-left:50%;display:flex;align-items:center;padding-left:8px;">
-            <span style="font-size:10px;font-weight:600;color:#fff;white-space:nowrap;">Oferta de Crédito</span>
-          </div>
-        </div>
-        <!-- NOV: full -->
-        <div style="padding:4px 2px;">
-          <div style="background:#003087;height:26px;"></div>
-        </div>
-        <!-- DEZ: implantação + milestone + estabilização -->
-        <div style="padding:4px 2px;position:relative;">
-          <div style="display:flex;height:26px;align-items:center;">
-            <div style="background:#003087;height:26px;width:30%;border-radius:0;"></div>
-            <div style="width:0;height:0;border-top:13px solid transparent;border-bottom:13px solid transparent;border-left:14px solid #003087;flex-shrink:0;"></div>
-            <div style="position:absolute;top:-16px;left:28%;font-size:9px;font-weight:700;color:#c75000;white-space:nowrap;">PRD dez/26</div>
-            <div style="background:#b0c4de;height:26px;flex:1;border-radius:0 4px 4px 0;display:flex;align-items:center;padding-left:6px;">
+          <div style="display:flex;height:26px;align-items:stretch;">
+            <div style="background:#003087;width:30%;height:26px;"></div>
+            <div style="width:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#f5c518;line-height:1;" title="Entrega dez/26">◆</div>
+            <div style="background:#b0c4de;flex:1;height:26px;display:flex;align-items:center;padding-left:6px;border-radius:0 4px 4px 0;">
               <span style="font-size:10px;color:#555;white-space:nowrap;">Estabilização</span>
             </div>
           </div>
         </div>
-        <!-- JAN: estabilização continua -->
-        <div style="padding:4px 2px;">
-          <div style="background:#b0c4de;height:26px;border-radius:0 4px 4px 0;width:60%;"></div>
-        </div>
+        <!-- col JAN: estabilização termina fim do mês -->
+        <div style="padding:4px 2px;"><div style="background:#b0c4de;height:26px;border-radius:0 4px 4px 0;width:100%;"></div></div>
         <div></div><div></div>
       </div>
 
-      <!-- CU2 -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;" class="gantt-row">
+      <!-- CU2: OUT(mid) → FEV(fim) — barra contínua, diamond no fim de FEV -->
+      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;" class="gantt-row cu-row">
         <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
           <div style="width:22px;height:22px;border-radius:50%;background:#c75000;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
           <span style="font-size:12px;font-weight:600;color:#1a2236;">Real / Near Real Time</span>
         </div>
-        <div style="padding:4px 2px;">
-          <div style="background:#c75000;border-radius:4px 0 0 4px;height:26px;margin-left:50%;"></div>
-        </div>
-        <div style="padding:4px 2px;"><div style="background:#c75000;height:26px;display:flex;align-items:center;padding-left:8px;"><span style="font-size:10px;font-weight:600;color:#fff;white-space:nowrap;">Real / Near Real Time</span></div></div>
+        <!-- OUT: começa meio -->
+        <div style="padding:4px 2px;"><div style="background:#c75000;border-radius:4px 0 0 4px;height:26px;margin-left:50%;display:flex;align-items:center;padding-left:6px;"><span style="font-size:10px;color:#fff;white-space:nowrap;">Real / Near Real Time</span></div></div>
+        <!-- NOV full -->
         <div style="padding:4px 2px;"><div style="background:#c75000;height:26px;"></div></div>
+        <!-- DEZ full -->
+        <div style="padding:4px 2px;"><div style="background:#c75000;height:26px;"></div></div>
+        <!-- JAN full -->
+        <div style="padding:4px 2px;"><div style="background:#c75000;height:26px;"></div></div>
+        <!-- FEV: barra full + diamond no fim -->
         <div style="padding:4px 2px;position:relative;">
-          <div style="background:#c75000;height:26px;border-radius:0 4px 4px 0;width:70%;display:flex;align-items:center;"></div>
-          <div style="position:absolute;top:-16px;right:25%;font-size:9px;font-weight:700;color:#6b7a99;white-space:nowrap;">Go-live fev/27</div>
-          <div style="position:absolute;right:26%;top:50%;transform:translateY(-50%);width:0;height:0;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:12px solid #c75000;"></div>
+          <div style="display:flex;height:26px;align-items:stretch;">
+            <div style="background:#c75000;flex:1;height:26px;border-radius:0 4px 4px 0;"></div>
+            <div style="width:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#f5c518;line-height:1;" title="Entrega fev/27">◆</div>
+          </div>
         </div>
-        <div></div><div></div>
+        <div></div>
       </div>
 
-      <!-- CU3 -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;" class="gantt-row">
+      <!-- CU3: NOV(mid) → MAR(fim) — barra contínua, diamond no fim de MAR -->
+      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;" class="gantt-row cu-row">
         <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
           <div style="width:22px;height:22px;border-radius:50%;background:#1a7f4e;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
           <span style="font-size:12px;font-weight:600;color:#1a2236;">Onboarding / Boas-vindas</span>
         </div>
         <div></div>
-        <div style="padding:4px 2px;"><div style="background:#1a7f4e;border-radius:4px 0 0 4px;height:26px;margin-left:50%;display:flex;align-items:center;padding-left:8px;"><span style="font-size:10px;font-weight:600;color:#fff;white-space:nowrap;">Onboarding / Boas-vindas</span></div></div>
+        <!-- NOV: começa meio -->
+        <div style="padding:4px 2px;"><div style="background:#1a7f4e;border-radius:4px 0 0 4px;height:26px;margin-left:50%;display:flex;align-items:center;padding-left:6px;"><span style="font-size:10px;color:#fff;white-space:nowrap;">Onboarding / Boas-vindas</span></div></div>
+        <!-- DEZ full -->
         <div style="padding:4px 2px;"><div style="background:#1a7f4e;height:26px;"></div></div>
+        <!-- JAN full -->
         <div style="padding:4px 2px;"><div style="background:#1a7f4e;height:26px;"></div></div>
+        <!-- FEV full -->
         <div style="padding:4px 2px;"><div style="background:#1a7f4e;height:26px;"></div></div>
+        <!-- MAR: barra full + diamond no fim -->
         <div style="padding:4px 2px;position:relative;">
-          <div style="background:#1a7f4e;height:26px;border-radius:0 4px 4px 0;width:50%;"></div>
-          <div style="position:absolute;top:-16px;right:45%;font-size:9px;font-weight:700;color:#6b7a99;white-space:nowrap;">Go-live mar/27</div>
-          <div style="position:absolute;right:46%;top:50%;transform:translateY(-50%);width:0;height:0;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:12px solid #1a7f4e;"></div>
+          <div style="display:flex;height:26px;align-items:stretch;">
+            <div style="background:#1a7f4e;flex:1;height:26px;border-radius:0 4px 4px 0;"></div>
+            <div style="width:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#f5c518;line-height:1;" title="Entrega mar/27">◆</div>
+          </div>
         </div>
       </div>
 
-      <!-- CU4 -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;" class="gantt-row">
+      <!-- CU4: NOV(mid) → MAR(fim) — barra contínua, diamond no fim de MAR -->
+      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:48px;" class="gantt-row cu-row">
         <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
           <div style="width:22px;height:22px;border-radius:50%;background:#5c2d91;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
           <span style="font-size:12px;font-weight:600;color:#1a2236;">Private / Financial</span>
         </div>
         <div></div>
-        <div style="padding:4px 2px;"><div style="background:#5c2d91;border-radius:4px 0 0 4px;height:26px;margin-left:50%;display:flex;align-items:center;padding-left:8px;"><span style="font-size:10px;font-weight:600;color:#fff;white-space:nowrap;">Private / Financial</span></div></div>
+        <!-- NOV: começa meio -->
+        <div style="padding:4px 2px;"><div style="background:#5c2d91;border-radius:4px 0 0 4px;height:26px;margin-left:50%;display:flex;align-items:center;padding-left:6px;"><span style="font-size:10px;color:#fff;white-space:nowrap;">Private / Financial</span></div></div>
+        <!-- DEZ full -->
         <div style="padding:4px 2px;"><div style="background:#5c2d91;height:26px;"></div></div>
+        <!-- JAN full -->
         <div style="padding:4px 2px;"><div style="background:#5c2d91;height:26px;"></div></div>
+        <!-- FEV full -->
         <div style="padding:4px 2px;"><div style="background:#5c2d91;height:26px;"></div></div>
+        <!-- MAR: barra full + diamond no fim -->
         <div style="padding:4px 2px;position:relative;">
-          <div style="background:#5c2d91;height:26px;border-radius:0 4px 4px 0;width:50%;"></div>
-          <div style="position:absolute;top:-16px;right:45%;font-size:9px;font-weight:700;color:#6b7a99;white-space:nowrap;">MVP mar/27</div>
-          <div style="position:absolute;right:46%;top:50%;transform:translateY(-50%);width:0;height:0;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:12px solid #5c2d91;"></div>
+          <div style="display:flex;height:26px;align-items:stretch;">
+            <div style="background:#5c2d91;flex:1;height:26px;border-radius:0 4px 4px 0;"></div>
+            <div style="width:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#f5c518;line-height:1;" title="Entrega mar/27">◆</div>
+          </div>
         </div>
       </div>
 
       <!-- Section: Entregáveis Contratuais -->
       <div style="padding:8px 14px 4px;background:#e6f5ee;border-bottom:1px solid #dde3ed;border-top:2px solid #dde3ed;font-size:11px;font-weight:700;color:#1a7f4e;letter-spacing:.5px;">ENTREGÁVEIS CONTRATUAIS (FASE 0)</div>
 
-      <!-- Marco 1 -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:40px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 1 · <span style="color:#1a7f4e;font-size:10px;">✅ Aprovado</span></div>
-        <div style="padding:3px 2px;"><div style="background:#1a7f4e;border-radius:4px;height:20px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:#fff;font-weight:600;">Planej. Estratégico</span></div></div>
+      <!-- Marco 1: OUT full (entrega 14/10 = início de OUT) — barra curta na primeira metade -->
+      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 1<br><span style="color:#1a7f4e;font-size:10px;">✅ Aprovado · 14/10</span></div>
+        <div style="padding:3px 4px;">
+          <div style="background:#1a7f4e;border-radius:4px;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;min-height:36px;width:55%;">
+            <span style="font-size:9px;color:#fff;line-height:1.3;">Planejamento Estratégico</span>
+            <span style="font-size:9px;color:#c8f0dc;line-height:1.3;">Avaliação de Capacidades</span>
+          </div>
+        </div>
         <div></div><div></div><div></div><div></div><div></div>
       </div>
 
-      <!-- Marco 2 -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:40px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 2 · <span style="color:#0e7490;font-size:10px;">✅ Entregue</span></div>
-        <div style="padding:3px 2px;"><div style="background:#a8c4e8;border-radius:4px 0 0 4px;height:20px;margin-left:50%;"></div></div>
-        <div style="padding:3px 2px;"><div style="background:#0e7490;border-radius:0 4px 4px 0;height:20px;width:30%;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:#fff;font-weight:600;white-space:nowrap;">Aval. Técnica</span></div></div>
+      <!-- Marco 2: OUT(mid) → NOV(início ~30%) — barra única na cor principal -->
+      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 2<br><span style="color:#0e7490;font-size:10px;">✅ Entregue · 09/11</span></div>
+        <!-- OUT: começa metade -->
+        <div style="padding:3px 4px;"><div style="background:#0e7490;border-radius:4px 0 0 4px;height:36px;margin-left:50%;"></div></div>
+        <!-- NOV: barra termina ~30% do mês (dia 9 ≈ 30%) -->
+        <div style="padding:3px 4px;">
+          <div style="display:flex;align-items:center;height:36px;">
+            <div style="background:#0e7490;border-radius:0 4px 4px 0;height:36px;width:30%;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;min-width:80px;box-sizing:border-box;">
+              <span style="font-size:9px;color:#fff;line-height:1.3;white-space:nowrap;">Avaliação Técnica</span>
+              <span style="font-size:9px;color:#b2e0e8;line-height:1.3;white-space:nowrap;">Prep. Organizacional / CM</span>
+            </div>
+          </div>
+        </div>
         <div></div><div></div><div></div><div></div>
       </div>
 
-      <!-- Marco 3 -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:40px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 3 · <span style="color:#c75000;font-size:10px;">🔄 Em andamento</span></div>
+      <!-- Marco 3: NOV(mid) → DEZ(início ~5%) — barra de NOV até início de DEZ -->
+      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 3<br><span style="color:#c75000;font-size:10px;">🔄 Em andamento · 02/12</span></div>
         <div></div>
-        <div style="padding:3px 2px;"><div style="background:#f0a070;border-radius:4px 0 0 4px;height:20px;margin-left:50%;"></div></div>
-        <div style="padding:3px 2px;"><div style="background:#c75000;border-radius:0 4px 4px 0;height:20px;width:10%;display:flex;align-items:center;justify-content:center;"></div></div>
+        <!-- NOV: começa meio, vai até fim -->
+        <div style="padding:3px 4px;"><div style="background:#c75000;border-radius:4px 0 0 4px;height:36px;margin-left:50%;display:flex;flex-direction:column;justify-content:center;padding-left:6px;">
+          <span style="font-size:9px;color:#fff;line-height:1.3;white-space:nowrap;">Mapeamento de Experiência</span>
+          <span style="font-size:9px;color:#ffd0b0;line-height:1.3;white-space:nowrap;">Análise de Valor · Estratégia Dados</span>
+        </div></div>
+        <!-- DEZ: termina no dia 2 ≈ 5% -->
+        <div style="padding:3px 4px;"><div style="background:#c75000;border-radius:0 4px 4px 0;height:36px;width:8%;"></div></div>
         <div></div><div></div><div></div>
       </div>
 
-      <!-- Marco 4 -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:40px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 4 · <span style="color:#6b7a99;font-size:10px;">📌 Futuro</span></div>
+      <!-- Marco 4: DEZ full (entrega 30/12) -->
+      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 4<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 30/12</span></div>
         <div></div><div></div>
-        <div style="padding:3px 2px;"><div style="background:#e0e6f0;border-radius:4px;height:20px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:#6b7a99;font-weight:600;">Plano Projeto</span></div></div>
+        <div style="padding:3px 4px;">
+          <div style="background:#c8d8f0;border-radius:4px;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;min-height:36px;">
+            <span style="font-size:9px;color:#003087;line-height:1.3;">Plano de Comunicação / RASIC</span>
+            <span style="font-size:9px;color:#446699;line-height:1.3;">Plano de Projeto com Baseline</span>
+          </div>
+        </div>
         <div></div><div></div><div></div>
       </div>
 
-      <!-- Marco 5 -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:40px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 5 · <span style="color:#6b7a99;font-size:10px;">📌 Futuro</span></div>
+      <!-- Marco 5: JAN (~22/01) — barra ~70% de JAN -->
+      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 5<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 22/01</span></div>
         <div></div><div></div><div></div>
-        <div style="padding:3px 2px;"><div style="background:#e0e6f0;border-radius:4px;height:20px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:#6b7a99;font-weight:600;">Diagramas / Épicos</span></div></div>
+        <div style="padding:3px 4px;">
+          <div style="background:#c8d8f0;border-radius:4px;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;min-height:36px;width:72%;">
+            <span style="font-size:9px;color:#003087;line-height:1.3;">Diagramas de Processo</span>
+            <span style="font-size:9px;color:#446699;line-height:1.3;">Histórias de Usuário (épicos)</span>
+          </div>
+        </div>
         <div></div><div></div>
       </div>
 
-      <!-- Marco 6 -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:40px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 6 · <span style="color:#6b7a99;font-size:10px;">📌 Futuro</span></div>
+      <!-- Marco 6: FEV (~19/02) — barra ~65% de FEV -->
+      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #f0f2f7;align-items:center;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 6<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 19/02</span></div>
         <div></div><div></div><div></div><div></div>
-        <div style="padding:3px 2px;"><div style="background:#e0e6f0;border-radius:4px;height:20px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:#6b7a99;font-weight:600;">Solução Técnica</span></div></div>
+        <div style="padding:3px 4px;">
+          <div style="background:#c8d8f0;border-radius:4px;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;min-height:36px;width:68%;">
+            <span style="font-size:9px;color:#003087;line-height:1.3;">Solução e Design Técnico</span>
+            <span style="font-size:9px;color:#446699;line-height:1.3;">Plano de Implementação</span>
+          </div>
+        </div>
         <div></div>
       </div>
 
-      <!-- Marco 7 -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);align-items:center;min-height:40px;" class="gantt-row">
-        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 7 · <span style="color:#6b7a99;font-size:10px;">📌 Futuro</span></div>
+      <!-- Marco 7: MAR (~19/03) — barra ~60% de MAR -->
+      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);align-items:center;min-height:52px;" class="gantt-row">
+        <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;">Marco 7<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 19/03</span></div>
         <div></div><div></div><div></div><div></div><div></div>
-        <div style="padding:3px 2px;"><div style="background:#e0e6f0;border-radius:4px;height:20px;display:flex;align-items:center;justify-content:center;"><span style="font-size:9px;color:#6b7a99;font-weight:600;">Estimativa Impl.</span></div></div>
+        <div style="padding:3px 4px;">
+          <div style="background:#c8d8f0;border-radius:4px;padding:4px 6px;display:flex;flex-direction:column;justify-content:center;min-height:36px;width:62%;">
+            <span style="font-size:9px;color:#003087;line-height:1.3;">Estimativa de Implementação</span>
+            <span style="font-size:9px;color:#446699;line-height:1.3;">Requisitos de Pessoas</span>
+          </div>
+        </div>
       </div>
 
       <!-- Linha HOJE dinâmica via JS -->
       <div id="hoje-line" style="position:absolute;top:0;bottom:0;width:2px;background:#e74c3c;pointer-events:none;z-index:10;">
-        <div style="position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;color:#e74c3c;white-space:nowrap;" id="hoje-label">HOJE</div>
+        <div style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;color:#e74c3c;white-space:nowrap;background:#fff3f3;border:1px solid #e74c3c;border-radius:4px;padding:1px 5px;" id="hoje-label">◀ Estamos aqui</div>
       </div>
     </div>
 
@@ -1149,7 +1388,7 @@
     <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:11px;color:#6b7a99;align-items:center;">
       <div style="display:flex;align-items:center;gap:6px;"><div style="width:24px;height:10px;background:#003087;border-radius:2px;"></div> Implantação</div>
       <div style="display:flex;align-items:center;gap:6px;"><div style="width:24px;height:10px;background:#b0c4de;border-radius:2px;"></div> Estabilização</div>
-      <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:10px solid #555;"></div> Entrada em produção</div>
+      <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;color:#f5c518;line-height:1;">◆</span> Entrega / Go-live</div>
       <div style="display:flex;align-items:center;gap:6px;"><div style="width:2px;height:16px;background:#e74c3c;"></div> <span style="color:#e74c3c;font-weight:600;">Data de hoje</span></div>
     </div>
 
@@ -1197,7 +1436,7 @@
     if (lbl) {
       const day = String(td).padStart(2,'0');
       const mon = String(tm + 1).padStart(2,'0');
-      lbl.textContent = 'HOJE · ' + day + '/' + mon;
+      lbl.textContent = '◀ Estamos aqui · ' + day + '/' + mon;
     }
   })();
   </script>
@@ -1390,13 +1629,134 @@
   </div>
 </div>
 
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- CALENDÁRIO DE REUNIÕES VIEW                               -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div id="reunioesView" class="inline-view" style="flex-direction:column;background:#f0f4f8;">
+
+    <div class="detail-topbar">
+      <button class="back-btn" onclick="goHome()">← Voltar</button>
+      <span class="detail-title">📅 Calendário de Reuniões — CEF Mov CRM</span>
+    </div>
+
+    <div style="background:#003087;padding:0;">
+      <div class="cal-tabs-bar" id="cal-tabs-bar"></div>
+    </div>
+
+    <div class="cal-summary-bar" id="cal-summary-bar"></div>
+
+    <div class="cal-legend">
+      <div class="cal-legend-item"><div class="cal-leg-box cal-leg-done"></div> Realizada — ATA enviada</div>
+      <div class="cal-legend-item"><div class="cal-leg-box cal-leg-pending"></div> Realizada — ATA pendente</div>
+      <div class="cal-legend-item"><div class="cal-leg-box cal-leg-future"></div> Futura / Prevista</div>
+    </div>
+
+    <div id="cal-tab-panels" style="flex:1;overflow:auto;"></div>
+
+  </div><!-- /reunioesView -->
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- PAINEL DE AÇÕES VIEW                                      -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div id="pendenciasView" class="inline-view" style="flex-direction:column;background:#f4f6f9;">
+
+    <div class="detail-topbar">
+      <button class="back-btn" onclick="goHome()">← Voltar</button>
+      <span class="detail-title">⏳ Painel de Ações Pendentes — CEF Mov CRM</span>
+    </div>
+
+    <div class="ac-controls">
+      <div class="ac-filter-group">
+        <label>Filtrar Status:</label>
+        <select id="ac-filterStatus" onchange="acApplyFilters()">
+          <option value="">Todos</option>
+          <option value="Futuro">Futuro</option>
+          <option value="Em Andamento">Em Andamento</option>
+          <option value="Concluído">Concluído</option>
+          <option value="Atrasado">Atrasado</option>
+        </select>
+      </div>
+      <div class="ac-filter-group">
+        <label>Filtrar Reunião:</label>
+        <select id="ac-filterReuniao" onchange="acApplyFilters()">
+          <option value="">Todas</option>
+          <option value="8.13">8.13 – SSO</option>
+          <option value="8.14">8.14 – Caso de Uso</option>
+          <option value="8.15">8.15 – Change Management</option>
+          <option value="8.16">8.16 – Arquitetura SDK</option>
+          <option value="8.17">8.17 – Private / FSC</option>
+          <option value="8.17b">8.17b – Biblioteca de Marcas</option>
+          <option value="8.18">8.18 – MVP FSC</option>
+          <option value="8.19">8.19 – Diagnóstico de Fontes/Dados</option>
+          <option value="8.21">8.21 – Canais de Ativação</option>
+          <option value="8.22">8.22 – Dados Agenda Técnica</option>
+          <option value="8.23">8.23 – Envio de SMS e E-mails</option>
+          <option value="8.24">8.24 – Gestão de Acesso e SSO (cont.)</option>
+          <option value="8.25">8.25 – Integrações do Core</option>
+          <option value="8.26">8.26 – Alinhamento Finance</option>
+          <option value="8.27">8.27 – Limite de Crédito</option>
+          <option value="8.28">8.28 – Alinhamento dos Squads</option>
+        </select>
+      </div>
+      <div class="ac-filter-group">
+        <label>Prazo até:</label>
+        <input type="date" id="ac-filterPrazoAte" onchange="acApplyFilters()">
+        <button onclick="document.getElementById('ac-filterPrazoAte').value='';acApplyFilters();" style="margin-left:4px;padding:4px 8px;border:1px solid #d0d7de;border-radius:6px;background:#f5f7fa;cursor:pointer;font-size:12px;color:#555;">✕</button>
+      </div>
+      <div class="ac-filter-group">
+        <label>Buscar:</label>
+        <input type="text" id="ac-searchInput" placeholder="Ação, responsável..." oninput="acApplyFilters()" style="width:200px">
+      </div>
+    </div>
+
+    <div class="ac-tab-nav">
+      <button class="ac-tab-btn-main active" id="acTabPendentes" onclick="acSwitchTab('pendentes')">
+        ⏳ Pendentes <span class="ac-tab-count" id="acCountPendentes">–</span>
+      </button>
+      <button class="ac-tab-btn-main" id="acTabConcluidos" onclick="acSwitchTab('concluidos')">
+        ✅ Concluídos <span class="ac-tab-count" id="acCountConcluidos">–</span>
+      </button>
+    </div>
+
+    <div class="ac-summary-bar" id="acSummaryBar"></div>
+
+    <div class="ac-table-wrap">
+      <table class="ac-table" id="acMainTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Reunião</th>
+            <th>Ação Pendente</th>
+            <th>Responsável</th>
+            <th>Prazo</th>
+            <th>Status</th>
+            <th>Concluído</th>
+            <th>Comentário</th>
+          </tr>
+        </thead>
+        <tbody id="acTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="ac-footer">
+      <span id="acRowCount"></span>
+      <button class="ac-export-btn" onclick="acExportCSV()">⬇ Exportar CSV</button>
+    </div>
+
+  </div><!-- /pendenciasView -->
+
 <div class="footer" id="footerBar">CEF – MC – SOW – Mult-Year &nbsp;|&nbsp; Salesforce Professional Services &nbsp;|&nbsp; Confidencial</div>
 
 <script>
   const REUNIOES_FILE  = 'file:///Users/avisentin/Claude/CEF%20-%20MC%20-%20SOW%20-%20Mult-Year/CEF%20-%20MC%20-%20SOW%20-%20Mult-Year/Calend%C3%A1rio%20de%20Reuni%C3%B5es%20-%20CEF%20Mov%20CRM.html';
   const PENDENCIAS_FILE = 'file:///Users/avisentin/Claude/CEF%20-%20MC%20-%20SOW%20-%20Mult-Year/CEF%20-%20MC%20-%20SOW%20-%20Mult-Year/Painel%20de%20A%C3%A7%C3%B5es%20Pendentes%20-%20CEF%20Mov%20CRM.html';
+  // GitHub Pages URLs (used when served via https)
+  const REUNIOES_GH   = 'https://avisentin-visentin.github.io/cef-painel/calendario-reunioes.html';
+  const PENDENCIAS_GH = 'https://avisentin-visentin.github.io/cef-painel/painel-acoes.html';
 
   const homeView         = document.getElementById('homeView');
+  const reunioesView    = document.getElementById('reunioesView');
+  const pendenciasView  = document.getElementById('pendenciasView');
   const detailView       = document.getElementById('detailView');
   const entregaveisView  = document.getElementById('entregaveisView');
   const casosView        = document.getElementById('casosView');
@@ -1412,6 +1772,8 @@
     casosView.style.display       = 'none';
     cronogramaView.style.display  = 'none';
     riscosView.style.display      = 'none';
+    reunioesView.style.display   = 'none';
+    pendenciasView.style.display = 'none';
   }
 
   function goHome() {
@@ -1423,10 +1785,12 @@
   function showView(view) {
     hideAll();
     if (view === 'reunioes') {
-      window.location.href = REUNIOES_FILE;
+      reunioesView.style.display = 'flex';
+      calRenderAll();
       return;
     } else if (view === 'pendencias') {
-      window.location.href = PENDENCIAS_FILE;
+      pendenciasView.style.display = 'flex';
+      acRender();
       return;
     } else if (view === 'entregaveis') {
       entregaveisView.style.display = 'flex';
@@ -1438,6 +1802,370 @@
       riscosView.style.display = 'flex';
     }
   }
+
+// ═══════════════════════════════════════════════════════════════
+// CALENDÁRIO DE REUNIÕES — dados e funções
+// ═══════════════════════════════════════════════════════════════
+const CAL_MEETINGS = [
+  { id:'8.4',  status:'done',    date:'28/10/2026', time:'11h00', week:1, name:'Maquinas necessárias para o Projeto', ataFile:'ATA - Projeto Caixa PS - Maquinas necessárias @ Wed, Oct 28, 2026 11_30am – 12_00pm (GMT-03).pdf' },
+  { id:'8.5',  status:'done',    date:'28/10/2026', time:'15h00', week:1, name:'Salesforce — Arquitetura de Convivência com Legado', ataFile:'ATA 2026-10-28 - 15h - Salesforce - Arquitetura convivência legado @ Wed, Oct 28, 2026 3_00pm – 4_00pm (GMT-03).pdf' },
+  { id:'8.6',  status:'done',    date:'28/10/2026', time:'16h00', week:1, name:'Agenda Diária — Levantamento de Caso de Uso (MCP)', ataFile:'ATA 2026-10-28 - 17h - Agenda diária - Levantamento de Caso de Uso @ Wed, Oct 28, 2026 4_00pm – 5_00pm (GMT-03).pdf' },
+  { id:'8.7',  status:'done',    date:'29/10/2026', time:'15h00', week:1, name:'Salesforce — Integração Databricks', ataFile:'ATA 2026-10-29 15h - Salesforce - Integração Databricks @ Thu, Oct 29, 2026 3_00pm – 4_00pm (GMT-03).pdf' },
+  { id:'8.8',  status:'done',    date:'29/10/2026', time:'16h00', week:1, name:'Tour pelo relacionamento.caixa', ataFile:'ATA 2026-10-29 16h - Tour pelo relacionamento.caixa @ Thu, Oct 29, 2026 4_00pm – 5_00pm (GMT-3).pdf' },
+  { id:'8.9',  status:'done',    date:'30/10/2026', time:'10h00', week:1, name:'Salesforce — Arquitetura Canal PJ, Integrações MuleSoft e SDK', ataFile:'ATA 2026-10-30 10h - Salesforce - Arquitetura Canal PJ, integrações Mulesoft e SDK @ Fri, Oct 30, 2026 10_00am – 11_00am (GMT-3).pdf' },
+  { id:'8.10', status:'done',    date:'30/10/2026', time:'14h00', week:1, name:'Salesforce — Dados (Produtos de Dados, Chave CCP e APIs Open Finance)', ataFile:'ATA 2026-10-30 14h - Salesforce - Dados @ Fri, Oct 30, 2026 2_00pm – 3_00pm (GMT-3).pdf' },
+  { id:'8.11', status:'done',    date:'30/10/2026', time:'16h00', week:1, name:'Agenda Diária GERAL — Plataforma MuleSoft, Rede e Segurança', ataFile:'ATA 2026-10-30 16h - Agenda diária - GERAL - Apresentação da arquitetura da plataforma Mulesoft e descoberta (integração, rede e segurança) @ Fri, Oct 30, 2026 4_00pm – 5_00pm (GMT-3).pdf' },
+  { id:'8.12', status:'done',    date:'03/11/2026', time:'14h00', week:2, name:'Salesforce — Gestão de Acesso e SSO', ataFile:'ATA 2026-11-03 14h - Salesforce - Gestão de acesso e SSO @ Tue, Nov 3, 2026 2_00pm – 3_00pm (GMT-3).pdf' },
+  { id:'8.13', status:'pending', date:'03/11/2026', time:'15h00', week:2, name:'Visão Macro Caixa — Segmentos, Produtos & Sinergia', ataFile:'' },
+  { id:'8.14', status:'done',    date:'03/11/2026', time:'16h00', week:2, name:'Agenda Diária — Levantamento CU1 (CDC / Limite de Crédito)', ataFile:'ATA 2026-11-03 16h - Agenda diária - Levantamento de Caso de Uso @ Tue, Nov 3, 2026 4_00pm – 5_00pm (GMT-3).pdf' },
+  { id:'8.15', status:'done',    date:'04/11/2026', time:'09h00', week:2, name:'Salesforce — Change Management (Workshop Diagnóstico)', ataFile:'ATA 2026-11-04 09h - Salesforce - Change Management @ Wed, Nov 4, 2026 9_00am – 10_30am (GMT-3).pdf' },
+  { id:'8.16', status:'done',    date:'04/11/2026', time:'11h00', week:2, name:'Salesforce — Arquitetura de Integração Super App (SDK e APIs)', ataFile:'ATA 2026-11-04 11h - Salesforce - Arquitetura de integração com Super APP (SDK e APIs) @ Wed, Nov 4, 2026 11_00am – 12_00pm (GMT-3).pdf' },
+  { id:'8.17', status:'done',    date:'04/11/2026', time:'14h00', week:2, name:'Alinhamento com Segmento Private (FSC)', ataFile:'ATA 2026-11-04 14h - Alinhamento Salesforce e segmento Private (implantação módulo Financial Services) @ Wed, Nov 4, 2026 2_00pm – 4_00pm (GMT-3).pdf' },
+  { id:'8.18', status:'done',    date:'05/11/2026', time:'11h00', week:2, name:'Salesforce — MVP Financial Services Cloud (Definição de Escopo)', ataFile:'ATA 2026-11-05 11h - MVP Financial @ Thu, Nov 5, 2026 11_00am – 12_00pm (GMT-3).pdf' },
+  { id:'8.19', status:'done',    date:'05/11/2026', time:'14h00', week:2, name:'Salesforce — Diagnóstico de Fontes, Qualidade & Duplicidade de Dados', ataFile:'ATA 2026-11-05 14h - Salesforce - Diagnóstico de Fontes, Qualidade & Duplicidade de Dados @ Thu, Nov 5, 2026 2_00pm – 3_00pm (GMT-3).pdf' },
+  { id:'8.20', status:'pending', date:'05/11/2026', time:'15h00', week:2, name:'Visita Presencial — Private Brasília', ataFile:'' },
+  { id:'8.21', status:'done',    date:'06/11/2026', time:'16h00', week:2, name:'Agenda Diária — Canais de Ativação (App, WhatsApp, SMS)', ataFile:'ATA 2026-11-06 16h - Agenda diária - Levantamento de Caso de Uso @ Fri, Nov 6, 2026 4_00pm – 5_00pm (GMT-3).pdf' },
+  { id:'8.22', status:'done',    date:'09/11/2026', time:'15h00', week:2, name:'Salesforce — Dados: Estratégia Data Cloud ↔ Databricks/Blob Storage', ataFile:'ATA 2026-11-09 15h - Salesforce - Dados (Agenda técnica) @ Mon, Nov 9, 2026 3_00pm – 4_00pm (GMT-3).pdf' },
+  { id:'8.23', status:'done',    date:'10/11/2026', time:'10h00', week:2, name:'Salesforce — Envio de SMS e E-mails', ataFile:'ATA 2026-11-10 10h- Salesforce - Envio de SMS e E-mails @ Tue, Nov 10, 2026 10_00am – 11_00am (GMT-3).pdf' },
+  { id:'8.24', status:'done',    date:'10/11/2026', time:'14h00', week:2, name:'Salesforce — Gestão de Acesso e SSO (continuação)', ataFile:'ATA 2026-11-10 14h - Salesforce - Gestão de acesso e SSO @ Tue, Nov 10, 2026 2_00pm – 3_00pm (GMT-3).pdf' },
+  { id:'8.25', status:'done',    date:'10/11/2026', time:'16h00', week:2, name:'Integrações do Core (FSC Private)', ataFile:'ATA 2026-11-10 16h30 - Integrações do Core @ Tue, Nov 10, 2026 4_30pm – 5_30pm (GMT-3).pdf' },
+  { id:'8.26', status:'done',    date:'11/11/2026', time:'11h00', week:2, name:'Alinhamento Caso de Uso Finance (FSC Private)', ataFile:'ATA 2026-11-11 11h- Alinhamento Caso de Uso Finance @ Wed, Nov 11, 2026 11_00am – 12_00pm (GMT-3).pdf' },
+  { id:'8.27', status:'done',    date:'11/11/2026', time:'14h00', week:2, name:'Agenda Diária — Limite de Crédito (Validação Novo Fluxo sem PUSH)', ataFile:'ATA 2026-11-11 14h- Agenda diária - Limite de Crédito (Validaçao no novo Fluxo sem PUSH) @ Wed, Nov 11, 2026 2_00pm – 3_00pm (GMT-3).pdf' },
+  { id:'8.28', status:'done',    date:'11/11/2026', time:'16h00', week:2, name:'Salesforce — Alinhamento dos Squads e Dailys do Projeto', duration:'1h10', ataFile:'ATA 2026-11-11 16h - Salesforce - Alinhamento dos squads e dailys do projeto @ Wed, Nov 11, 2026 4_00pm – 5_00pm (GMT-3).pdf' },
+  { id:'8.29', status:'future',  date:'12/11/2026', time:'11h00', week:3, name:'Salesforce — Trackamento no Super App', ataFile:'' },
+  { id:'8.37', status:'future',  date:'12/11/2026', time:'14h00', week:3, name:'Acessos/Encarteiramento', ataFile:'' },
+  { id:'8.31', status:'future',  date:'13/11/2026', time:'14h00', week:3, name:'Salesforce — Kickoff Estrutura Squads', duration:'1h', ataFile:'' },
+  { id:'8.36', status:'future',  date:'13/11/2026', time:'16h00', week:3, name:'Agenda Diária — UC2 Depósito (Validação do Novo Fluxo sem PUSH)', ataFile:'' },
+  { id:'8.38', status:'future',  date:'16/11/2026', time:'11h00', week:4, name:'Personas/Grupos', ataFile:'' },
+  { id:'8.32', status:'future',  date:'16/11/2026', time:'16h00', week:4, name:'Agenda Diária — UC2 Carrinho Abandonado', ataFile:'' },
+  { id:'8.33', status:'future',  date:'17/11/2026', time:'16h00', week:4, name:'Agenda Diária — Levantamento de Caso de Uso', ataFile:'' },
+  { id:'8.34', status:'future',  date:'18/11/2026', time:'16h00', week:4, name:'Agenda Diária — Levantamento de Caso de Uso', ataFile:'' },
+  { id:'8.35', status:'future',  date:'19/11/2026', time:'16h00', week:4, name:'Agenda Diária — Levantamento de Caso de Uso', ataFile:'' }
+];
+
+const CAL_WEEKS = [
+  { label:'26/10–30/10', days:[{label:'SEG',date:'26/10',fullDate:'26/10/2026'},{label:'TER',date:'27/10',fullDate:'27/10/2026'},{label:'QUA',date:'28/10',fullDate:'28/10/2026'},{label:'QUI',date:'29/10',fullDate:'29/10/2026'},{label:'SEX',date:'30/10',fullDate:'30/10/2026'}] },
+  { label:'02/11–06/11', days:[{label:'SEG',date:'02/11',fullDate:'02/11/2026'},{label:'TER',date:'03/11',fullDate:'03/11/2026'},{label:'QUA',date:'04/11',fullDate:'04/11/2026'},{label:'QUI',date:'05/11',fullDate:'05/11/2026'},{label:'SEX',date:'06/11',fullDate:'06/11/2026'}] },
+  { label:'09/11–13/11', days:[{label:'SEG',date:'09/11',fullDate:'09/11/2026'},{label:'TER',date:'10/11',fullDate:'10/11/2026'},{label:'QUA',date:'11/11',fullDate:'11/11/2026'},{label:'QUI',date:'12/11',fullDate:'12/11/2026'},{label:'SEX',date:'13/11',fullDate:'13/11/2026'}] },
+  { label:'16/11–20/11', days:[{label:'SEG',date:'16/11',fullDate:'16/11/2026'},{label:'TER',date:'17/11',fullDate:'17/11/2026'},{label:'QUA',date:'18/11',fullDate:'18/11/2026'},{label:'QUI',date:'19/11',fullDate:'19/11/2026'},{label:'SEX',date:'20/11',fullDate:'20/11/2026'}] }
+];
+
+const CAL_MORNING   = ['09h00','10h00','11h00'];
+const CAL_AFTERNOON = ['14h00','15h00','16h00','17h00'];
+
+function calTodayStr() {
+  const n = new Date();
+  return String(n.getDate()).padStart(2,'0')+'/'+String(n.getMonth()+1).padStart(2,'0')+'/'+n.getFullYear();
+}
+
+function calNormTime(t) {
+  const m = t.match(/^(\d{1,2})h/);
+  return m ? m[1].padStart(2,'0')+'h00' : null;
+}
+
+function calGetMeetings(dayFull, slot) {
+  return CAL_MEETINGS.filter(m => m.date === dayFull && calNormTime(m.time) === slot);
+}
+
+function calOpenAta(ataFile) {
+  const base = 'https://avisentin-visentin.github.io/cef-painel/atas/';
+  const a = document.createElement('a');
+  a.href = base + encodeURIComponent(ataFile);
+  a.target = '_blank'; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+function calRenderSummary() {
+  const done    = CAL_MEETINGS.filter(m=>m.status==='done').length;
+  const pending = CAL_MEETINGS.filter(m=>m.status==='pending').length;
+  const future  = CAL_MEETINGS.filter(m=>m.status==='future').length;
+  document.getElementById('cal-summary-bar').innerHTML = `
+    <div class="cal-summary-card"><span class="cal-num cal-num-total">${CAL_MEETINGS.length}</span><span class="cal-lbl">Total</span></div>
+    <div class="cal-summary-card"><span class="cal-num cal-num-done">${done}</span><span class="cal-lbl">Realizadas com ATA</span></div>
+    <div class="cal-summary-card"><span class="cal-num cal-num-pending">${pending}</span><span class="cal-lbl">ATA pendente</span></div>
+    <div class="cal-summary-card"><span class="cal-num cal-num-future">${future}</span><span class="cal-lbl">Futuras</span></div>`;
+}
+
+function calRenderWeek(week) {
+  const today = calTodayStr();
+  let html = '<div class="cal-wrapper"><table class="cal-table"><thead><tr><th class="th-hour">Hora</th>';
+  week.days.forEach(d => {
+    const isToday = d.fullDate === today;
+    html += `<th ${isToday?'style="background:#1a5276;border-color:#154360"':''}>
+      <span class="day-name">${d.label}</span><span class="day-date">${d.date}</span></th>`;
+  });
+  html += '</tr></thead><tbody>';
+  [{label:'☀️ Manhã', slots:CAL_MORNING},{label:'🌇 Tarde', slots:CAL_AFTERNOON}].forEach(period => {
+    html += `<tr class="cal-period-row"><td colspan="6">${period.label}</td></tr>`;
+    period.slots.forEach(slot => {
+      const isMorning = period.label.includes('Manhã');
+      html += `<tr><td class="cal-cell-hour ${isMorning?'morning':'afternoon'}">${slot}</td>`;
+      week.days.forEach(d => {
+        const isToday = d.fullDate === today;
+        const mtgs = calGetMeetings(d.fullDate, slot);
+        html += `<td class="cal-cell-day${isToday?' today':''}">`;
+        mtgs.forEach(m => {
+          const cc = m.status==='done'?'done':m.status==='pending'?'pending':'future';
+          const nc = m.status==='future'?'cal-mc-name future-name':'cal-mc-name';
+          const tl = m.duration?`${m.time} · ${m.duration}`:m.time;
+          html += `<div class="cal-meeting-card ${cc}">
+            <div class="cal-mc-time">${tl}</div>
+            <div class="${nc}">${m.name}</div>`;
+          if (m.status==='done') {
+            if (m.ataFile) {
+              html += `<button class="mc-ata" data-ata="${m.ataFile.replace(/"/g,'&quot;')}">✅ ATA enviada</button>`;
+            } else {
+              html += `<span class="cal-mc-no-ata">ATA pendente</span>`;
+            }
+          }
+          html += `</div>`;
+        });
+        html += '</td>';
+      });
+      html += '</tr>';
+    });
+  });
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function calRenderAll() {
+  calRenderSummary();
+  const tabsBar   = document.getElementById('cal-tabs-bar');
+  const tabPanels = document.getElementById('cal-tab-panels');
+  tabsBar.innerHTML = ''; tabPanels.innerHTML = '';
+  const today = calTodayStr();
+  let defaultIdx = CAL_WEEKS.length - 1;
+  CAL_WEEKS.forEach((w,i) => { if (w.days.some(d=>d.fullDate===today)) defaultIdx=i; });
+  CAL_WEEKS.forEach((w,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'cal-tab-btn'+(i===defaultIdx?' active':'');
+    btn.textContent = w.label;
+    btn.onclick = () => {
+      tabsBar.querySelectorAll('.cal-tab-btn').forEach(b=>b.classList.remove('active'));
+      tabPanels.querySelectorAll('.cal-tab-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('cal-panel-'+i).classList.add('active');
+    };
+    tabsBar.appendChild(btn);
+    const panel = document.createElement('div');
+    panel.className = 'cal-tab-panel'+(i===defaultIdx?' active':'');
+    panel.id = 'cal-panel-'+i;
+    panel.innerHTML = calRenderWeek(w);
+    tabPanels.appendChild(panel);
+    panel.querySelectorAll('button.mc-ata[data-ata]').forEach(btn => {
+      btn.addEventListener('click', () => calOpenAta(btn.getAttribute('data-ata')));
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// PAINEL DE AÇÕES — dados e funções
+// ═══════════════════════════════════════════════════════════════
+const AC_STORAGE_KEY = 'cef_acoes_painel_v1';
+let acCurrentTab = 'pendentes';
+const AC_STORAGE = {};
+
+function acLoadStorage() {
+  try { const raw = localStorage.getItem(AC_STORAGE_KEY); if(raw) Object.assign(AC_STORAGE,JSON.parse(raw)); } catch(e){}
+}
+function acSaveStorage() {
+  try { localStorage.setItem(AC_STORAGE_KEY, JSON.stringify(AC_STORAGE)); } catch(e){}
+}
+function acGetState(id) { return AC_STORAGE[id] || {checked:false,comentario:'',status:null}; }
+function acSetState(id,key,value) {
+  if(!AC_STORAGE[id]) AC_STORAGE[id]={checked:false,comentario:'',status:null};
+  AC_STORAGE[id][key]=value; acSaveStorage();
+}
+function acSwitchTab(tab) {
+  acCurrentTab=tab;
+  document.getElementById('acTabPendentes').classList.toggle('active',tab==='pendentes');
+  document.getElementById('acTabConcluidos').classList.toggle('active',tab==='concluidos');
+  acRender();
+}
+function acGetStatus(acao) {
+  const st = acGetState(acao.id);
+  if(st.checked) return 'Concluído';
+  if(st.status) return st.status;
+  const pd = new Date(acao.prazo);
+  const today = new Date(); today.setHours(0,0,0,0);
+  if(acao.status!=='Concluído' && acao.prazo && pd<today) return 'Atrasado';
+  return acao.status;
+}
+function acRender() {
+  acLoadStorage();
+  const tbody = document.getElementById('acTableBody');
+  tbody.innerHTML='';
+  let cPend=0,cConc=0;
+  AC_ACOES.forEach(a=>{ const s=acGetStatus(a); if(s==='Concluído') cConc++; else cPend++; });
+  document.getElementById('acCountPendentes').textContent=cPend;
+  document.getElementById('acCountConcluidos').textContent=cConc;
+  let lastRid=null, seq=1;
+  AC_ACOES.forEach(acao => {
+    const st=acGetState(acao.id), eff=acGetStatus(acao);
+    if(acCurrentTab==='pendentes' && eff==='Concluído') return;
+    if(acCurrentTab==='concluidos' && eff!=='Concluído') return;
+    if(acao.reuniaoId!==lastRid) {
+      const gh=document.createElement('tr'); gh.className='ac-group-header'; gh.setAttribute('data-reuniao',acao.reuniaoId);
+      gh.innerHTML=`<td colspan="8">${acao.reuniaoId} — ${acao.reuniaoNome} (${acao.reuniaoData})</td>`;
+      tbody.appendChild(gh); lastRid=acao.reuniaoId;
+    }
+    const tr=document.createElement('tr');
+    tr.setAttribute('data-id',acao.id); tr.setAttribute('data-reuniao',acao.reuniaoId);
+    tr.setAttribute('data-status',eff); tr.setAttribute('data-prazo',acao.prazo||'');
+    tr.setAttribute('data-search',(acao.acao+acao.resp+acao.prazoDisplay+eff).toLowerCase());
+    const bmap={'Futuro':'ac-badge-futuro','Em Andamento':'ac-badge-andamento','Concluído':'ac-badge-concluido','Atrasado':'ac-badge-atrasado'};
+    tr.innerHTML=`
+      <td class="ac-td-num">${seq++}</td>
+      <td class="ac-td-reuniao"><div class="ac-rid">${acao.reuniaoId}</div><div class="ac-rnom">${acao.reuniaoNome}</div></td>
+      <td class="ac-td-acao">${acao.acao}</td>
+      <td class="ac-td-resp"><div class="ac-rname">${acao.resp}</div><div class="ac-rorg">${acao.respOrg}</div></td>
+      <td class="ac-td-prazo${eff==='Atrasado'?' atrasado':''}">${acao.prazoDisplay}</td>
+      <td class="ac-td-status">
+        <select class="ac-comentario-input" style="resize:none;min-height:auto;padding:4px 6px;" onchange="acChangeStatus(${acao.id},this.value)">
+          <option value="Futuro" ${eff==='Futuro'?'selected':''}>🔵 Futuro</option>
+          <option value="Em Andamento" ${eff==='Em Andamento'?'selected':''}>🟡 Em Andamento</option>
+          <option value="Concluído" ${eff==='Concluído'?'selected':''}>🟢 Concluído</option>
+          <option value="Atrasado" ${eff==='Atrasado'?'selected':''}>🔴 Atrasado</option>
+        </select>
+      </td>
+      <td class="ac-td-concluido"><div class="ac-check-wrap"><div class="ac-check-box ${st.checked?'checked':''}" onclick="acToggleCheck(${acao.id},this)">${st.checked?'✓':''}</div></div></td>
+      <td class="ac-td-comentario"><textarea class="ac-comentario-input" rows="2" placeholder="Comentário..." onblur="acSaveComentario(${acao.id},this.value)">${st.comentario||''}</textarea></td>`;
+    tbody.appendChild(tr);
+  });
+  acUpdateSummary();
+  acApplyFilters(true);
+  document.getElementById('acRowCount').textContent=`${AC_ACOES.length} ações no total`;
+}
+function acToggleCheck(id,el) {
+  const cur=el.classList.contains('checked');
+  el.classList.toggle('checked',!cur); el.textContent=!cur?'✓':'';
+  acSetState(id,'checked',!cur); if(!cur) acSetState(id,'status','Concluído'); acRender();
+}
+function acChangeStatus(id,value) { acSetState(id,'status',value); if(value==='Concluído') acSetState(id,'checked',true); acRender(); }
+function acSaveComentario(id,value) { acSetState(id,'comentario',value); }
+function acUpdateSummary() {
+  const c={'Futuro':0,'Em Andamento':0,'Concluído':0,'Atrasado':0};
+  AC_ACOES.forEach(a=>{const s=acGetStatus(a);if(c[s]!==undefined)c[s]++;});
+  document.getElementById('acSummaryBar').innerHTML=`
+    <div class="ac-stat-chip"><div class="ac-dot ac-dot-total"></div>Total: <strong>${AC_ACOES.length}</strong></div>
+    <div class="ac-stat-chip"><div class="ac-dot ac-dot-futuro"></div>Futuro: <strong>${c['Futuro']}</strong></div>
+    <div class="ac-stat-chip"><div class="ac-dot ac-dot-andamento"></div>Em Andamento: <strong>${c['Em Andamento']}</strong></div>
+    <div class="ac-stat-chip"><div class="ac-dot ac-dot-concluido"></div>Concluído: <strong>${c['Concluído']}</strong></div>
+    <div class="ac-stat-chip"><div class="ac-dot ac-dot-atrasado"></div>Atrasado: <strong>${c['Atrasado']}</strong></div>`;
+}
+function acApplyFilters(skipRender) {
+  const fStatus  = document.getElementById('ac-filterStatus').value;
+  const fReuniao = document.getElementById('ac-filterReuniao').value;
+  const fPrazo   = document.getElementById('ac-filterPrazoAte').value;
+  const search   = document.getElementById('ac-searchInput').value.toLowerCase().trim();
+  const tbody = document.getElementById('acTableBody');
+  const rows  = tbody.querySelectorAll('tr');
+  const gVis  = {};
+  let vis=0;
+  rows.forEach(tr => {
+    if(tr.classList.contains('ac-group-header')) return;
+    const rId=tr.getAttribute('data-reuniao'), st=tr.getAttribute('data-status');
+    const prazo=tr.getAttribute('data-prazo')||'', srch=tr.getAttribute('data-search')||'';
+    let show=true;
+    if(fStatus && st!==fStatus) show=false;
+    if(fReuniao && rId!==fReuniao) show=false;
+    if(fPrazo && prazo && prazo>fPrazo) show=false;
+    if(fPrazo && !prazo) show=false;
+    if(search && !srch.includes(search)) show=false;
+    tr.classList.toggle('ac-hidden',!show);
+    if(show){vis++;gVis[rId]=true;}
+  });
+  rows.forEach(tr=>{if(!tr.classList.contains('ac-group-header'))return;tr.classList.toggle('ac-hidden',!gVis[tr.getAttribute('data-reuniao')]);});
+  document.getElementById('acRowCount').textContent=`Exibindo ${vis} de ${AC_ACOES.length} ações`;
+}
+function acExportCSV() {
+  const h=['#','Reunião ID','Nome','Ação','Responsável','Org','Prazo','Status','Concluído','Comentário'];
+  const rows=AC_ACOES.map((a,i)=>{const st=acGetState(a.id),eff=acGetStatus(a);return[i+1,a.reuniaoId,a.reuniaoNome,'"'+a.acao.replace(/"/g,'""')+'"','"'+a.resp.replace(/"/g,'""')+'"',a.respOrg,a.prazoDisplay,eff,st.checked?'Sim':'Não','"'+(st.comentario||'').replace(/"/g,'""')+'"'].join(',');});
+  const csv=[h.join(','),...rows].join('\n');
+  const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='CEF_Acoes_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(url);
+}
+
+const AC_ACOES = [
+  {id:1,reuniaoId:'8.13',reuniaoNome:'Gestão de Acesso e SSO',reuniaoData:'03/11/2026',acao:'Confirmar suporte ao fluxo PKCE e Authorization Code Grant com parâmetros de escopo customizados no provedor de identidade (IdP) da Caixa.',resp:'Humphrey / Equipe Caixa (Arquitetura)',respOrg:'Caixa',prazo:'2026-11-09',prazoDisplay:'09/Nov/2026',status:'Futuro'},
+  {id:2,reuniaoId:'8.13',reuniaoNome:'Gestão de Acesso e SSO',reuniaoData:'03/11/2026',acao:'Disponibilizar endpoint de metadados do IdP (discovery document ou JWKS URI) e credenciais de ambiente de homologação para integração SSO com Salesforce.',resp:'Humphrey (Caixa — Arquitetura)',respOrg:'Caixa',prazo:'2026-11-09',prazoDisplay:'09/Nov/2026',status:'Futuro'},
+  {id:3,reuniaoId:'8.13',reuniaoNome:'Gestão de Acesso e SSO',reuniaoData:'03/11/2026',acao:'Mapear e documentar os perfis de usuário e grupos de permissão necessários para o FSC (bankers, superintendentes, suporte) e enviar para time SF modelar os Permission Sets.',resp:'Jeyson Cordeiro (Caixa — CRM)',respOrg:'Caixa',prazo:'2026-11-13',prazoDisplay:'13/Nov/2026',status:'Futuro'},
+  {id:4,reuniaoId:'8.13',reuniaoNome:'Gestão de Acesso e SSO',reuniaoData:'03/11/2026',acao:'Configurar e testar o fluxo de SSO em sandbox Salesforce com as credenciais de homologação da Caixa, validando login, logout e renovação de token.',resp:'Samuel de Sena (Salesforce — TA)',respOrg:'Salesforce',prazo:'2026-11-18',prazoDisplay:'18/Nov/2026',status:'Futuro'},
+  {id:5,reuniaoId:'8.14',reuniaoNome:'Levantamento de Caso de Uso',reuniaoData:'03/11/2026',acao:'Detalhar e documentar as regras de negócio do Caso de Uso 1 (Crédito): critérios de elegibilidade, segmentação, canais de disparo e KPIs de sucesso.',resp:'Fábio Grande / Juan Rigueiras (Caixa)',respOrg:'Caixa',prazo:'2026-11-13',prazoDisplay:'13/Nov/2026',status:'Futuro'},
+  {id:6,reuniaoId:'8.14',reuniaoNome:'Levantamento de Caso de Uso',reuniaoData:'03/11/2026',acao:'Enviar sample de dados do Caso de Uso 1 (Crédito) para time SF — pendência há mais de 10 dias conforme cobrado a Bruno Aprioto.',resp:'Bruno Aprigio e Silva (Caixa — Gerente Nacional)',respOrg:'Caixa',prazo:'2026-11-09',prazoDisplay:'09/Nov/2026',status:'Em Andamento'},
+  {id:7,reuniaoId:'8.14',reuniaoNome:'Levantamento de Caso de Uso',reuniaoData:'03/11/2026',acao:'Enviar documentação da fila MQ, volumetria por cliente e regras de frequência para Caso de Uso 2.2 (Ofertas de Investimento).',resp:'Fábio Grande (Caixa — CRM/Dados)',respOrg:'Caixa',prazo:'2026-11-13',prazoDisplay:'13/Nov/2026',status:'Futuro'},
+  {id:8,reuniaoId:'8.15',reuniaoNome:'Change Management (Workshop Diagnóstico)',reuniaoData:'04/11/2026',acao:'Consolidar a Versão 1.0 do Diagnóstico de Prontidão Organizacional com base nas notas e apontamentos da sessão, estruturando a matriz preliminar para composição do Marco 2.',resp:'Raquel Klafke / Mariana Izukawa (Salesforce — CM)',respOrg:'Salesforce',prazo:'2026-11-09',prazoDisplay:'09/Nov/2026',status:'Em Andamento'},
+  {id:9,reuniaoId:'8.15',reuniaoNome:'Change Management (Workshop Diagnóstico)',reuniaoData:'04/11/2026',acao:'Elaborar proposta de plano de ação e evolução da maturidade por alavanca, sugerindo atividades e entregáveis prioritários para o ciclo de Change Management.',resp:'Mariana Izukawa (Salesforce — CM)',respOrg:'Salesforce',prazo:'2026-11-13',prazoDisplay:'13/Nov/2026',status:'Futuro'},
+  {id:10,reuniaoId:'8.15',reuniaoNome:'Change Management (Workshop Diagnóstico)',reuniaoData:'04/11/2026',acao:'Estruturar a estratégia de rastreabilidade de leads e atribuição de vendas nas ferramentas de atendimento da Caixa para identificar conversões originadas pelas inteligências do Move CRM.',resp:'Juan Rigueiras (Caixa) / Fábio Grande (Caixa) / Vittor (Salesforce)',respOrg:'Caixa + Salesforce',prazo:'2026-11-18',prazoDisplay:'18/Nov/2026',status:'Futuro'},
+  {id:11,reuniaoId:'8.15',reuniaoNome:'Change Management (Workshop Diagnóstico)',reuniaoData:'04/11/2026',acao:'Mapear os fluxos e definir o modelo de atendimento ágil de sustentação (Hypercare) pós-go-live, desenhando o escalonamento integrado entre ServiceNow (Serval) e canais corporativos.',resp:'Bruno Aprigio e Silva (Caixa) / Jeyson Cordeiro (Caixa)',respOrg:'Caixa',prazo:'2026-11-20',prazoDisplay:'20/Nov/2026',status:'Futuro'},
+  {id:12,reuniaoId:'8.16',reuniaoNome:'Arquitetura de Integração com Super App (SDK e APIs)',reuniaoData:'04/11/2026',acao:'Especificar o contrato técnico da API de push do CCPU (Swagger/JSON, payloads e parâmetros aceitos).',resp:'Humphrey Correa da Fonseca / Fábio Grande (Caixa)',respOrg:'Caixa',prazo:'2026-11-09',prazoDisplay:'09/Nov/2026',status:'Futuro'},
+  {id:13,reuniaoId:'8.16',reuniaoNome:'Arquitetura de Integração com Super App (SDK e APIs)',reuniaoData:'04/11/2026',acao:'Desenhar a arquitetura e estimar o desenvolvimento da Custom Activity no Marketing Cloud para integração com o CCPU.',resp:'Samuel de Sena / Maciel Bombonato (Salesforce — TA)',respOrg:'Salesforce',prazo:'2026-11-13',prazoDisplay:'13/Nov/2026',status:'Futuro'},
+  {id:14,reuniaoId:'8.16',reuniaoNome:'Arquitetura de Integração com Super App (SDK e APIs)',reuniaoData:'04/11/2026',acao:'Mapear o fluxo de retroalimentação de telemetria e eventos via Trilha de Auditoria / BigQuery para consolidação no Data Cloud.',resp:'Tamie Silva Takeda (Caixa) / Renan Polônio (Salesforce)',respOrg:'Caixa + Salesforce',prazo:'2026-11-18',prazoDisplay:'18/Nov/2026',status:'Futuro'},
+  {id:15,reuniaoId:'8.16',reuniaoNome:'Arquitetura de Integração com Super App (SDK e APIs)',reuniaoData:'04/11/2026',acao:'Formalizar o registro de exceção de arquitetura (Padrão Primeiro — P1) e risco de projeto no caderno do Marco 2 (Avaliação Técnica).',resp:'Adriana Visentin (Salesforce — PM) / Maciel Bombonato (Salesforce — TA)',respOrg:'Salesforce',prazo:'2026-11-09',prazoDisplay:'09/Nov/2026',status:'Em Andamento'},
+  {id:16,reuniaoId:'8.17',reuniaoNome:'Pré-reserva: Alinhamento Private / FSC',reuniaoData:'04/11/2026',acao:'Compartilhar o mockup de painel de gestão de carteira Private com o time Salesforce PS como referência de design.',resp:'Lino Raphael Brancaglion Muffato (Caixa — Estratégia Private)',respOrg:'Caixa',prazo:'2026-11-11',prazoDisplay:'11/Nov/2026',status:'Futuro'},
+  {id:17,reuniaoId:'8.17',reuniaoNome:'Pré-reserva: Alinhamento Private / FSC',reuniaoData:'04/11/2026',acao:'Elaborar proposta funcional do painel FSC para bankers Private com base nos inputs coletados (visão 360, grupos, marcas, feed de oportunidades, mobile).',resp:'Camila Pacheco / Karina Santos (Salesforce — SA FSC)',respOrg:'Salesforce',prazo:'2026-11-25',prazoDisplay:'25/Nov/2026',status:'Futuro'},
+  {id:18,reuniaoId:'8.17',reuniaoNome:'Pré-reserva: Alinhamento Private / FSC',reuniaoData:'04/11/2026',acao:'Mapear as integrações necessárias para viabilizar a visão 360 consolidada no FSC (plataforma.caixa, previdência, fundos, cartão, Quantum equivalente).',resp:'Karina Santos (Salesforce — SA FSC) / Fábio Grande (Caixa — CRM/Dados)',respOrg:'Salesforce + Caixa',prazo:'2026-11-25',prazoDisplay:'25/Nov/2026',status:'Futuro'},
+  {id:19,reuniaoId:'8.17',reuniaoNome:'Pré-reserva: Alinhamento Private / FSC',reuniaoData:'04/11/2026',acao:'Formalizar solicitação de exceção junto à área de arquitetura da Caixa para uso transacional do Salesforce FSC (conforme política plataforma.caixa).',resp:'Jeyson Cordeiro (Caixa) / Adriana Visentin (Salesforce — PM)',respOrg:'Caixa + Salesforce',prazo:'2026-11-30',prazoDisplay:'30/Nov/2026',status:'Futuro'},
+  {id:20,reuniaoId:'8.17b',reuniaoNome:'Levantamento CU — Biblioteca de Marcas',reuniaoData:'04/11/2026',acao:'Compartilhar catálogo completo da Biblioteca de Marcas em formato Excel (ficha técnica, regras de negócio, fontes, cadência, classificação LGPD).',resp:'Suelen / Fábio Grande (Caixa — CRM/Dados)',respOrg:'Caixa',prazo:'2026-11-06',prazoDisplay:'06/Nov/2026',status:'Futuro'},
+  {id:21,reuniaoId:'8.17b',reuniaoNome:'Levantamento CU — Biblioteca de Marcas',reuniaoData:'04/11/2026',acao:'Revisar o catálogo da Biblioteca de Marcas e mapear marcas prioritárias para cada caso de uso (CU1 — Crédito e CU2 — Tempo Real), devolvendo lista de prioridades.',resp:'Samuel de Sena / Renan Polônio (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-13',prazoDisplay:'13/Nov/2026',status:'Futuro'},
+  {id:22,reuniaoId:'8.17b',reuniaoNome:'Levantamento CU — Biblioteca de Marcas',reuniaoData:'04/11/2026',acao:'Definir cadência de reuniões quinzenais de acompanhamento da evolução da Biblioteca de Marcas.',resp:'Fábio Grande (Caixa) / Adriana Visentin (Salesforce — PM)',respOrg:'Caixa + Salesforce',prazo:'2026-11-13',prazoDisplay:'13/Nov/2026',status:'Futuro'},
+  {id:23,reuniaoId:'8.18',reuniaoNome:'MVP Financial Services Cloud',reuniaoData:'05/11/2026',acao:'Estruturar lista formal de funcionalidades do MVP FSC em formato de épicos para validação com a Caixa (4 blocos: Visão 360, Visão Carteira, Insights com IA, Apoio Agêntico).',resp:'Camila Pacheco / Karina Santos (Salesforce — SA FSC)',respOrg:'Salesforce',prazo:'2026-11-18',prazoDisplay:'18/Nov/2026',status:'Futuro'},
+  {id:24,reuniaoId:'8.18',reuniaoNome:'MVP Financial Services Cloud',reuniaoData:'05/11/2026',acao:'Compartilhar painel mockup da Estratégia Private com o time Salesforce PS como referência de design para o FSC.',resp:'Lino Raphael Brancaglion Muffato (Caixa — Estratégia Private)',respOrg:'Caixa',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
+  {id:25,reuniaoId:'8.18',reuniaoNome:'MVP Financial Services Cloud',reuniaoData:'05/11/2026',acao:'Conduzir o "deparo" formal — mapeamento de equivalência entre objetos do relacionamento.caixa e objetos do Financial Services Cloud.',resp:'Jeyson Cordeiro (Caixa) / Karina Santos (Salesforce)',respOrg:'Caixa + Salesforce',prazo:'2026-11-25',prazoDisplay:'25/Nov/2026',status:'Futuro'},
+  {id:26,reuniaoId:'8.18',reuniaoNome:'MVP Financial Services Cloud',reuniaoData:'05/11/2026',acao:'Designar Product Owner (PO) da Caixa dedicado ao FSC — perfil com conhecimento do dia a dia dos bankers Private e autonomia para decisões de backlog.',resp:'Lino Raphael Brancaglion Muffato (Caixa)',respOrg:'Caixa',prazo:'2026-11-18',prazoDisplay:'18/Nov/2026',status:'Futuro'},
+  {id:27,reuniaoId:'8.18',reuniaoNome:'MVP Financial Services Cloud',reuniaoData:'05/11/2026',acao:'Confirmar viabilidade e fonte de dados para integração de previdência na Visão 360 (único produto fora das APIs atuais do relacionamento.caixa).',resp:'Fábio Grande (Caixa) / Karina Santos (Salesforce)',respOrg:'Caixa + Salesforce',prazo:'2026-11-18',prazoDisplay:'18/Nov/2026',status:'Futuro'},
+  {id:28,reuniaoId:'8.19',reuniaoNome:'Diagnóstico de Fontes, Qualidade & Duplicidade de Dados',reuniaoData:'05/11/2026',acao:'Remarcar reunião de definição da estratégia de conexão Data Cloud → Databricks/GCP com presença de Eugênio e/ou Rafael Xavier (Suarte/TI Caixa).',resp:'Bruno Aniceto de Araújo (Salesforce) / Fábio Grande (Caixa)',respOrg:'Salesforce + Caixa',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
+  {id:29,reuniaoId:'8.19',reuniaoNome:'Diagnóstico de Fontes, Qualidade & Duplicidade de Dados',reuniaoData:'05/11/2026',acao:'Enviar para Bruno Aniceto o estudo e documentação da prova de conceito de Service Principal + Delta Share realizada no projeto SAS.',resp:'Ronaldo Francisco Pereira da Silva (Caixa — TI)',respOrg:'Caixa',prazo:'2026-11-09',prazoDisplay:'09/Nov/2026',status:'Futuro'},
+  {id:30,reuniaoId:'8.19',reuniaoNome:'Diagnóstico de Fontes, Qualidade & Duplicidade de Dados',reuniaoData:'05/11/2026',acao:'Abrir acionamento formal junto à Suarte para deliberação sobre estratégia de conexão, apresentando as três opções mapeadas e a POC existente.',resp:'Bruno Aniceto de Araújo (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Em Andamento'},
+  {id:31,reuniaoId:'8.21',reuniaoNome:'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',reuniaoData:'06/11/2026',acao:'Compartilhar Swagger da API de orquestração de push (nova) e das demais APIs de canal (carrossel, mensagem de relacionamento, splash screen, posse/oferta).',resp:'Fábio Grande (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'Urgente — a definir',status:'Futuro'},
+  {id:32,reuniaoId:'8.21',reuniaoNome:'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',reuniaoData:'06/11/2026',acao:'Agendar reunião com a área de Gênesis para mapeamento das possibilidades de transbordo de WhatsApp antes de definir arquitetura de canal.',resp:'Fábio Grande (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:33,reuniaoId:'8.21',reuniaoNome:'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',reuniaoData:'06/11/2026',acao:'Mapear e consolidar todas as possibilidades de canais (ativos, receptivos, transbordo, integração Gênesis) e apresentar à Caixa.',resp:'Renan Polônio (Salesforce — Digital SA)',respOrg:'Salesforce',prazo:null,prazoDisplay:'Antes da próxima reunião de caso de uso',status:'Futuro'},
+  {id:34,reuniaoId:'8.21',reuniaoNome:'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',reuniaoData:'06/11/2026',acao:'Participar de reunião técnica de SMS para definir estratégia de envio — InfoBip vs. envio via Salesforce Marketing Cloud (short codes já contratados).',resp:'Fábio Grande (Caixa) + Renan Polônio (Salesforce)',respOrg:'Caixa/Salesforce',prazo:'2026-11-10',prazoDisplay:'10/Nov/2026',status:'Futuro'},
+  {id:35,reuniaoId:'8.21',reuniaoNome:'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',reuniaoData:'06/11/2026',acao:'Envolver Juan (gestor de marketing digital) para alinhamento de guideline de conteúdo e configuração de layout das campanhas no Super App.',resp:'Josie Roque Vecchi (Caixa) / Renan Polônio (Salesforce)',respOrg:'Caixa/Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:36,reuniaoId:'8.21',reuniaoNome:'Agenda Diária: Canais de Ativação (App, WhatsApp, SMS)',reuniaoData:'06/11/2026',acao:'Agendar agenda específica por caso de uso para detalhar regras de negócio de cada caso (solicitado por Vitor Raymundo).',resp:'Adriana Visentin (Salesforce — PM)',respOrg:'Salesforce',prazo:null,prazoDisplay:'A agendar',status:'Futuro'},
+  {id:37,reuniaoId:'8.22',reuniaoNome:'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',reuniaoData:'09/11/2026',acao:'Confirmar suporte de File Federation (Delta Sharing) via Private Connect Azure — verificar compatibilidade com os modelos de Private Connect padrão e Multicloud.',resp:'Renan Polônio / Juliano Polito (Salesforce)',respOrg:'Salesforce',prazo:null,prazoDisplay:'Urgente',status:'Futuro'},
+  {id:38,reuniaoId:'8.22',reuniaoNome:'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',reuniaoData:'09/11/2026',acao:'Confirmar requisitos de autenticação/autorização do Blob Storage Azure com time de segurança (Túlio — COI/Suarte).',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Em Andamento'},
+  {id:39,reuniaoId:'8.22',reuniaoNome:'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',reuniaoData:'09/11/2026',acao:'Atualizar demanda de arquitetura já aberta com Túlio (Suarte) incluindo todas as possibilidades de conexão: conector nativo Data Cloud + MuleSoft como alternativa.',resp:'Bruno Aniceto (Salesforce) + Bruno Aprigio (Caixa)',respOrg:'Caixa/Salesforce',prazo:null,prazoDisplay:'Urgente',status:'Futuro'},
+  {id:40,reuniaoId:'8.22',reuniaoNome:'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',reuniaoData:'09/11/2026',acao:'Levantar com Fábio Grande os nomes exatos dos produtos de dados para o MVP e passar para Rafael Xavier para informar volumetria e formato dos arquivos Parquet.',resp:'Karina Curvina (Salesforce) / Fábio Grande (Caixa)',respOrg:'Caixa/Salesforce',prazo:null,prazoDisplay:'Urgente — meta produção Dez/2026',status:'Futuro'},
+  {id:41,reuniaoId:'8.22',reuniaoNome:'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',reuniaoData:'09/11/2026',acao:'Incluir Bruno Aniceto e Juliano Polito (Salesforce) na agenda com time de segurança (Túlio) quando convocada pela Caixa.',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'Ao agendar reunião com Túlio',status:'Futuro'},
+  {id:42,reuniaoId:'8.22',reuniaoNome:'Dados (Agenda Técnica): Estratégia Conexão Data Cloud ↔ Databricks/Blob Storage',reuniaoData:'09/11/2026',acao:'Avaliar pertinência e, se confirmado, agendar sessão de onboarding de Data Cloud para Rafael Xavier e time do Lakehouse (Vitec).',resp:'Rafael Carneiro (Salesforce) / Rafael Xavier (Caixa)',respOrg:'Caixa/Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:43,reuniaoId:'8.23',reuniaoNome:'Envio de SMS e E-mails',reuniaoData:'10/11/2026',acao:'Agendar reunião urgente com Edvaldo e Renato Jambeiro (JACDI) para alinhamento sobre uso dos canais nativos Salesforce para marketing e coexistência com o SIGMS (transacional).',resp:'Fábio Netto Pinheiro Grande (Caixa)',respOrg:'Caixa',prazo:'2026-11-11',prazoDisplay:'11/Nov/2026',status:'Futuro'},
+  {id:44,reuniaoId:'8.23',reuniaoNome:'Envio de SMS e E-mails',reuniaoData:'10/11/2026',acao:'Enviar material com regras de nomenclatura para definição do from name do SMS (Caixa será 2º cliente da América Latina a adotar a funcionalidade).',resp:'Samuel Sena / Karina Curvina (Salesforce)',respOrg:'Salesforce',prazo:null,prazoDisplay:'Breve',status:'Futuro'},
+  {id:45,reuniaoId:'8.23',reuniaoNome:'Envio de SMS e E-mails',reuniaoData:'10/11/2026',acao:'Enviar material de boas práticas de aquecimento de IP para e-mail, incluindo sugestão de plano B/C com base em percentuais das bases dos casos de uso.',resp:'Karina Curvina (Salesforce)',respOrg:'Salesforce',prazo:null,prazoDisplay:'Breve',status:'Futuro'},
+  {id:46,reuniaoId:'8.23',reuniaoNome:'Envio de SMS e E-mails',reuniaoData:'10/11/2026',acao:'Definir subdomínio(s) desejados para configuração de e-mail (ex: comunicacao.caixa.gov.br, renegociacao.caixa.gov.br) — Cenário A recomendado pela Salesforce.',resp:'Fábio Netto / Ronaldo / Marketing (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'Urgente',status:'Futuro'},
+  {id:47,reuniaoId:'8.23',reuniaoNome:'Envio de SMS e E-mails',reuniaoData:'10/11/2026',acao:'Iniciar processo interno de criação de DNS e certificados SSL para e-mail junto às áreas CEPRO e CESTEI. Prazo estimado: 1–2 semanas.',resp:'Ronaldo Francisco Pereira da Silva (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'Urgente — iniciar semana 10/11',status:'Futuro'},
+  {id:48,reuniaoId:'8.23',reuniaoNome:'Envio de SMS e E-mails',reuniaoData:'10/11/2026',acao:'Conduzir aprovação de fraseologia do from name do SMS junto à JACDI e GEPUP, considerando a nova identidade visual da Caixa.',resp:'Fábio Netto / Ronaldo (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:49,reuniaoId:'8.23',reuniaoNome:'Envio de SMS e E-mails',reuniaoData:'10/11/2026',acao:'Enviar lista completa de tabelas de dados (todos os produtos da primeira onda de casos de uso) para análise de volumetria e definição de arquitetura de conectividade com Data Cloud.',resp:'Fábio Netto Pinheiro Grande (Caixa)',respOrg:'Caixa',prazo:'2026-11-10',prazoDisplay:'10/Nov/2026',status:'Futuro'},
+  {id:50,reuniaoId:'8.23',reuniaoNome:'Envio de SMS e E-mails',reuniaoData:'10/11/2026',acao:'Configurar monitoramento de saúde do IP via Google Postmaster e SNDS (Microsoft) para IPs Salesforce e IPs atuais da Caixa.',resp:'Salesforce + TI Caixa',respOrg:'Caixa/Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:51,reuniaoId:'8.24',reuniaoNome:'Gestão de Acesso e SSO (continuação)',reuniaoData:'10/11/2026',acao:'Compartilhar a nomenclatura definitiva dos grupos criados no EntraID com Bruno Aniceto para atualização da documentação de mapeamento de grupos.',resp:'Danilo Pedroso de Moraes (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'Breve',status:'Futuro'},
+  {id:52,reuniaoId:'8.24',reuniaoNome:'Gestão de Acesso e SSO (continuação)',reuniaoData:'10/11/2026',acao:'Remover acessos diretos pré-SSO das plataformas MuleSoft e Salesforce Core, migrando todos os usuários para autenticação exclusiva via SSO/EntraID.',resp:'Bruno Aniceto de Araújo (Salesforce)',respOrg:'Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:53,reuniaoId:'8.24',reuniaoNome:'Gestão de Acesso e SSO (continuação)',reuniaoData:'10/11/2026',acao:'Adicionar demais usuários do projeto nos grupos do EntraID conforme necessidade de acesso (processo contínuo).',resp:'Danilo Pedroso de Moraes (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'Contínuo',status:'Em Andamento'},
+  {id:54,reuniaoId:'8.25',reuniaoNome:'Integrações do Core (FSC Private)',reuniaoData:'10/11/2026',acao:'Enviar planilha de integrações FSC Private (versão atual) para Fábio Netto revisar pontos abertos e anotar dúvidas antes da próxima sessão.',resp:'Karina Santos (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-11',prazoDisplay:'11/Nov/2026',status:'Futuro'},
+  {id:55,reuniaoId:'8.25',reuniaoNome:'Integrações do Core (FSC Private)',reuniaoData:'10/11/2026',acao:'Agendar nova sessão de ~30 minutos para finalizar itens restantes da lista de integrações FSC Private (Planejamento de Visitas e demais pendentes).',resp:'Adriana Visentin (Salesforce) / Andryelle Verissimo (Orange)',respOrg:'Salesforce',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
+  {id:56,reuniaoId:'8.25',reuniaoNome:'Integrações do Core (FSC Private)',reuniaoData:'10/11/2026',acao:'Agendar sessão com Jeyson e time de dados Caixa para decidir fonte definitiva de dados cadastrais e carteiramento para o MVP FSC Private.',resp:'Fábio Netto Pinheiro Grande (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:57,reuniaoId:'8.25',reuniaoNome:'Integrações do Core (FSC Private)',reuniaoData:'10/11/2026',acao:'Levantar com Lima/Jeyson: (a) se débito automático e adesão SMS são "produtos" no FSC, (b) onde ficam dados de interesses pessoais, (c) onde ficam marcações de impedimento.',resp:'Fábio Netto Pinheiro Grande (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:58,reuniaoId:'8.25',reuniaoNome:'Integrações do Core (FSC Private)',reuniaoData:'10/11/2026',acao:'Confirmar regra de membro não-private dentro de grupo econômico de cliente private: qual status recebe no FSC?',resp:'Fábio Netto Pinheiro Grande (Caixa) / Karina Santos (Salesforce)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:59,reuniaoId:'8.25',reuniaoNome:'Integrações do Core (FSC Private)',reuniaoData:'10/11/2026',acao:'Agendar sessão com Lino para entender escopo de indicadores/metas no Alcance para o contexto Private e viabilidade do espelhamento consultivo no FSC.',resp:'Fábio Netto Pinheiro Grande (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:60,reuniaoId:'8.26',reuniaoNome:'Alinhamento Caso de Uso Finance',reuniaoData:'11/11/2026',acao:'Enviar material de pesquisa interna Caixa (levantamento de dores do segmento private pela própria rede) por e-mail para a equipe Salesforce.',resp:'Lino Raphael Brancaglion Muffato (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'Breve',status:'Futuro'},
+  {id:61,reuniaoId:'8.26',reuniaoNome:'Alinhamento Caso de Uso Finance',reuniaoData:'11/11/2026',acao:'Criar grupo de WhatsApp FSC Private (Salesforce + Caixa) e adicionar Lino como ADM para incluir os demais membros da Caixa.',resp:'Adriana Visentin (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-11',prazoDisplay:'11/Nov/2026',status:'Futuro'},
+  {id:62,reuniaoId:'8.26',reuniaoNome:'Alinhamento Caso de Uso Finance',reuniaoData:'11/11/2026',acao:'Construir pré-estrutura dos grupos de entrevistas de personas (tarefas, segmentos de usuários, perguntas-guia) para alinhamento com Lino.',resp:'Mariana Izukawa (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
+  {id:63,reuniaoId:'8.26',reuniaoNome:'Alinhamento Caso de Uso Finance',reuniaoData:'11/11/2026',acao:'Enviar invites para as agendas de Acessos/Encarteiramento (qui 12/11) e Personas/Grupos (sex 13/11), das 14h às 15h.',resp:'Adriana Visentin (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-11',prazoDisplay:'11/Nov/2026',status:'Futuro'},
+  {id:64,reuniaoId:'8.26',reuniaoNome:'Alinhamento Caso de Uso Finance',reuniaoData:'11/11/2026',acao:'Indicar colegas da rede private para as entrevistas de personas: grupos presenciais em São Paulo (Paulista) e remotos para outras regiões.',resp:'Lino Raphael Brancaglion Muffato (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:65,reuniaoId:'8.26',reuniaoNome:'Alinhamento Caso de Uso Finance',reuniaoData:'11/11/2026',acao:'Adicionar integração com sistema Gênesis na lista de integrações FSC Private.',resp:'Karina Santos (Salesforce)',respOrg:'Salesforce',prazo:null,prazoDisplay:'Breve',status:'Futuro'},
+  {id:66,reuniaoId:'8.26',reuniaoNome:'Alinhamento Caso de Uso Finance',reuniaoData:'11/11/2026',acao:'Agendar visita presencial ao escritório da Paulista (São Paulo) para conduzir entrevistas de personas com gerentes private.',resp:'Camila Pacheco / Mariana Izukawa (Salesforce)',respOrg:'Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:67,reuniaoId:'8.27',reuniaoNome:'Limite de Crédito (Sem PUSH)',reuniaoData:'11/11/2026',acao:'Enviar documento consolidado da jornada alternativa do CU1 (fluxo sem PUSH) + apresentação visual com opções de canal para a equipe Caixa.',resp:'Josie (Salesforce — MC)',respOrg:'Salesforce',prazo:'2026-11-11',prazoDisplay:'11/Nov/2026',status:'Futuro'},
+  {id:68,reuniaoId:'8.27',reuniaoNome:'Limite de Crédito (Sem PUSH)',reuniaoData:'11/11/2026',acao:'Confirmar fonte de telefone de contato principal para uso nos canais WhatsApp e SMS — verificar se é SICL (Cicli) ou outra fonte. Conversar com Edvaldo.',resp:'Fábio Grande (Caixa)',respOrg:'Caixa',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
+  {id:69,reuniaoId:'8.27',reuniaoNome:'Limite de Crédito (Sem PUSH)',reuniaoData:'11/11/2026',acao:'Confirmar volumetria das tabelas complementares necessárias além do Limite de Crédito (e-mail, telefone e demais campos exigidos pelos novos canais).',resp:'Fábio Grande (Caixa)',respOrg:'Caixa',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
+  {id:70,reuniaoId:'8.27',reuniaoNome:'Limite de Crédito (Sem PUSH)',reuniaoData:'11/11/2026',acao:'Confirmar aplicação do modelo de qualidade de e-mail (filtro de hard bounce e domínios inválidos) antes da ingestão da base para o canal e-mail.',resp:'Fábio Grande (Caixa)',respOrg:'Caixa',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
+  {id:71,reuniaoId:'8.28',reuniaoNome:'Alinhamento dos Squads',reuniaoData:'11/11/2026',acao:'Formatar o documento de estrutura de squads (com nomes, papéis e casos de uso) e enviar para todos os participantes do projeto.',resp:'Bruno Aprigio (Caixa)',respOrg:'Caixa',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
+  {id:72,reuniaoId:'8.28',reuniaoNome:'Alinhamento dos Squads',reuniaoData:'11/11/2026',acao:'Configurar a ferramenta de acompanhamento por squad (Microsoft Planner ou equivalente) antes de convocar os times para o kickoff.',resp:'Bruno Aprigio / Fábio Grande (Caixa)',respOrg:'Caixa',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
+  {id:73,reuniaoId:'8.28',reuniaoNome:'Alinhamento dos Squads',reuniaoData:'11/11/2026',acao:'Enviar invite do Kickoff de Estrutura de Squads (13/11 às 14h) para os times Salesforce e Orange.',resp:'Adriana Visentin / Andryelle Verissimo',respOrg:'Salesforce',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'},
+  {id:74,reuniaoId:'8.28',reuniaoNome:'Alinhamento dos Squads',reuniaoData:'11/11/2026',acao:'Realinhar agenda com Lino (Squad Financial/Private) para outro horário na sexta 13/11, pois conflita com o Kickoff de Squads das 14h.',resp:'Adriana Visentin / Bruno Aprigio',respOrg:'Salesforce',prazo:'2026-11-12',prazoDisplay:'12/Nov/2026',status:'Futuro'}
+];
+acLoadStorage();
+
 </script>
 
 </body>
