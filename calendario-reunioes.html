@@ -731,13 +731,19 @@ function showToast(msg) {
 function openAta(ataFile) {
   const base = 'https://avisentin-visentin.github.io/cef-painel/atas/';
   const href = base + encodeURIComponent(ataFile);
-  window.open(href, '_blank');
+  const a = document.createElement('a');
+  a.href = href;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 function ataLink(ataFile) {
   if (!ataFile) return '';
-  const safe = ataFile.replace(/'/g, "\\'");
-  return `<button class="mc-ata" onclick="openAta('${safe}')">✅ ATA enviada</button>`;
+  const safe = ataFile.replace(/"/g, '&quot;');
+  return `<button class="mc-ata" data-ata="${safe}">✅ ATA enviada</button>`;
 }
 
 // ─────────────────────────────────────────────
@@ -788,6 +794,11 @@ function renderTabs() {
     panel.id = 'panel-' + i;
     panel.innerHTML = renderWeekGrid(weeks[td.idx]);
     tabPanels.appendChild(panel);
+
+    // Registrar eventos nos botões ATA deste painel
+    panel.querySelectorAll('button.mc-ata[data-ata]').forEach(btn => {
+      btn.addEventListener('click', () => openAta(btn.getAttribute('data-ata')));
+    });
   });
 }
 
