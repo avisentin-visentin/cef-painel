@@ -243,7 +243,7 @@
   .risco-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12.5px;
+    font-size: 13px;
     background: #fff;
     border-radius: 10px;
     overflow: hidden;
@@ -252,18 +252,19 @@
   .risco-table thead th {
     background: #b91c1c;
     color: #fff;
-    padding: 9px 12px;
+    padding: 9px 10px;
     text-align: left;
     font-weight: 600;
-    font-size: 11.5px;
+    font-size: 13px;
   }
   .risco-table tbody tr:nth-child(even) { background: #f8fafd; }
   .risco-table tbody tr:hover { background: #fee2e2; }
   .risco-table td {
-    padding: 9px 12px;
+    padding: 8px 10px;
     border-bottom: 1px solid var(--border);
     vertical-align: top;
     line-height: 1.45;
+    font-size: 13px;
   }
   .risco-nivel {
     border-radius: 6px;
@@ -857,8 +858,8 @@
       <div class="card-title">Riscos Mapeados</div>
       <div class="card-desc">Registro de riscos identificados com probabilidade, impacto e plano de mitigação.</div>
       <div class="card-stats">
-        <span class="stat-pill pill-red">🔴 9 riscos altos</span>
-        <span class="stat-pill pill-orange">🟡 3 riscos médios</span>
+        <span class="stat-pill pill-red">🔴 6 riscos altos</span>
+        <span class="stat-pill pill-orange">🟡 2 riscos médios</span>
         <span class="stat-pill pill-orange" style="background:#fef3c7;color:#92400e;">⚠️ 6 internos</span>
       </div>
       <div class="card-arrow">→</div>
@@ -1255,21 +1256,12 @@
         </div>
       </div>
 
-      <!-- CU2 header: Real / Near Real Time -->
-      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:28px;" class="gantt-row cu-row">
-        <div style="padding:6px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;background:#fef6f0;">
-          <div style="width:22px;height:22px;border-radius:50%;background:#c75000;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-          <span style="font-size:11px;font-weight:700;color:#c75000;">Real / Near Real Time</span>
-        </div>
-        <div style="background:#fef6f0;border-left:none;"></div>
-      </div>
-
       <!-- CU2.1: Carrinho Abandonado — 01/Dez → 28/Fev -->
       <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row cu-row">
-        <div style="padding:8px 14px 8px 28px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
-          <div style="width:18px;height:18px;border-radius:50%;background:#c75000;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2.1</div>
+        <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
+          <div style="width:22px;height:22px;border-radius:50%;background:#c75000;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2.1</div>
           <div style="display:flex;flex-direction:column;">
-            <span style="font-size:11px;font-weight:600;color:#1a2236;">Carrinho Abandonado</span>
+            <span style="font-size:12px;font-weight:600;color:#1a2236;">Carrinho Abandonado</span>
             <span style="font-size:10px;color:#6b7a99;">01/Dez – 28/Fev</span>
           </div>
         </div>
@@ -1284,10 +1276,10 @@
 
       <!-- CU2.2: Ofertas de Investimento — 01/Nov → 17/Jan -->
       <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row cu-row">
-        <div style="padding:8px 14px 8px 28px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
-          <div style="width:18px;height:18px;border-radius:50%;background:#c75000;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2.2</div>
+        <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
+          <div style="width:22px;height:22px;border-radius:50%;background:#c75000;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2.2</div>
           <div style="display:flex;flex-direction:column;">
-            <span style="font-size:11px;font-weight:600;color:#1a2236;">Ofertas de Investimento</span>
+            <span style="font-size:12px;font-weight:600;color:#1a2236;">Ofertas de Investimento</span>
             <span style="font-size:10px;color:#6b7a99;">01/Nov – 17/Jan</span>
           </div>
         </div>
@@ -1611,17 +1603,17 @@
 
     <!-- TABELA 1: RISCOS DO PROJETO -->
     <div class="ev-section">
-      <div class="ev-section-title">Riscos do Projeto (7 riscos · Nov/2026)</div>
+      <div class="ev-section-title">Riscos do Projeto (4 riscos · Nov/2026)</div>
       <table class="risco-table">
         <thead>
           <tr>
-            <th style="width:40px">#</th>
-            <th style="width:140px">Risco</th>
-            <th>Descrição (Causa → Risco → Efeito)</th>
-            <th style="width:80px">Prob.</th>
-            <th style="width:80px">Impacto</th>
-            <th style="width:90px">Nível</th>
-            <th>Mitigação</th>
+            <th style="width:36px">#</th>
+            <th style="width:190px">Risco</th>
+            <th style="width:30%">Descrição (Causa → Risco → Efeito)</th>
+            <th style="width:70px">Prob.</th>
+            <th style="width:70px">Impacto</th>
+            <th style="width:80px">Nível</th>
+            <th style="width:22%">Mitigação</th>
           </tr>
         </thead>
         <tbody>
@@ -1642,33 +1634,6 @@
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
             <td>Integrar imediatamente Camila Pacheco e Karina Santos para alinhamentos aprofundados com Bruno e Jeyson antes da esteira de desenvolvimento.</td>
-          </tr>
-          <tr>
-            <td style="font-weight:700;color:#b91c1c">R-05</td>
-            <td style="font-weight:600">Curva de Aprendizado Técnico da Caixa</td>
-            <td>Devido ao primeiro contato da equipe técnica da Caixa com MuleSoft e o ecossistema Salesforce integrado, poderá ocorrer resistência ou morosidade nos requisitos de dados/integração, levando a gargalos na fase inicial.</td>
-            <td><span class="risco-nivel nivel-alta">Alta</span></td>
-            <td><span class="risco-nivel nivel-media">Médio</span></td>
-            <td><span class="risco-nivel nivel-media">🟡 Médio</span></td>
-            <td>Realizar sessões conceituais e workshops técnicos antes dos levantamentos de integração; aproveitar o Salesforce Day como acelerador de capacitação.</td>
-          </tr>
-          <tr>
-            <td style="font-weight:700;color:#b91c1c">R-06</td>
-            <td style="font-weight:600">Decisão API vs SDK não Formalizada</td>
-            <td>Devido à falta de alinhamento formal entre PS, Digital e Vendas sobre a abordagem de integração do Personalization (API vs SDK), poderá ocorrer início do desenvolvimento em arquitetura errada, levando a retrabalho técnico e risco de attrition.</td>
-            <td><span class="risco-nivel nivel-alta">Alta</span></td>
-            <td><span class="risco-nivel nivel-alta">Alto</span></td>
-            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
-            <td>Concluir agenda interna SF (PS + Digital + Vendas) para fechar recomendação formal de API; alinhar posição com a Caixa antes de iniciar desenvolvimento do CU1.</td>
-          </tr>
-          <tr>
-            <td style="font-weight:700;color:#b91c1c">R-07</td>
-            <td style="font-weight:600">Dependência de Dados da Caixa (CU1)</td>
-            <td>Devido à não entrega do sample de dados, regras de negócio de crédito e definição de volumetria por parte da Caixa, poderá ocorrer bloqueio total do desenvolvimento do CU1, levando ao não cumprimento do go-live em Jan/27.</td>
-            <td><span class="risco-nivel nivel-alta">Alta</span></td>
-            <td><span class="risco-nivel nivel-alta">Alto</span></td>
-            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
-            <td>Rafael Carneiro acionando Bruno Aprioto diretamente; escalada formal se não houver entrega até prazo acordado.</td>
           </tr>
           <tr>
             <td style="font-weight:700;color:#b45309">R-08</td>
@@ -1698,13 +1663,13 @@
       <table class="risco-table">
         <thead>
           <tr>
-            <th style="width:40px">#</th>
-            <th style="width:140px">Risco</th>
-            <th>Descrição (Causa → Risco → Efeito)</th>
-            <th style="width:80px">Prob.</th>
-            <th style="width:80px">Impacto</th>
-            <th style="width:90px">Nível</th>
-            <th>Mitigação</th>
+            <th style="width:36px">#</th>
+            <th style="width:190px">Risco</th>
+            <th style="width:30%">Descrição (Causa → Risco → Efeito)</th>
+            <th style="width:70px">Prob.</th>
+            <th style="width:70px">Impacto</th>
+            <th style="width:80px">Nível</th>
+            <th style="width:22%">Mitigação</th>
           </tr>
         </thead>
         <tbody>
