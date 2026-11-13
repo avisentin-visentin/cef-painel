@@ -857,8 +857,9 @@
       <div class="card-title">Riscos Mapeados</div>
       <div class="card-desc">Registro de riscos identificados com probabilidade, impacto e plano de mitigação.</div>
       <div class="card-stats">
-        <span class="stat-pill pill-red">🔴 3 riscos altos</span>
-        <span class="stat-pill pill-orange">🟡 2 riscos médios</span>
+        <span class="stat-pill pill-red">🔴 9 riscos altos</span>
+        <span class="stat-pill pill-orange">🟡 3 riscos médios</span>
+        <span class="stat-pill pill-orange" style="background:#fef3c7;color:#92400e;">⚠️ 6 internos</span>
       </div>
       <div class="card-arrow">→</div>
     </div>
@@ -1607,13 +1608,15 @@
     <span class="detail-title">Riscos Mapeados — Registro de Riscos do Projeto</span>
   </div>
   <div style="flex:1;overflow:auto;padding-bottom:24px;">
+
+    <!-- TABELA 1: RISCOS DO PROJETO -->
     <div class="ev-section">
-      <div class="ev-section-title">Riscos Identificados (5 riscos · Nov/2026)</div>
+      <div class="ev-section-title">Riscos do Projeto (7 riscos · Nov/2026)</div>
       <table class="risco-table">
         <thead>
           <tr>
             <th style="width:40px">#</th>
-            <th style="width:130px">Risco</th>
+            <th style="width:140px">Risco</th>
             <th>Descrição (Causa → Risco → Efeito)</th>
             <th style="width:80px">Prob.</th>
             <th style="width:80px">Impacto</th>
@@ -1623,13 +1626,13 @@
         </thead>
         <tbody>
           <tr>
-            <td style="font-weight:700;color:#b91c1c">R-01</td>
-            <td style="font-weight:600">Alocação Part-Time de Especialistas</td>
-            <td>Devido à alocação parcial de especialistas (TAs e SAs divididos com outros projetos), poderá ocorrer indisponibilidade técnica, levando a atrasos no fechamento dos levantamentos e arquitetura.</td>
+            <td style="font-weight:700;color:#b91c1c">R-00</td>
+            <td style="font-weight:600">Atraso no Início da Construção — Habilitação de Conectores e Definição de Fonte de Dados</td>
+            <td>Devido à não habilitação tempestiva dos conectores necessários e à falta de definição da fonte e qualidade dos dados pela Caixa, poderá ocorrer atraso no início da fase de construção dos casos de uso, levando ao não cumprimento do go-live planejado para Jan/27.</td>
             <td><span class="risco-nivel nivel-alta">Alta</span></td>
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
-            <td>Formalizar plano de transição para 100%; mapear agendas de descoberta com antecedência; garantir KT antes de férias/saídas.</td>
+            <td>Mapear e priorizar habilitação de conectores como pré-requisito crítico; formalizar junto à Caixa a definição de fonte e dados com prazo e responsável; incluir como dependência bloqueante no cronograma.</td>
           </tr>
           <tr>
             <td style="font-weight:700;color:#b91c1c">R-02</td>
@@ -1641,25 +1644,7 @@
             <td>Integrar imediatamente Camila Pacheco e Karina Santos para alinhamentos aprofundados com Bruno e Jeyson antes da esteira de desenvolvimento.</td>
           </tr>
           <tr>
-            <td style="font-weight:700;color:#b91c1c">R-03</td>
-            <td style="font-weight:600">Pressão Comercial sem Validação Técnica</td>
-            <td>Devido ao interesse comercial em vender novas licenças durante as sessões de descoberta, poderá ocorrer comprometimento de funcionalidades sem viabilidade técnica, levando a atritos com o cliente e sobrecarga de escopo.</td>
-            <td><span class="risco-nivel nivel-media">Média</span></td>
-            <td><span class="risco-nivel nivel-alta">Alto</span></td>
-            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
-            <td>Centralizar alinhamentos na reunião semanal de conta (seg 11h); qualquer nova capacidade deve passar por validação dos TAs/SAs antes de qualquer comprometimento.</td>
-          </tr>
-          <tr>
-            <td style="font-weight:700;color:#b45309">R-04</td>
-            <td style="font-weight:600">Dependência do Fluxo de Caixa da Orange</td>
-            <td>Devido ao contrato da Caixa exigir aceite formal dos marcos para remunerar a Orange, poderá ocorrer descompasso financeiro caso cadernos volumosos atrasem, levando a desgastes operacionais e atritos contratuais.</td>
-            <td><span class="risco-nivel nivel-media">Média</span></td>
-            <td><span class="risco-nivel nivel-media">Médio</span></td>
-            <td><span class="risco-nivel nivel-media">🟡 Médio</span></td>
-            <td>Manter estratégia ágil de entrega fracionada dos marcos da Fase Zero, permitindo leituras progressivas e faturamentos parciais da Orange.</td>
-          </tr>
-          <tr>
-            <td style="font-weight:700;color:#b45309">R-05</td>
+            <td style="font-weight:700;color:#b91c1c">R-05</td>
             <td style="font-weight:600">Curva de Aprendizado Técnico da Caixa</td>
             <td>Devido ao primeiro contato da equipe técnica da Caixa com MuleSoft e o ecossistema Salesforce integrado, poderá ocorrer resistência ou morosidade nos requisitos de dados/integração, levando a gargalos na fase inicial.</td>
             <td><span class="risco-nivel nivel-alta">Alta</span></td>
@@ -1667,9 +1652,120 @@
             <td><span class="risco-nivel nivel-media">🟡 Médio</span></td>
             <td>Realizar sessões conceituais e workshops técnicos antes dos levantamentos de integração; aproveitar o Salesforce Day como acelerador de capacitação.</td>
           </tr>
+          <tr>
+            <td style="font-weight:700;color:#b91c1c">R-06</td>
+            <td style="font-weight:600">Decisão API vs SDK não Formalizada</td>
+            <td>Devido à falta de alinhamento formal entre PS, Digital e Vendas sobre a abordagem de integração do Personalization (API vs SDK), poderá ocorrer início do desenvolvimento em arquitetura errada, levando a retrabalho técnico e risco de attrition.</td>
+            <td><span class="risco-nivel nivel-alta">Alta</span></td>
+            <td><span class="risco-nivel nivel-alta">Alto</span></td>
+            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
+            <td>Concluir agenda interna SF (PS + Digital + Vendas) para fechar recomendação formal de API; alinhar posição com a Caixa antes de iniciar desenvolvimento do CU1.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:#b91c1c">R-07</td>
+            <td style="font-weight:600">Dependência de Dados da Caixa (CU1)</td>
+            <td>Devido à não entrega do sample de dados, regras de negócio de crédito e definição de volumetria por parte da Caixa, poderá ocorrer bloqueio total do desenvolvimento do CU1, levando ao não cumprimento do go-live em Jan/27.</td>
+            <td><span class="risco-nivel nivel-alta">Alta</span></td>
+            <td><span class="risco-nivel nivel-alta">Alto</span></td>
+            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
+            <td>Rafael Carneiro acionando Bruno Aprioto diretamente; escalada formal se não houver entrega até prazo acordado.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:#b45309">R-08</td>
+            <td style="font-weight:600">Dependência do Time de Arquitetura do Superapp — Integração Personalization e SDK</td>
+            <td>Devido à dependência do time de Arquitetura do Superapp da Caixa para validação e habilitação da integração com Salesforce Personalization e SDK, poderá ocorrer atraso na data de entrega dos CUs 2 e 3, levando ao não cumprimento do go-live planejado.</td>
+            <td><span class="risco-nivel nivel-media">Média</span></td>
+            <td><span class="risco-nivel nivel-alta">Alto</span></td>
+            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
+            <td>Agendar reuniões semanais de evolução com o time de Arquitetura do Superapp; formalizar ponto de contato dedicado; monitorar progresso como dependência bloqueante no cronograma.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:#b45309">R-12</td>
+            <td style="font-weight:600">Definição da Chave de Contato CCP</td>
+            <td>Devido à indefinição sobre a disponibilidade e uso do CCP (Chave de Correlação de Perfil) como chave de contato no Superapp, poderá ocorrer impossibilidade de matching de identidade nos casos de uso, levando ao bloqueio técnico dos CUs 2 e 3. Pendente: confirmar se CCP está disponível no Superapp e qual a data prevista.</td>
+            <td><span class="risco-nivel nivel-media">Média</span></td>
+            <td><span class="risco-nivel nivel-alta">Alto</span></td>
+            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
+            <td>Confirmar com time de TI da Caixa a disponibilidade do CCP no Superapp e data de entrega; definir chave de contato alternativa provisória caso CCP não esteja disponível no prazo necessário.</td>
+          </tr>
         </tbody>
       </table>
     </div>
+
+    <!-- TABELA 2: RISCOS INTERNOS -->
+    <div class="ev-section" style="margin-top:24px;">
+      <div class="ev-section-title" style="background:#fef3c7;color:#92400e;border-left:4px solid #f59e0b;">Riscos Internos Salesforce (6 riscos · Nov/2026)</div>
+      <table class="risco-table">
+        <thead>
+          <tr>
+            <th style="width:40px">#</th>
+            <th style="width:140px">Risco</th>
+            <th>Descrição (Causa → Risco → Efeito)</th>
+            <th style="width:80px">Prob.</th>
+            <th style="width:80px">Impacto</th>
+            <th style="width:90px">Nível</th>
+            <th>Mitigação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:700;color:#b91c1c">R-01</td>
+            <td style="font-weight:600">Alocação Part-Time de Especialistas</td>
+            <td>Devido à alocação parcial de TAs e SAs divididos com outros projetos (ex: BB), poderá ocorrer indisponibilidade técnica e cancelamento de agendas críticas, levando a atrasos nos levantamentos técnicos e desenho de arquitetura.</td>
+            <td><span class="risco-nivel nivel-alta">Alta</span></td>
+            <td><span class="risco-nivel nivel-alta">Alto</span></td>
+            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
+            <td>Formalizar plano de transição para 100%; mapear agendas de descoberta com antecedência; garantir KT estruturado antes de férias/saídas (ex: Maciel → Flávia Adrieli).</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:#b91c1c">R-03</td>
+            <td style="font-weight:600">Pressão Comercial sem Validação Técnica</td>
+            <td>Devido ao interesse do time comercial em comercializar novas licenças durante as sessões de descoberta, poderá ocorrer comprometimento de funcionalidades sem viabilidade técnica, levando a expectativas desalinhadas com o cliente e sobrecarga de escopo.</td>
+            <td><span class="risco-nivel nivel-media">Média</span></td>
+            <td><span class="risco-nivel nivel-alta">Alto</span></td>
+            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
+            <td>Centralizar alinhamentos na reunião semanal de conta (seg 11h); qualquer nova capacidade deve passar por validação obrigatória dos TAs/SAs antes de qualquer comprometimento com o cliente.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:#b45309">R-04</td>
+            <td style="font-weight:600">Dependência do Fluxo de Caixa da Orange</td>
+            <td>Devido ao contrato exigir aceite formal dos marcos do edital para remunerar a Orange, poderá ocorrer descompasso financeiro caso cadernos atrasem, levando a desgastes operacionais e atritos contratuais entre as partes.</td>
+            <td><span class="risco-nivel nivel-media">Média</span></td>
+            <td><span class="risco-nivel nivel-media">Médio</span></td>
+            <td><span class="risco-nivel nivel-media">🟡 Médio</span></td>
+            <td>Manter estratégia ágil de entrega fracionada dos marcos da Fase Zero, antecipando cadernos e permitindo faturamentos parciais progressivos para a Orange.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:#b45309">R-09</td>
+            <td style="font-weight:600">Transição de PM em Período Crítico</td>
+            <td>Devido às férias da PM principal (Juliana Achiles, 28/10–16/11) em período de marcos contratuais (M2 em 09/11, M3 em 02/12), poderá ocorrer perda de contexto e descontinuidade na gestão, levando a atrasos nas entregas e retrabalho de alinhamentos.</td>
+            <td><span class="risco-nivel nivel-media">Média</span></td>
+            <td><span class="risco-nivel nivel-media">Médio</span></td>
+            <td><span class="risco-nivel nivel-media">🟡 Médio</span></td>
+            <td>KT estruturado realizado antes das férias; Adriana Visentin assumindo gestão integral; alinhamento semanal com time de vendas para suporte institucional junto à Caixa.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:#b45309">R-10</td>
+            <td style="font-weight:600">Renan em 50% até Jan/27 (CU2)</td>
+            <td>Devido à alocação parcial do responsável pelo CU2 (Real/Near Real Time) até janeiro de 2027, poderá ocorrer lentidão no levantamento e refinamento das histórias do CU2, levando ao risco de não cumprimento do go-live do caso de uso em Jan/27.</td>
+            <td><span class="risco-nivel nivel-alta">Alta</span></td>
+            <td><span class="risco-nivel nivel-alta">Alto</span></td>
+            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
+            <td>Mapear o que pode ser antecipado por outros membros do time enquanto Renan está em 50%; priorizar suas horas disponíveis para as decisões críticas do CU2.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:#b91c1c">R-11</td>
+            <td style="font-weight:600">Dev e QA só disponíveis em Dez/26</td>
+            <td>Devido à entrada dos recursos de desenvolvimento e qualidade somente em dezembro de 2026, poderá ocorrer compressão crítica do tempo de implementação e testes, levando ao risco de não cumprimento do go-live dos 4 CUs em Jan/27.</td>
+            <td><span class="risco-nivel nivel-alta">Alta</span></td>
+            <td><span class="risco-nivel nivel-alta">Alto</span></td>
+            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
+            <td>Antecipar ao máximo o refinamento de histórias e arquitetura técnica durante novembro para que os devs entrem com backlog pronto; avaliar antecipação de entrada se viável.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
 </div>
 
