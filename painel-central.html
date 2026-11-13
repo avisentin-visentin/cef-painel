@@ -243,7 +243,7 @@
   .risco-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 14px;
     background: #fff;
     border-radius: 10px;
     overflow: hidden;
@@ -255,7 +255,7 @@
     padding: 9px 10px;
     text-align: left;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
   }
   .risco-table tbody tr:nth-child(even) { background: #f8fafd; }
   .risco-table tbody tr:hover { background: #fee2e2; }
@@ -264,7 +264,7 @@
     border-bottom: 1px solid var(--border);
     vertical-align: top;
     line-height: 1.45;
-    font-size: 13px;
+    font-size: 14px;
   }
   .risco-nivel {
     border-radius: 6px;
@@ -1594,144 +1594,218 @@
 </div>
 
 <!-- ── INLINE VIEW — RISCOS ───────────────────────────── -->
-<div id="riscosView" class="inline-view">
+<div id="riscosView" class="inline-view" style="flex-direction:column;">
   <div class="detail-topbar">
     <button class="back-btn" onclick="goHome()">← Voltar</button>
     <span class="detail-title">Riscos Mapeados — Registro de Riscos do Projeto</span>
   </div>
-  <div style="flex:1;overflow:auto;padding-bottom:24px;">
 
-    <!-- TABELA 1: RISCOS DO PROJETO -->
+  <!-- Abas -->
+  <div style="background:#003087;display:flex;gap:0;padding:0 20px;">
+    <button id="risco-tab-projeto" onclick="riscoTab('projeto')"
+      style="padding:10px 24px;border:none;cursor:pointer;font-size:13px;font-weight:600;background:#1a4fa0;color:#fff;border-radius:8px 8px 0 0;margin-right:4px;border-bottom:3px solid #f5c518;">
+      🔴 Riscos do Projeto <span style="background:#f5c518;color:#003087;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:6px;">4</span>
+    </button>
+    <button id="risco-tab-interno" onclick="riscoTab('interno')"
+      style="padding:10px 24px;border:none;cursor:pointer;font-size:13px;font-weight:600;background:transparent;color:#a0b4d4;border-radius:8px 8px 0 0;margin-right:4px;border-bottom:3px solid transparent;">
+      ⚠️ Riscos Internos <span style="background:#6b7a99;color:#fff;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:6px;">6</span>
+    </button>
+  </div>
+
+  <!-- Painel: Riscos do Projeto -->
+  <div id="risco-panel-projeto" style="flex:1;overflow:auto;padding-bottom:24px;">
     <div class="ev-section">
-      <div class="ev-section-title">Riscos do Projeto (4 riscos · Nov/2026)</div>
       <table class="risco-table">
         <thead>
           <tr>
             <th style="width:36px">#</th>
-            <th style="width:190px">Risco</th>
-            <th style="width:30%">Descrição (Causa → Risco → Efeito)</th>
+            <th style="width:180px">Risco</th>
+            <th style="width:28%">Descrição (Causa → Risco → Efeito)</th>
             <th style="width:70px">Prob.</th>
             <th style="width:70px">Impacto</th>
             <th style="width:80px">Nível</th>
-            <th style="width:22%">Mitigação</th>
+            <th style="width:20%">Mitigação</th>
+            <th style="width:110px">Owner</th>
+            <th style="width:80px">Data Limite</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="font-weight:700;color:#b91c1c">R-00</td>
+            <td style="font-weight:700;color:#b91c1c">R-01</td>
             <td style="font-weight:600">Atraso no Início da Construção — Habilitação de Conectores e Definição de Fonte de Dados</td>
             <td>Devido à não habilitação tempestiva dos conectores necessários e à falta de definição da fonte e qualidade dos dados pela Caixa, poderá ocorrer atraso no início da fase de construção dos casos de uso, levando ao não cumprimento do go-live planejado para Jan/27.</td>
             <td><span class="risco-nivel nivel-alta">Alta</span></td>
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
             <td>Mapear e priorizar habilitação de conectores como pré-requisito crítico; formalizar junto à Caixa a definição de fonte e dados com prazo e responsável; incluir como dependência bloqueante no cronograma.</td>
+            <td style="font-weight:600;">Bruno (Caixa)</td>
+            <td style="color:#6b7a99;">—</td>
           </tr>
           <tr>
             <td style="font-weight:700;color:#b91c1c">R-02</td>
-            <td style="font-weight:600">Indefinição de Escopo FSC</td>
+            <td style="font-weight:600">Definir Escopo para o MVP FSC</td>
             <td>Devido à ausência de clareza dos requisitos do caso de uso Financial por parte da Caixa, poderá ocorrer incompatibilidade de integração, levando a retrabalho técnico e atrasos no cronograma.</td>
             <td><span class="risco-nivel nivel-alta">Alta</span></td>
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
             <td>Integrar imediatamente Camila Pacheco e Karina Santos para alinhamentos aprofundados com Bruno e Jeyson antes da esteira de desenvolvimento.</td>
+            <td style="font-weight:600;">Lino (Caixa)</td>
+            <td style="font-weight:600;">18/Nov</td>
           </tr>
           <tr>
-            <td style="font-weight:700;color:#b45309">R-08</td>
+            <td style="font-weight:700;color:#b45309">R-03</td>
             <td style="font-weight:600">Dependência do Time de Arquitetura do Superapp — Integração Personalization e SDK</td>
             <td>Devido à dependência do time de Arquitetura do Superapp da Caixa para validação e habilitação da integração com Salesforce Personalization e SDK, poderá ocorrer atraso na data de entrega dos CUs 2 e 3, levando ao não cumprimento do go-live planejado.</td>
             <td><span class="risco-nivel nivel-media">Média</span></td>
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
             <td>Agendar reuniões semanais de evolução com o time de Arquitetura do Superapp; formalizar ponto de contato dedicado; monitorar progresso como dependência bloqueante no cronograma.</td>
+            <td style="font-weight:600;">Humphrey (Caixa)</td>
+            <td style="color:#6b7a99;">—</td>
           </tr>
           <tr>
-            <td style="font-weight:700;color:#b45309">R-12</td>
+            <td style="font-weight:700;color:#b45309">R-04</td>
             <td style="font-weight:600">Definição da Chave de Contato CCP</td>
             <td>Devido à indefinição sobre a disponibilidade e uso do CCP (Chave de Correlação de Perfil) como chave de contato no Superapp, poderá ocorrer impossibilidade de matching de identidade nos casos de uso, levando ao bloqueio técnico dos CUs 2 e 3. Pendente: confirmar se CCP está disponível no Superapp e qual a data prevista.</td>
             <td><span class="risco-nivel nivel-media">Média</span></td>
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
             <td>Confirmar com time de TI da Caixa a disponibilidade do CCP no Superapp e data de entrega; definir chave de contato alternativa provisória caso CCP não esteja disponível no prazo necessário.</td>
+            <td style="font-weight:600;">Humphrey (Caixa)</td>
+            <td style="color:#6b7a99;">—</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:#b91c1c">R-05</td>
+            <td style="font-weight:600">Conectividade com a Rede Corporativa Caixa</td>
+            <td style="color:#6b7a99;">—</td>
+            <td style="color:#6b7a99;">—</td>
+            <td><span class="risco-nivel nivel-alta">Alto</span></td>
+            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
+            <td style="color:#6b7a99;">—</td>
+            <td style="font-weight:600;">Bruno (Caixa)</td>
+            <td style="color:#6b7a99;">—</td>
           </tr>
         </tbody>
       </table>
     </div>
+  </div>
 
-    <!-- TABELA 2: RISCOS INTERNOS -->
-    <div class="ev-section" style="margin-top:24px;">
-      <div class="ev-section-title" style="background:#fef3c7;color:#92400e;border-left:4px solid #f59e0b;">Riscos Internos Salesforce (6 riscos · Nov/2026)</div>
-      <table class="risco-table">
-        <thead>
+  <!-- Painel: Riscos Internos -->
+  <div id="risco-panel-interno" style="flex:1;overflow:auto;padding-bottom:24px;display:none;">
+    <div class="ev-section">
+      <table class="risco-table" style="--thead-bg:#92400e;">
+        <thead style="background:#92400e;">
           <tr>
-            <th style="width:36px">#</th>
-            <th style="width:190px">Risco</th>
-            <th style="width:30%">Descrição (Causa → Risco → Efeito)</th>
-            <th style="width:70px">Prob.</th>
-            <th style="width:70px">Impacto</th>
-            <th style="width:80px">Nível</th>
-            <th style="width:22%">Mitigação</th>
+            <th style="width:36px;background:#92400e;">#</th>
+            <th style="width:180px;background:#92400e;">Risco</th>
+            <th style="width:28%;background:#92400e;">Descrição (Causa → Risco → Efeito)</th>
+            <th style="width:70px;background:#92400e;">Prob.</th>
+            <th style="width:70px;background:#92400e;">Impacto</th>
+            <th style="width:80px;background:#92400e;">Nível</th>
+            <th style="width:20%;background:#92400e;">Mitigação</th>
+            <th style="width:110px;background:#92400e;">Owner</th>
+            <th style="width:80px;background:#92400e;">Data Limite</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="font-weight:700;color:#b91c1c">R-01</td>
+            <td style="font-weight:700;color:#b91c1c">RI-01</td>
             <td style="font-weight:600">Alocação Part-Time de Especialistas</td>
             <td>Devido à alocação parcial de TAs e SAs divididos com outros projetos (ex: BB), poderá ocorrer indisponibilidade técnica e cancelamento de agendas críticas, levando a atrasos nos levantamentos técnicos e desenho de arquitetura.</td>
             <td><span class="risco-nivel nivel-alta">Alta</span></td>
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
             <td>Formalizar plano de transição para 100%; mapear agendas de descoberta com antecedência; garantir KT estruturado antes de férias/saídas (ex: Maciel → Flávia Adrieli).</td>
+            <td style="color:#6b7a99;">—</td>
+            <td style="color:#6b7a99;">—</td>
           </tr>
           <tr>
-            <td style="font-weight:700;color:#b91c1c">R-03</td>
+            <td style="font-weight:700;color:#b91c1c">RI-02</td>
             <td style="font-weight:600">Pressão Comercial sem Validação Técnica</td>
             <td>Devido ao interesse do time comercial em comercializar novas licenças durante as sessões de descoberta, poderá ocorrer comprometimento de funcionalidades sem viabilidade técnica, levando a expectativas desalinhadas com o cliente e sobrecarga de escopo.</td>
             <td><span class="risco-nivel nivel-media">Média</span></td>
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
             <td>Centralizar alinhamentos na reunião semanal de conta (seg 11h); qualquer nova capacidade deve passar por validação obrigatória dos TAs/SAs antes de qualquer comprometimento com o cliente.</td>
+            <td style="color:#6b7a99;">—</td>
+            <td style="color:#6b7a99;">—</td>
           </tr>
           <tr>
-            <td style="font-weight:700;color:#b45309">R-04</td>
+            <td style="font-weight:700;color:#b45309">RI-03</td>
             <td style="font-weight:600">Dependência do Fluxo de Caixa da Orange</td>
             <td>Devido ao contrato exigir aceite formal dos marcos do edital para remunerar a Orange, poderá ocorrer descompasso financeiro caso cadernos atrasem, levando a desgastes operacionais e atritos contratuais entre as partes.</td>
             <td><span class="risco-nivel nivel-media">Média</span></td>
             <td><span class="risco-nivel nivel-media">Médio</span></td>
             <td><span class="risco-nivel nivel-media">🟡 Médio</span></td>
             <td>Manter estratégia ágil de entrega fracionada dos marcos da Fase Zero, antecipando cadernos e permitindo faturamentos parciais progressivos para a Orange.</td>
+            <td style="color:#6b7a99;">—</td>
+            <td style="color:#6b7a99;">—</td>
           </tr>
           <tr>
-            <td style="font-weight:700;color:#b45309">R-09</td>
+            <td style="font-weight:700;color:#b45309">RI-04</td>
             <td style="font-weight:600">Transição de PM em Período Crítico</td>
             <td>Devido às férias da PM principal (Juliana Achiles, 28/10–16/11) em período de marcos contratuais (M2 em 09/11, M3 em 02/12), poderá ocorrer perda de contexto e descontinuidade na gestão, levando a atrasos nas entregas e retrabalho de alinhamentos.</td>
             <td><span class="risco-nivel nivel-media">Média</span></td>
             <td><span class="risco-nivel nivel-media">Médio</span></td>
             <td><span class="risco-nivel nivel-media">🟡 Médio</span></td>
             <td>KT estruturado realizado antes das férias; Adriana Visentin assumindo gestão integral; alinhamento semanal com time de vendas para suporte institucional junto à Caixa.</td>
+            <td style="color:#6b7a99;">—</td>
+            <td style="color:#6b7a99;">—</td>
           </tr>
           <tr>
-            <td style="font-weight:700;color:#b45309">R-10</td>
+            <td style="font-weight:700;color:#b45309">RI-05</td>
             <td style="font-weight:600">Renan em 50% até Jan/27 (CU2)</td>
             <td>Devido à alocação parcial do responsável pelo CU2 (Real/Near Real Time) até janeiro de 2027, poderá ocorrer lentidão no levantamento e refinamento das histórias do CU2, levando ao risco de não cumprimento do go-live do caso de uso em Jan/27.</td>
             <td><span class="risco-nivel nivel-alta">Alta</span></td>
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
             <td>Mapear o que pode ser antecipado por outros membros do time enquanto Renan está em 50%; priorizar suas horas disponíveis para as decisões críticas do CU2.</td>
+            <td style="color:#6b7a99;">—</td>
+            <td style="color:#6b7a99;">—</td>
           </tr>
           <tr>
-            <td style="font-weight:700;color:#b91c1c">R-11</td>
+            <td style="font-weight:700;color:#b91c1c">RI-06</td>
             <td style="font-weight:600">Dev e QA só disponíveis em Dez/26</td>
             <td>Devido à entrada dos recursos de desenvolvimento e qualidade somente em dezembro de 2026, poderá ocorrer compressão crítica do tempo de implementação e testes, levando ao risco de não cumprimento do go-live dos 4 CUs em Jan/27.</td>
             <td><span class="risco-nivel nivel-alta">Alta</span></td>
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
             <td>Antecipar ao máximo o refinamento de histórias e arquitetura técnica durante novembro para que os devs entrem com backlog pronto; avaliar antecipação de entrada se viável.</td>
+            <td style="color:#6b7a99;">—</td>
+            <td style="color:#6b7a99;">—</td>
           </tr>
         </tbody>
       </table>
     </div>
-
   </div>
+
+  <script>
+  function riscoTab(tab) {
+    const tabProjeto  = document.getElementById('risco-tab-projeto');
+    const tabInterno  = document.getElementById('risco-tab-interno');
+    const panelProjeto = document.getElementById('risco-panel-projeto');
+    const panelInterno = document.getElementById('risco-panel-interno');
+    if (tab === 'projeto') {
+      tabProjeto.style.background = '#1a4fa0';
+      tabProjeto.style.color = '#fff';
+      tabProjeto.style.borderBottom = '3px solid #f5c518';
+      tabInterno.style.background = 'transparent';
+      tabInterno.style.color = '#a0b4d4';
+      tabInterno.style.borderBottom = '3px solid transparent';
+      panelProjeto.style.display = 'block';
+      panelInterno.style.display = 'none';
+    } else {
+      tabInterno.style.background = '#1a4fa0';
+      tabInterno.style.color = '#fff';
+      tabInterno.style.borderBottom = '3px solid #f5c518';
+      tabProjeto.style.background = 'transparent';
+      tabProjeto.style.color = '#a0b4d4';
+      tabProjeto.style.borderBottom = '3px solid transparent';
+      panelInterno.style.display = 'block';
+      panelProjeto.style.display = 'none';
+    }
+  }
+  </script>
 </div>
 
   <!-- ══════════════════════════════════════════════════════════ -->
