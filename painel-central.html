@@ -1170,161 +1170,252 @@
     <!-- GANTT CHART -->
     <div style="background:#fff;border:1px solid #dde3ed;border-radius:12px;overflow:visible;margin-bottom:28px;position:relative;" id="gantt-wrapper">
       <!-- Months header -->
-      <div style="display:grid;grid-template-columns:180px repeat(6,1fr);border-bottom:1px solid #dde3ed;background:#f5f7fa;" id="gantt-header">
+      <div style="display:grid;grid-template-columns:180px repeat(8,1fr);border-bottom:1px solid #dde3ed;background:#f5f7fa;" id="gantt-header">
         <div style="padding:10px 14px;font-size:11px;font-weight:700;color:#6b7a99;border-right:1px solid #dde3ed;"></div>
+        <div style="padding:10px;text-align:center;font-size:11px;font-weight:700;color:#6b7a99;border-right:1px solid #eee;">SET/26</div>
         <div style="padding:10px;text-align:center;font-size:11px;font-weight:700;color:#6b7a99;border-right:1px solid #eee;">OUT/26</div>
         <div style="padding:10px;text-align:center;font-size:11px;font-weight:700;color:#003087;border-right:1px solid #eee;">NOV/26</div>
         <div style="padding:10px;text-align:center;font-size:11px;font-weight:700;color:#c75000;border-right:1px solid #eee;">DEZ/26</div>
         <div style="padding:10px;text-align:center;font-size:11px;font-weight:700;color:#6b7a99;border-right:1px solid #eee;">JAN/27</div>
         <div style="padding:10px;text-align:center;font-size:11px;font-weight:700;color:#6b7a99;border-right:1px solid #eee;">FEV/27</div>
-        <div style="padding:10px;text-align:center;font-size:11px;font-weight:700;color:#6b7a99;">MAR/27</div>
+        <div style="padding:10px;text-align:center;font-size:11px;font-weight:700;color:#6b7a99;border-right:1px solid #eee;">MAR/27</div>
+        <div style="padding:10px;text-align:center;font-size:11px;font-weight:700;color:#6b7a99;">ABR/27</div>
+      </div>
+
+      <!-- Section: Setup -->
+      <div style="padding:8px 14px 4px;background:#e3eaf5;border-bottom:1px solid #dde3ed;font-size:11px;font-weight:700;color:#1565c0;letter-spacing:.5px;">SETUP</div>
+
+      <!-- Setup Row 1: Foundation Amb. Digital Financial — 1/Set → 16/Dez -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:44px;" class="gantt-row">
+        <div style="padding:6px 14px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid #dde3ed;">
+          <span style="font-size:11px;font-weight:600;color:#1a2236;">Foundation Amb. Digital / Financial</span>
+          <span style="font-size:10px;color:#6b7a99;">01/Set – 16/Dez</span>
+        </div>
+        <div style="position:relative;">
+          <!-- SET(01) → DEZ(16) left=0% right=56.45% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:0%;right:56.45%;background:#1565c0;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:9px;color:#fff;white-space:nowrap;font-weight:600;">Foundation</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Setup Row 2: Fase 0 — 1/Set → 16/Dez -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:44px;" class="gantt-row">
+        <div style="padding:6px 14px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid #dde3ed;">
+          <span style="font-size:11px;font-weight:600;color:#1a2236;">Fase 0</span>
+          <span style="font-size:10px;color:#6b7a99;">01/Set – 16/Dez</span>
+        </div>
+        <div style="position:relative;">
+          <!-- SET(01) → DEZ(16) left=0% right=56.45% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:0%;right:56.45%;background:#003087;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:9px;color:#fff;white-space:nowrap;font-weight:600;">Fase 0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Setup Row 3: Plan & Design — 16/Dez → 28/Fev -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:44px;" class="gantt-row">
+        <div style="padding:6px 14px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid #dde3ed;">
+          <span style="font-size:11px;font-weight:600;color:#1a2236;">Plan &amp; Design</span>
+          <span style="font-size:10px;color:#6b7a99;">16/Dez – 28/Fev</span>
+        </div>
+        <div style="position:relative;">
+          <!-- DEZ(16) → FEV(28) left=43.55% right=25.45% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:43.55%;right:25.45%;background:#4a90d9;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:9px;color:#fff;white-space:nowrap;font-weight:600;">Plan &amp; Design</span>
+          </div>
+        </div>
       </div>
 
       <!-- Section: Casos de Uso -->
-      <div style="padding:8px 14px 4px;background:#e8f0fb;border-bottom:1px solid #dde3ed;font-size:11px;font-weight:700;color:#003087;letter-spacing:.5px;">CASOS DE USO</div>
+      <div style="padding:8px 14px 4px;background:#e8f0fb;border-bottom:1px solid #dde3ed;border-top:2px solid #dde3ed;font-size:11px;font-weight:700;color:#003087;letter-spacing:.5px;">CASOS DE USO</div>
 
       <!-- CU1: Oferta de Crédito -->
-      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:48px;" class="gantt-row cu-row">
+      <!-- CU1: Oferta de Crédito — 15/Out → 16/Dez -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row cu-row">
         <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
           <div style="width:22px;height:22px;border-radius:50%;background:#003087;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
-          <span style="font-size:12px;font-weight:600;color:#1a2236;">Oferta de Crédito</span>
+          <div style="display:flex;flex-direction:column;">
+            <span style="font-size:12px;font-weight:600;color:#1a2236;">Oferta de Crédito</span>
+            <span style="font-size:10px;color:#6b7a99;">15/Out – 16/Dez</span>
+          </div>
         </div>
         <div style="position:relative;">
-          <!-- implantação: OUT(50%) → DEZ(30%) left=8.33% right=61.67% -->
-          <div style="position:absolute;top:6px;bottom:6px;left:8.33%;right:61.67%;background:#003087;border-radius:4px;display:flex;align-items:center;padding-left:8px;">
-            <span style="font-size:10px;color:#fff;white-space:nowrap;font-weight:600;">Oferta de Crédito</span>
+          <!-- implantação: OUT(15/10) → DEZ(16/12) left=18.15% right=56.45% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:18.15%;right:56.45%;background:#003087;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:9px;color:#fff;white-space:nowrap;font-weight:600;">Oferta de Crédito</span>
           </div>
-          <!-- diamond DEZ(30%) = 38.33% -->
-          <div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(38.33% - 8px);font-size:16px;color:#f5c518;z-index:2;">◆</div>
-          <!-- estabilização: DEZ(30%) → JAN(100%) left=38.33% right=33.33% -->
-          <div style="position:absolute;top:6px;bottom:6px;left:38.33%;right:33.33%;background:#b0c4de;border-radius:4px;display:flex;align-items:center;padding-left:8px;">
-            <span style="font-size:10px;color:#555;white-space:nowrap;">Estabilização</span>
+          <!-- diamond 16/Dez = 43.55% -->
+          <div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(43.55% - 8px);font-size:16px;color:#f5c518;z-index:2;">◆</div>
+          <!-- estabilização: DEZ(16/12) → JAN(31/01) left=43.55% right=37.9% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:43.55%;right:37.9%;background:#b0c4de;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:9px;color:#555;white-space:nowrap;">Estabilização</span>
           </div>
         </div>
       </div>
 
-      <!-- CU2: Real / Near Real Time -->
-      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:48px;" class="gantt-row cu-row">
-        <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
+      <!-- CU2 header: Real / Near Real Time -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:28px;" class="gantt-row cu-row">
+        <div style="padding:6px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;background:#fef6f0;">
           <div style="width:22px;height:22px;border-radius:50%;background:#c75000;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-          <span style="font-size:12px;font-weight:600;color:#1a2236;">Real / Near Real Time</span>
+          <span style="font-size:11px;font-weight:700;color:#c75000;">Real / Near Real Time</span>
+        </div>
+        <div style="background:#fef6f0;border-left:none;"></div>
+      </div>
+
+      <!-- CU2.1: Carrinho Abandonado — 01/Dez → 28/Fev -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row cu-row">
+        <div style="padding:8px 14px 8px 28px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
+          <div style="width:18px;height:18px;border-radius:50%;background:#c75000;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2.1</div>
+          <div style="display:flex;flex-direction:column;">
+            <span style="font-size:11px;font-weight:600;color:#1a2236;">Carrinho Abandonado</span>
+            <span style="font-size:10px;color:#6b7a99;">01/Dez – 28/Fev</span>
+          </div>
         </div>
         <div style="position:relative;">
-          <!-- barra: OUT(50%) → FEV(100%) left=8.33% right=16.67% -->
-          <div style="position:absolute;top:6px;bottom:6px;left:8.33%;right:16.67%;background:#c75000;border-radius:4px;display:flex;align-items:center;padding-left:8px;">
-            <span style="font-size:10px;color:#fff;white-space:nowrap;font-weight:600;">Real / Near Real Time</span>
+          <!-- DEZ(01) → FEV(28) left=37.5% right=25.45% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:37.5%;right:25.45%;background:#c75000;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:9px;color:#fff;white-space:nowrap;font-weight:600;">Carrinho Abandonado</span>
           </div>
-          <!-- diamond FEV(100%) = 83.33% -->
-          <div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(83.33% - 8px);font-size:16px;color:#f5c518;z-index:2;">◆</div>
+          <div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(74.55% - 8px);font-size:16px;color:#f5c518;z-index:2;">◆</div>
         </div>
       </div>
 
-      <!-- CU3: Onboarding / Boas-vindas -->
-      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:48px;" class="gantt-row cu-row">
+      <!-- CU2.2: Ofertas de Investimento — 01/Nov → 17/Jan -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row cu-row">
+        <div style="padding:8px 14px 8px 28px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
+          <div style="width:18px;height:18px;border-radius:50%;background:#c75000;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2.2</div>
+          <div style="display:flex;flex-direction:column;">
+            <span style="font-size:11px;font-weight:600;color:#1a2236;">Ofertas de Investimento</span>
+            <span style="font-size:10px;color:#6b7a99;">01/Nov – 17/Jan</span>
+          </div>
+        </div>
+        <div style="position:relative;">
+          <!-- NOV(01) → JAN(17) left=25.0% right=43.55% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:25.0%;right:43.55%;background:#e8630a;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:9px;color:#fff;white-space:nowrap;font-weight:600;">Ofertas de Investimento</span>
+          </div>
+          <div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(56.45% - 8px);font-size:16px;color:#f5c518;z-index:2;">◆</div>
+        </div>
+      </div>
+
+      <!-- CU3: Onboarding / Boas-vindas — 01/Dez → 28/Fev -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row cu-row">
         <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
           <div style="width:22px;height:22px;border-radius:50%;background:#1a7f4e;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
-          <span style="font-size:12px;font-weight:600;color:#1a2236;">Onboarding / Boas-vindas</span>
+          <div style="display:flex;flex-direction:column;">
+            <span style="font-size:12px;font-weight:600;color:#1a2236;">Onboarding / Boas-vindas</span>
+            <span style="font-size:10px;color:#6b7a99;">01/Dez – 28/Fev</span>
+          </div>
         </div>
         <div style="position:relative;">
-          <!-- barra: NOV(50%) → MAR(100%) left=25% right=0% -->
-          <div style="position:absolute;top:6px;bottom:6px;left:25%;right:0%;background:#1a7f4e;border-radius:4px;display:flex;align-items:center;padding-left:8px;">
-            <span style="font-size:10px;color:#fff;white-space:nowrap;font-weight:600;">Onboarding / Boas-vindas</span>
+          <!-- DEZ(01) → FEV(28) left=37.5% right=25.45% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:37.5%;right:25.45%;background:#1a7f4e;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:9px;color:#fff;white-space:nowrap;font-weight:600;">Onboarding / Boas-vindas</span>
           </div>
-          <!-- diamond MAR(100%) = borda direita -->
-          <div style="position:absolute;top:50%;transform:translateY(-50%);right:2px;font-size:16px;color:#f5c518;z-index:2;">◆</div>
+          <div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(74.55% - 8px);font-size:16px;color:#f5c518;z-index:2;">◆</div>
         </div>
       </div>
 
-      <!-- CU4: Private / Financial -->
-      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:48px;" class="gantt-row cu-row">
+      <!-- CU4: Private / Financial — 01/Dez → 28/Fev -->
+      <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row cu-row">
         <div style="padding:8px 14px;display:flex;align-items:center;gap:8px;border-right:1px solid #dde3ed;">
           <div style="width:22px;height:22px;border-radius:50%;background:#5c2d91;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
-          <span style="font-size:12px;font-weight:600;color:#1a2236;">Private / Financial</span>
+          <div style="display:flex;flex-direction:column;">
+            <span style="font-size:12px;font-weight:600;color:#1a2236;">Private / Financial</span>
+            <span style="font-size:10px;color:#6b7a99;">01/Nov – 30/Abr</span>
+          </div>
         </div>
         <div style="position:relative;">
-          <!-- barra: NOV(50%) → MAR(100%) left=25% right=0% -->
-          <div style="position:absolute;top:6px;bottom:6px;left:25%;right:0%;background:#5c2d91;border-radius:4px;display:flex;align-items:center;padding-left:8px;">
-            <span style="font-size:10px;color:#fff;white-space:nowrap;font-weight:600;">Private / Financial</span>
+          <!-- NOV(01) → ABR(30) left=25.0% right=0.42% -->
+          <div style="position:absolute;top:6px;bottom:6px;left:25.0%;right:0.42%;background:#5c2d91;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:9px;color:#fff;white-space:nowrap;font-weight:600;">Private / Financial</span>
           </div>
-          <!-- diamond MAR(100%) -->
-          <div style="position:absolute;top:50%;transform:translateY(-50%);right:2px;font-size:16px;color:#f5c518;z-index:2;">◆</div>
+          <div style="position:absolute;top:50%;transform:translateY(-50%);left:calc(99.58% - 8px);font-size:16px;color:#f5c518;z-index:2;">◆</div>
         </div>
       </div>
 
       <!-- Section: Entregáveis Contratuais -->
       <div style="padding:8px 14px 4px;background:#e6f5ee;border-bottom:1px solid #dde3ed;border-top:2px solid #dde3ed;font-size:11px;font-weight:700;color:#1a7f4e;letter-spacing:.5px;">ENTREGÁVEIS CONTRATUAIS (FASE 0)</div>
 
-      <!-- Marco 1: OUT(0%) → OUT(55%) left=0% right=90.83% -->
+      <!-- Marco 1: left=0% right=92.63% (OUT 0→17/10) -->
       <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
         <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 1<br><span style="color:#1a7f4e;font-size:10px;">✅ Aprovado · 14/10</span></div>
         <div style="position:relative;">
-          <div style="position:absolute;top:8px;bottom:8px;left:0%;right:90.83%;background:#1a7f4e;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+          <!-- M1: OUT(01) → OUT(17) left=12.5% right=81.05% -->
+          <div style="position:absolute;top:8px;bottom:8px;left:12.5%;right:81.05%;background:#1a7f4e;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
             <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Planejamento Estratégico</span>
             <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Avaliação de Capacidades</span>
           </div>
         </div>
       </div>
 
-      <!-- Marco 2: OUT(50%) → NOV(30%) left=8.33% right=78.33% -->
+      <!-- Marco 2: left=6.91% right=81.9% (OUT 16/10 → NOV 09/11) -->
       <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
         <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 2<br><span style="color:#0e7490;font-size:10px;">✅ Entregue · 09/11</span></div>
         <div style="position:relative;">
-          <div style="position:absolute;top:8px;bottom:8px;left:8.33%;right:78.33%;background:#0e7490;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+          <!-- M2: OUT(16) → NOV(09) left=18.55% right=71.67% -->
+          <div style="position:absolute;top:8px;bottom:8px;left:18.55%;right:71.67%;background:#0e7490;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
             <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Avaliação Técnica</span>
             <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Prep. Organizacional / CM</span>
           </div>
         </div>
       </div>
 
-      <!-- Marco 3: NOV(30%=09/11) → DEZ(8%=02/12) left=21.67% right=65.33% -->
+      <!-- Marco 3: left=18.1% right=70.97% (NOV 09/11 → DEZ 02/12) -->
       <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
         <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 3<br><span style="color:#c75000;font-size:10px;">🔄 Em andamento · 02/12</span></div>
         <div style="position:relative;">
-          <div style="position:absolute;top:8px;bottom:8px;left:21.67%;right:65.33%;background:#c75000;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+          <!-- M3: NOV(09) → DEZ(02) left=28.33% right=62.1% -->
+          <div style="position:absolute;top:8px;bottom:8px;left:28.33%;right:62.1%;background:#c75000;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
             <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Mapeamento de Experiência</span>
             <span style="font-size:9px;color:#fff;line-height:1.4;white-space:nowrap;">Análise de Valor · Estratégia Dados</span>
           </div>
         </div>
       </div>
 
-      <!-- Marco 4: DEZ(8%=02/12) → DEZ(97%=30/12) left=34.67% right=50.5% -->
+      <!-- Marco 4: left=29.03% right=58.06% (DEZ 02/12 → DEZ 30/12) -->
       <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
         <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 4<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 30/12</span></div>
         <div style="position:relative;">
-          <div style="position:absolute;top:8px;bottom:8px;left:34.67%;right:50.5%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+          <!-- M4: DEZ(02) → DEZ(30) left=37.9% right=50.81% -->
+          <div style="position:absolute;top:8px;bottom:8px;left:37.9%;right:50.81%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
             <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Plano de Comunicação / RASIC</span>
             <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Plano de Projeto com Baseline</span>
           </div>
         </div>
       </div>
 
-      <!-- Marco 5: DEZ(97%=30/12) → JAN(72%=22/01) left=49.5% right=38% -->
+      <!-- Marco 5: left=41.94% right=47.47% (DEZ 30/12 → JAN 22/01) -->
       <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
         <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 5<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 22/01</span></div>
         <div style="position:relative;">
-          <div style="position:absolute;top:8px;bottom:8px;left:49.5%;right:38%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+          <!-- M5: DEZ(30) → JAN(22) left=49.19% right=41.53% -->
+          <div style="position:absolute;top:8px;bottom:8px;left:49.19%;right:41.53%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
             <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Diagramas de Processo</span>
             <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Histórias de Usuário (épicos)</span>
           </div>
         </div>
       </div>
 
-      <!-- Marco 6: JAN(72%=22/01) → FEV(63%=19/02) left=62% right=22.83% -->
+      <!-- Marco 6: left=52.53% right=33.67% (JAN 22/01 → FEV 19/02) -->
       <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
         <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 6<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 19/02</span></div>
         <div style="position:relative;">
-          <div style="position:absolute;top:8px;bottom:8px;left:62%;right:22.83%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+          <!-- M6: JAN(22) → FEV(19) left=58.47% right=29.46% -->
+          <div style="position:absolute;top:8px;bottom:8px;left:58.47%;right:29.46%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
             <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Solução e Design Técnico</span>
             <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Plano de Implementação</span>
           </div>
         </div>
       </div>
 
-      <!-- Marco 7: FEV(63%=19/02) → MAR(62%=19/03) left=77.17% right=6.33% -->
+      <!-- Marco 7: left=66.33% right=20.28% (FEV 19/02 → MAR 19/03) -->
       <div style="display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid #f0f2f7;min-height:52px;" class="gantt-row">
         <div style="padding:6px 14px;border-right:1px solid #dde3ed;font-size:11px;font-weight:600;color:#1a2236;display:flex;align-items:center;">Marco 7<br><span style="color:#6b7a99;font-size:10px;">📌 Futuro · 19/03</span></div>
         <div style="position:relative;">
-          <div style="position:absolute;top:8px;bottom:8px;left:77.17%;right:6.33%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
+          <!-- M7: FEV(19) → MAR(19) left=70.54% right=17.74% -->
+          <div style="position:absolute;top:8px;bottom:8px;left:70.54%;right:17.74%;background:#c8d8f0;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;">
             <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Estimativa de Implementação</span>
             <span style="font-size:9px;color:#003087;line-height:1.4;white-space:nowrap;">Requisitos de Pessoas</span>
           </div>
@@ -1352,12 +1443,14 @@
   function posicionarLinhaHoje() {
     const LABEL_W_PCT = 180; // px fixos do label
     const months = [
-      { year: 2026, month: 9  },
-      { year: 2026, month: 10 },
-      { year: 2026, month: 11 },
-      { year: 2027, month: 0  },
-      { year: 2027, month: 1  },
-      { year: 2027, month: 2  }
+      { year: 2026, month: 8  }, // SET
+      { year: 2026, month: 9  }, // OUT
+      { year: 2026, month: 10 }, // NOV
+      { year: 2026, month: 11 }, // DEZ
+      { year: 2027, month: 0  }, // JAN
+      { year: 2027, month: 1  }, // FEV
+      { year: 2027, month: 2  }, // MAR
+      { year: 2027, month: 3  }  // ABR
     ];
     const today = new Date();
     const ty = today.getFullYear(), tm = today.getMonth(), td = today.getDate();
@@ -1377,7 +1470,7 @@
     if (colIdx < 0) { line.style.display = 'none'; return; }
     // A área de barras começa em 180px fixos e ocupa o restante (100% - 180px)
     // left = 180px + fracPos * (100% - 180px) = (1-fracPos)*180px + fracPos*100%
-    const fracPos = (colIdx + pct) / 6;
+    const fracPos = (colIdx + pct) / 8;
     const fixedPx = (1 - fracPos) * LABEL_W_PCT;
     line.style.left = 'calc(' + fracPos * 100 + '% + ' + fixedPx.toFixed(2) + 'px)';
     line.style.display = 'block';
@@ -1784,8 +1877,8 @@ const CAL_MEETINGS = [
   { id:'8.26', status:'done',    date:'11/11/2026', time:'11h00', week:2, name:'Alinhamento Caso de Uso Finance (FSC Private)', ataFile:'ATA 2026-11-11 11h- Alinhamento Caso de Uso Finance @ Wed, Nov 11, 2026 11_00am – 12_00pm (GMT-3).pdf' },
   { id:'8.27', status:'done',    date:'11/11/2026', time:'14h00', week:2, name:'Agenda Diária — Limite de Crédito (Validação Novo Fluxo sem PUSH)', ataFile:'ATA 2026-11-11 14h- Agenda diária - Limite de Crédito (Validaçao no novo Fluxo sem PUSH) @ Wed, Nov 11, 2026 2_00pm – 3_00pm (GMT-3).pdf' },
   { id:'8.28', status:'done',    date:'11/11/2026', time:'16h00', week:2, name:'Salesforce — Alinhamento dos Squads e Dailys do Projeto', duration:'1h10', ataFile:'ATA 2026-11-11 16h - Salesforce - Alinhamento dos squads e dailys do projeto @ Wed, Nov 11, 2026 4_00pm – 5_00pm (GMT-3).pdf' },
-  { id:'8.29', status:'done',    date:'12/11/2026', time:'11h00', week:3, name:'Salesforce — Trackamento no Super App', ataFile:'' },
-  { id:'8.37', status:'future',  date:'17/11/2026', time:'10h30', week:4, name:'Acessos/Encarteiramento', ataFile:'' },
+  { id:'8.29', status:'done',    date:'12/11/2026', time:'11h00', week:3, name:'Salesforce — Trackamento no Super App', ataFile:'ATA 2026-11-12 11h - Salesforce - Trackamento no Superapp.docx' },
+  { id:'8.37', status:'future',  date:'17/11/2026', time:'10h30', week:4, name:'Acessos/Encarteiramento', duration:'1h', ataFile:'' },
   { id:'8.31', status:'future',  date:'13/11/2026', time:'14h00', week:3, name:'Salesforce — Kickoff Estrutura Squads', duration:'1h', ataFile:'' },
   { id:'8.39', status:'future',  date:'13/11/2026', time:'15h00', week:3, name:'Salesforce — Arquitetura de Conectividade', duration:'30min', ataFile:'' },
   { id:'8.36', status:'future',  date:'13/11/2026', time:'16h00', week:3, name:'Agenda Diária — UC2 Depósito (Validação do Novo Fluxo sem PUSH)', ataFile:'' },
@@ -1803,8 +1896,8 @@ const CAL_WEEKS = [
   { label:'16/11–20/11', days:[{label:'SEG',date:'16/11',fullDate:'16/11/2026'},{label:'TER',date:'17/11',fullDate:'17/11/2026'},{label:'QUA',date:'18/11',fullDate:'18/11/2026'},{label:'QUI',date:'19/11',fullDate:'19/11/2026'},{label:'SEX',date:'20/11',fullDate:'20/11/2026'}] }
 ];
 
-const CAL_MORNING   = ['09h00','10h00','11h00'];
-const CAL_AFTERNOON = ['14h00','15h00','16h00','17h00'];
+const CAL_MORNING   = ['09h00','09h30','10h00','10h30','11h00','11h30'];
+const CAL_AFTERNOON = ['14h00','14h30','15h00','15h30','16h00','16h30','17h00','17h30'];
 
 function calTodayStr() {
   const n = new Date();
@@ -1812,12 +1905,32 @@ function calTodayStr() {
 }
 
 function calNormTime(t) {
-  const m = t.match(/^(\d{1,2})h/);
-  return m ? m[1].padStart(2,'0')+'h00' : null;
+  // normaliza "9h00", "9h30", "14h", "14h00" → "09h00", "09h30", "14h00"
+  const m = t.match(/^(\d{1,2})h(\d{2})?/);
+  if (!m) return null;
+  return m[1].padStart(2,'0') + 'h' + (m[2] || '00');
 }
 
+function calTimeToMins(t) {
+  const m = t.match(/^(\d{1,2})h(\d{2})?/);
+  if (!m) return 0;
+  return parseInt(m[1]) * 60 + parseInt(m[2] || '0');
+}
+function calDurToMins(d) {
+  if (!d) return 60;
+  if (d === '30min') return 30;
+  const h = d.match(/(\d+)h/); const mn = d.match(/(\d+)min/);
+  return (h ? parseInt(h[1]) * 60 : 0) + (mn ? parseInt(mn[1]) : 0);
+}
 function calGetMeetings(dayFull, slot) {
-  return CAL_MEETINGS.filter(m => m.date === dayFull && calNormTime(m.time) === slot);
+  const slotMins = calTimeToMins(slot);
+  return CAL_MEETINGS.filter(m => {
+    if (m.date !== dayFull) return false;
+    const start = calTimeToMins(m.time);
+    const end   = start + calDurToMins(m.duration);
+    // mostra o card apenas no slot de início (evita duplicação visual)
+    return calNormTime(m.time) === slot;
+  });
 }
 
 function calOpenAta(ataFile) {
@@ -1841,6 +1954,25 @@ function calRenderSummary() {
 
 function calRenderWeek(week) {
   const today = calTodayStr();
+  const allSlots = [...CAL_MORNING, ...CAL_AFTERNOON];
+
+  // Para cada célula (dia x slot), calcula rowspan e marca células suprimidas
+  // skipCell[dayIdx][slotIdx] = true → célula suprimida por rowspan de reunião acima
+  const skipCell = week.days.map(() => allSlots.map(() => false));
+
+  function getMtgForCell(dayIdx, slotIdx) {
+    const d = week.days[dayIdx];
+    return CAL_MEETINGS.filter(m => {
+      if (m.date !== d.fullDate) return false;
+      return calNormTime(m.time) === allSlots[slotIdx];
+    });
+  }
+
+  function getRowspan(m) {
+    const dur = calDurToMins(m.duration);
+    return Math.max(1, Math.round(dur / 30));
+  }
+
   let html = '<div class="cal-wrapper"><table class="cal-table"><thead><tr><th class="th-hour">Hora</th>';
   week.days.forEach(d => {
     const isToday = d.fullDate === today;
@@ -1848,15 +1980,28 @@ function calRenderWeek(week) {
       <span class="day-name">${d.label}</span><span class="day-date">${d.date}</span></th>`;
   });
   html += '</tr></thead><tbody>';
+
   [{label:'☀️ Manhã', slots:CAL_MORNING},{label:'🌇 Tarde', slots:CAL_AFTERNOON}].forEach(period => {
     html += `<tr class="cal-period-row"><td colspan="6">${period.label}</td></tr>`;
     period.slots.forEach(slot => {
+      const slotIdx = allSlots.indexOf(slot);
       const isMorning = period.label.includes('Manhã');
       html += `<tr><td class="cal-cell-hour ${isMorning?'morning':'afternoon'}">${slot}</td>`;
-      week.days.forEach(d => {
+      week.days.forEach((d, dayIdx) => {
+        if (skipCell[dayIdx][slotIdx]) return; // célula suprimida por rowspan
         const isToday = d.fullDate === today;
-        const mtgs = calGetMeetings(d.fullDate, slot);
-        html += `<td class="cal-cell-day${isToday?' today':''}">`;
+        const mtgs = getMtgForCell(dayIdx, slotIdx);
+        // calcula rowspan máximo para esta célula
+        let maxRowspan = 1;
+        if (mtgs.length > 0) {
+          maxRowspan = Math.max(...mtgs.map(m => getRowspan(m)));
+          // marca slots seguintes como suprimidos
+          for (let r = 1; r < maxRowspan; r++) {
+            if (slotIdx + r < allSlots.length) skipCell[dayIdx][slotIdx + r] = true;
+          }
+        }
+        const rsAttr = maxRowspan > 1 ? ` rowspan="${maxRowspan}"` : '';
+        html += `<td class="cal-cell-day${isToday?' today':''}"${rsAttr}>`;
         mtgs.forEach(m => {
           const cc = m.status==='done'?'done':m.status==='pending'?'pending':'future';
           const nc = m.status==='future'?'cal-mc-name future-name':'cal-mc-name';
