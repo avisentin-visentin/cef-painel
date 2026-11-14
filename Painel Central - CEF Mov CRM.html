@@ -626,6 +626,9 @@
     height: 72px; position: relative;
   }
   .cal-cell-day.today { background: #fffbf0; border-color: #e6b800; }
+  .cal-cell-day.holiday { background: #e8e8e8; border-color: #bbb; }
+  .cal-cell-day.holiday .cal-day-num { color: #999; }
+  .cal-holiday-label { font-size: 9px; color: #888; font-style: italic; text-align: center; margin-top: 2px; line-height: 1.2; }
   .cal-meeting-card {
     border-radius: 5px; padding: 5px 7px; line-height: 1.35;
     position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px;
@@ -1676,12 +1679,12 @@
           </tr>
           <tr>
             <td style="font-weight:700;color:#b91c1c">R-05</td>
-            <td style="font-weight:600">Conectividade com a Rede Corporativa Caixa</td>
-            <td>A falta de definição da conectividade com a rede corporativa da Caixa inviabiliza o uso de Mulesoft.</td>
+            <td style="font-weight:600">Paralização Técnica por Falta de Definição da Conectividade com a Rede Corp. Caixa</td>
+            <td>Ausência de definição e provisionamento do canal de comunicação segura (AWS Direct Connect, Transit Gateway ou VPN IPsec) entre a plataforma em nuvem da MuleSoft (CloudHub) e o datacenter on-premise da Caixa. Este canal é o único caminho aprovado pelas diretrizes de segurança corporativa para permitir que a nuvem acesse os sistemas internos de forma privada.</td>
             <td><span class="risco-nivel nivel-media">Média</span></td>
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
-            <td>Aprovação do Plano de Arq. de Integração apresentado na reunião de 13/Nov.</td>
+            <td>Caminho técnico definido: adotar MuleSoft RTF (Runtime Fabric) instalado on-premise nos servidores da Caixa — APIs 100% dentro da rede, sem AWS Direct Connect. Pendente aprovação formal da Caixa e avaliação dos requisitos de infra (OpenShift/Kubernetes, Load Balancer, SSD). Bruno Aniceto enviou e-mail com requisitos em 13/Nov.</td>
             <td style="font-weight:600;">Bruno (Caixa)</td>
             <td style="font-weight:600;">17/Nov</td>
           </tr>
@@ -1875,6 +1878,8 @@
           <option value="8.26">8.26 – Alinhamento Finance</option>
           <option value="8.27">8.27 – Limite de Crédito</option>
           <option value="8.28">8.28 – Alinhamento dos Squads</option>
+          <option value="8.29">8.29 – Trackamento no Superapp</option>
+          <option value="8.30">8.30 – Arquitetura de Conectividade</option>
         </select>
       </div>
       <div class="ac-filter-group">
@@ -2014,21 +2019,23 @@ const CAL_MEETINGS = [
   { id:'8.28', status:'done',    date:'11/11/2026', time:'16h00', week:2, name:'Salesforce — Alinhamento dos Squads e Dailys do Projeto', duration:'1h10', ataFile:'ATA 2026-11-11 16h - Salesforce - Alinhamento dos squads e dailys do projeto @ Wed, Nov 11, 2026 4_00pm – 5_00pm (GMT-3).pdf' },
   { id:'8.29', status:'done',    date:'12/11/2026', time:'11h00', week:3, name:'Salesforce — Trackamento no Super App', ataFile:'ATA 2026-11-12 11h - Salesforce - Trackamento no Superapp.docx' },
   { id:'8.37', status:'future',  date:'17/11/2026', time:'10h30', week:4, name:'Acessos/Encarteiramento', duration:'1h', ataFile:'' },
-  { id:'8.31', status:'future',  date:'13/11/2026', time:'14h00', week:3, name:'Salesforce — Kickoff Estrutura Squads', duration:'1h', ataFile:'' },
-  { id:'8.39', status:'future',  date:'13/11/2026', time:'15h00', week:3, name:'Salesforce — Arquitetura de Conectividade', duration:'30min', ataFile:'' },
-  { id:'8.36', status:'future',  date:'13/11/2026', time:'16h00', week:3, name:'Agenda Diária — UC2 Depósito (Validação do Novo Fluxo sem PUSH)', ataFile:'' },
+  { id:'8.30', status:'done',    date:'13/11/2026', time:'15h00', week:3, name:'Salesforce — Arquitetura de Conectividade', duration:'1h25', ataFile:'ATA 2026-11-13 15h - Salesforce - Arquitetura de Conectividade @ Fri, Nov 13, 2026 3_00pm – 3_30pm (GMT-3).pdf' },
+  { id:'8.31', status:'future',  date:'16/11/2026', time:'15h00', week:4, name:'Salesforce — Kickoff Estrutura Squads', duration:'1h', ataFile:'' },
+  { id:'8.36', status:'future',  date:'18/11/2026', time:'16h00', week:4, name:'Agenda Diária — UC2 Depósito (Validação do Novo Fluxo sem PUSH)', ataFile:'' },
   { id:'8.38', status:'future',  date:'16/11/2026', time:'11h00', week:4, name:'Personas/Grupos', ataFile:'' },
   { id:'8.32', status:'future',  date:'16/11/2026', time:'16h00', week:4, name:'Agenda Diária — UC2 Carrinho Abandonado', ataFile:'' },
-  { id:'8.33', status:'future',  date:'17/11/2026', time:'16h00', week:4, name:'Agenda Diária — Levantamento de Caso de Uso', ataFile:'' },
-  { id:'8.34', status:'future',  date:'18/11/2026', time:'16h00', week:4, name:'Agenda Diária — Levantamento de Caso de Uso', ataFile:'' },
-  { id:'8.35', status:'future',  date:'19/11/2026', time:'16h00', week:4, name:'Agenda Diária — Levantamento de Caso de Uso', ataFile:'' }
+  { id:'8.33', status:'future',  date:'17/11/2026', time:'16h00', week:4, name:'Arquitetura Business Unit — Cross Todos os Casos de Uso (Bruno Aprioto + Fábio Grande)', ataFile:'' },
+  { id:'8.35', status:'future',  date:'19/11/2026', time:'16h00', week:4, name:'Agenda Diária — Levantamento de Caso de Uso', ataFile:'' },
+  { id:'8.42', status:'future',  date:'18/11/2026', time:'10h00', week:4, name:'Follow-up RTF — Validação Modelo e Requisitos de Infra (OpenShift/Kubernetes, Load Balancer, SSD) · Luís (Caixa) + Bruno Aniceto (SF)', ataFile:'' },
+  { id:'8.40', status:'future',  date:'16/11/2026', time:'14h00', week:4, name:'Detalhamento APIs (Samuel + Fábio Grande)', ataFile:'' },
+  { id:'8.41', status:'future',  date:'17/11/2026', time:'14h00', week:4, name:'Visualização Desenho Arq. SuperApp (Samuel + Humphrey)', ataFile:'' }
 ];
 
 const CAL_WEEKS = [
   { label:'26/10–30/10', days:[{label:'SEG',date:'26/10',fullDate:'26/10/2026'},{label:'TER',date:'27/10',fullDate:'27/10/2026'},{label:'QUA',date:'28/10',fullDate:'28/10/2026'},{label:'QUI',date:'29/10',fullDate:'29/10/2026'},{label:'SEX',date:'30/10',fullDate:'30/10/2026'}] },
   { label:'02/11–06/11', days:[{label:'SEG',date:'02/11',fullDate:'02/11/2026'},{label:'TER',date:'03/11',fullDate:'03/11/2026'},{label:'QUA',date:'04/11',fullDate:'04/11/2026'},{label:'QUI',date:'05/11',fullDate:'05/11/2026'},{label:'SEX',date:'06/11',fullDate:'06/11/2026'}] },
   { label:'09/11–13/11', days:[{label:'SEG',date:'09/11',fullDate:'09/11/2026'},{label:'TER',date:'10/11',fullDate:'10/11/2026'},{label:'QUA',date:'11/11',fullDate:'11/11/2026'},{label:'QUI',date:'12/11',fullDate:'12/11/2026'},{label:'SEX',date:'13/11',fullDate:'13/11/2026'}] },
-  { label:'16/11–20/11', days:[{label:'SEG',date:'16/11',fullDate:'16/11/2026'},{label:'TER',date:'17/11',fullDate:'17/11/2026'},{label:'QUA',date:'18/11',fullDate:'18/11/2026'},{label:'QUI',date:'19/11',fullDate:'19/11/2026'},{label:'SEX',date:'20/11',fullDate:'20/11/2026'}] }
+  { label:'16/11–20/11', days:[{label:'SEG',date:'16/11',fullDate:'16/11/2026'},{label:'TER',date:'17/11',fullDate:'17/11/2026'},{label:'QUA',date:'18/11',fullDate:'18/11/2026'},{label:'QUI',date:'19/11',fullDate:'19/11/2026'},{label:'SEX',date:'20/11',fullDate:'20/11/2026',holiday:'Feriado — Consciência Negra'}] }
 ];
 
 const CAL_MORNING   = ['09h00','09h30','10h00','10h30','11h00','11h30'];
@@ -2111,8 +2118,11 @@ function calRenderWeek(week) {
   let html = '<div class="cal-wrapper"><table class="cal-table"><thead><tr><th class="th-hour">Hora</th>';
   week.days.forEach(d => {
     const isToday = d.fullDate === today;
-    html += `<th ${isToday?'style="background:#1a5276;border-color:#154360"':''}>
-      <span class="day-name">${d.label}</span><span class="day-date">${d.date}</span></th>`;
+    const isHoliday = !!d.holiday;
+    const thStyle = isHoliday ? 'style="background:#c0c0c0;border-color:#aaa;color:#666;"' : (isToday ? 'style="background:#1a5276;border-color:#154360"' : '');
+    html += `<th ${thStyle}>
+      <span class="day-name">${d.label}</span><span class="day-date">${d.date}</span>${isHoliday?`<br><span style="font-size:9px;font-style:italic;font-weight:400;">${d.holiday}</span>`:''}
+    </th>`;
   });
   html += '</tr></thead><tbody>';
 
@@ -2136,7 +2146,10 @@ function calRenderWeek(week) {
           }
         }
         const rsAttr = maxRowspan > 1 ? ` rowspan="${maxRowspan}"` : '';
-        html += `<td class="cal-cell-day${isToday?' today':''}"${rsAttr}>`;
+        const isHoliday = !!d.holiday;
+        const cellClass = isHoliday ? 'cal-cell-day holiday' : (isToday ? 'cal-cell-day today' : 'cal-cell-day');
+        html += `<td class="${cellClass}"${rsAttr}>${isHoliday && slotIdx===0?`<div class="cal-holiday-label">${d.holiday}</div>`:''}`;
+
         mtgs.forEach(m => {
           const cc = m.status==='done'?'done':m.status==='pending'?'pending':'future';
           const nc = m.status==='future'?'cal-mc-name future-name':'cal-mc-name';
@@ -2399,7 +2412,15 @@ const AC_ACOES = [
   {id:75,reuniaoId:'8.29',reuniaoNome:'Trackamento no Super App',reuniaoData:'12/11/2026',acao:'Compartilhar dicionário de eventos e parâmetros do Firebase (atualizado) com o time Salesforce.',resp:'Tam (Caixa — TI Superapp)',respOrg:'Caixa',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Futuro'},
   {id:76,reuniaoId:'8.29',reuniaoNome:'Trackamento no Super App',reuniaoData:'12/11/2026',acao:'Agendar reunião de arquitetura do Superapp + Firebase com Humfrey (TI Caixa) e Bruno Aniceto (Salesforce MuleSoft).',resp:'Adriana Visentin (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-16',prazoDisplay:'16/Nov/2026',status:'Futuro'},
   {id:77,reuniaoId:'8.29',reuniaoNome:'Trackamento no Super App',reuniaoData:'12/11/2026',acao:'Agendar reunião para apresentação das APIs de personalização do CRM da Caixa com o time responsável (Fábio T.).',resp:'Adriana Visentin (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-16',prazoDisplay:'16/Nov/2026',status:'Futuro'},
-  {id:78,reuniaoId:'8.29',reuniaoNome:'Trackamento no Super App',reuniaoData:'12/11/2026',acao:'Avaliar inclusão da jornada de contratação de cartão de crédito como caso de uso de abandono de carrinho, envolvendo o gestor do produto.',resp:'Adriana Visentin / Renan (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Futuro'}
+  {id:78,reuniaoId:'8.29',reuniaoNome:'Trackamento no Super App',reuniaoData:'12/11/2026',acao:'Avaliar inclusão da jornada de contratação de cartão de crédito como caso de uso de abandono de carrinho, envolvendo o gestor do produto.',resp:'Adriana Visentin / Renan (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Futuro'},
+  {id:79,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'Consolidar inventário completo de fontes de dados e acessos necessários: APIs internas (Open Finance), bancos de dados, filas MQ e Azure Blob Storage — pré-requisito para dimensionar a arquitetura de conectividade.',resp:'Bruno Aniceto de Araújo (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Futuro'},
+  {id:80,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'[Superado pelo RTF] Definir modelo de conectividade CloudHub 2.0 (VPN/IPsec ou AWS Transit Gateway). Substituído pela proposta MuleSoft RTF enviada por Bruno Aniceto em 13/11 — modelo adotado será RTF on-premise.',resp:'Bruno Aniceto de Araújo (Salesforce) / Luís (Caixa — Arq. Infra)',respOrg:'Salesforce + Caixa',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Concluído'},
+  {id:81,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'[Superado pelo RTF] Abrir chamado para provisionar range de IPs CloudHub. Com a adoção do RTF on-premise, não há necessidade de range de IPs ou AWS Direct Connect — pendência cancelada.',resp:'Luís (Caixa — Arq. Infra)',respOrg:'Caixa',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Concluído'},
+  {id:82,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'[Superado pelo RTF] Avaliar NAT/Proxy CloudHub → On-Premise. Com RTF, o tráfego de dados permanece 100% dentro da rede da Caixa — apenas saída HTTPS/443 necessária para o Control Plane. Pendência encerrada.',resp:'Bruno Aniceto de Araújo (Salesforce) / Luís (Caixa)',respOrg:'Salesforce + Caixa',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Concluído'},
+  {id:83,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'Agendar reunião de follow-up com Luís (Caixa) para validação do modelo RTF e alinhamento dos requisitos de infraestrutura (OpenShift/Kubernetes, Load Balancer, SSD). Contato direto autorizado.',resp:'Bruno Aniceto de Araújo (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:84,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'[RTF — Plano Adotado] Avaliar tecnicamente os requisitos de infraestrutura para implantação do MuleSoft Runtime Fabric (RTF): servidores Linux/OpenShift, liberação de saída HTTPS porta 443, Load Balancer interno (F5/HAProxy/NGINX) e discos SSD. E-mail com requisitos enviado por Bruno Aniceto em 13/11.',resp:'Bruno Aprigio e Silva (Caixa) / Time de Engenharia Caixa',respOrg:'Caixa',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Em Andamento'},
+  {id:85,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'Aprovar formalmente o modelo MuleSoft RTF como arquitetura de integração — APIs MuleSoft 100% dentro dos servidores da Caixa, sem exposição de IPs, sem AWS Direct Connect, apenas saída HTTPS/443 para o Control Plane.',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:86,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'Fornecer lista exata de URLs/IPs dos domínios Anypoint Platform necessários para liberação de tráfego de saída (Outbound HTTPS/443) no ambiente RTF da Caixa.',resp:'Bruno Aniceto de Araújo (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'}
 ];
 acLoadStorage();
 
