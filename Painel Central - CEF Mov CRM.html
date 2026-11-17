@@ -781,7 +781,7 @@
     <div class="header-title">PROJETO CEF – MOV CRM</div>
     <div class="header-sub">Painel Central de Controle do Projeto</div>
   </div>
-  <div class="header-badge">📅 Atualizado em 11/11/2026</div>
+  <div class="header-badge" id="update-badge">📅 Atualizado em …</div>
 </div>
 
 <!-- ── HOME VIEW ────────────────────────────────────── -->
@@ -1479,6 +1479,25 @@
   // Roda imediatamente e também quando DOM estiver pronto
   posicionarLinhaHoje();
   document.addEventListener('DOMContentLoaded', posicionarLinhaHoje);
+
+  // Data de atualização dinâmica: data da reunião done mais recente
+  (function(){
+    var latest = null;
+    CAL_MEETINGS.forEach(function(m){
+      if(m.status==='done' && m.date){
+        var p=m.date.split('/');
+        var d=new Date(+p[2],+p[1]-1,+p[0]);
+        if(!latest||d>latest) latest=d;
+      }
+    });
+    if(latest){
+      var dd=String(latest.getDate()).padStart(2,'0');
+      var mm=String(latest.getMonth()+1).padStart(2,'0');
+      var yyyy=latest.getFullYear();
+      var badge=document.getElementById('update-badge');
+      if(badge) badge.textContent='📅 Atualizado em '+dd+'/'+mm+'/'+yyyy;
+    }
+  })();
   </script>
   <div style="display:none;"><div style="display:none;">
     <div class="ev-section">
@@ -1621,28 +1640,39 @@
       <table class="risco-table">
         <thead>
           <tr>
-            <th style="width:36px">#</th>
-            <th style="width:180px">Risco</th>
-            <th style="width:28%">Descrição (Causa → Risco → Efeito)</th>
-            <th style="width:70px">Prob.</th>
-            <th style="width:70px">Impacto</th>
-            <th style="width:80px">Nível</th>
-            <th style="width:20%">Mitigação</th>
-            <th style="width:110px">Owner</th>
-            <th style="width:80px">Data Limite</th>
+            <th style="width:40px">#</th>
+            <th style="width:160px">Risco</th>
+            <th style="width:22%">Descrição (Causa → Risco → Efeito)</th>
+            <th style="width:58px">Prob.</th>
+            <th style="width:68px">Impacto</th>
+            <th style="width:72px">Nível</th>
+            <th style="width:30%">Mitigação</th>
+            <th style="width:130px">Owner</th>
+            <th style="width:88px">Data Limite</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="font-weight:700;color:#b91c1c">R-01</td>
-            <td style="font-weight:600">Atraso no Início da Construção — Habilitação de Conectores e Definição de Fonte de Dados</td>
-            <td>Devido à não habilitação tempestiva dos conectores necessários e à falta de definição da fonte e qualidade dos dados pela Caixa, poderá ocorrer atraso no início da fase de construção dos casos de uso, levando ao não cumprimento do go-live planejado para Jan/27.</td>
+            <td style="font-weight:700;color:#b91c1c">R-01a</td>
+            <td style="font-weight:600">Atraso no Início da Construção — Habilitação de Conectores</td>
+            <td>Devido à não habilitação tempestiva dos conectores necessários entre os sistemas da Caixa e a plataforma Salesforce, poderá ocorrer atraso no início da fase de construção dos casos de uso, levando ao não cumprimento do go-live planejado para Dez/26–Jan/27.</td>
             <td><span class="risco-nivel nivel-alta">Alta</span></td>
             <td><span class="risco-nivel nivel-alta">Alto</span></td>
             <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
-            <td>Mapear e priorizar habilitação de conectores como pré-requisito crítico; formalizar junto à Caixa a definição de fonte e dados com prazo e responsável; incluir como dependência bloqueante no cronograma.</td>
+            <td>Mapear e priorizar habilitação de conectores como pré-requisito crítico; adotar Fase 1 (Cloud-to-Cloud via SAS Token Azure/Databricks) como plano de contorno imediato para UC1; formalizar aprovação da solução definitiva (MuleSoft RTF) em paralelo.</td>
             <td style="font-weight:600;">Bruno (Caixa)</td>
-            <td style="font-weight:600;">18/Nov</td>
+            <td style="font-weight:600;">19/Nov</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:#b91c1c">R-01b</td>
+            <td style="font-weight:600">Falta de Definição da Origem dos Dados — Fontes e Conectores</td>
+            <td>Devido à falta de definição das fontes de dados (Databricks, GCP, Azure Blob) e conectores a serem utilizados por caso de uso, poderá ocorrer impossibilidade de construção dos casos de uso na sequência planejada, levando ao atraso no go-live e replanejamento do cronograma.</td>
+            <td><span class="risco-nivel nivel-alta">Alta</span></td>
+            <td><span class="risco-nivel nivel-alta">Alto</span></td>
+            <td><span class="risco-nivel nivel-alta">🔴 Alto</span></td>
+            <td>Priorizar confirmação da viabilidade de conexão Cloud-to-Cloud (Azure Databricks e Google Cloud) para UC1 e UC2; realizar inventário completo de fontes disponíveis no Blob Storage como alternativa; formalizar decisão por caso de uso com prazo e responsável.</td>
+            <td style="font-weight:600;">Fábio (Caixa)</td>
+            <td style="font-weight:600;">19/Nov</td>
           </tr>
           <tr>
             <td style="font-weight:700;color:#b91c1c">R-02</td>
@@ -1699,15 +1729,15 @@
       <table class="risco-table" style="--thead-bg:#92400e;">
         <thead style="background:#92400e;">
           <tr>
-            <th style="width:36px;background:#92400e;">#</th>
-            <th style="width:180px;background:#92400e;">Risco</th>
-            <th style="width:28%;background:#92400e;">Descrição (Causa → Risco → Efeito)</th>
-            <th style="width:70px;background:#92400e;">Prob.</th>
-            <th style="width:70px;background:#92400e;">Impacto</th>
-            <th style="width:80px;background:#92400e;">Nível</th>
-            <th style="width:20%;background:#92400e;">Mitigação</th>
-            <th style="width:110px;background:#92400e;">Owner</th>
-            <th style="width:80px;background:#92400e;">Data Limite</th>
+            <th style="width:40px;background:#92400e;">#</th>
+            <th style="width:160px;background:#92400e;">Risco</th>
+            <th style="width:22%;background:#92400e;">Descrição (Causa → Risco → Efeito)</th>
+            <th style="width:58px;background:#92400e;">Prob.</th>
+            <th style="width:68px;background:#92400e;">Impacto</th>
+            <th style="width:72px;background:#92400e;">Nível</th>
+            <th style="width:30%;background:#92400e;">Mitigação</th>
+            <th style="width:130px;background:#92400e;">Owner</th>
+            <th style="width:88px;background:#92400e;">Data Limite</th>
           </tr>
         </thead>
         <tbody>
@@ -1880,6 +1910,8 @@
           <option value="8.28">8.28 – Alinhamento dos Squads</option>
           <option value="8.29">8.29 – Trackamento no Superapp</option>
           <option value="8.30">8.30 – Arquitetura de Conectividade</option>
+          <option value="8.31">8.31 – PC Projeto Caixa (Status Report)</option>
+          <option value="8.38">8.38 – Personas e Grupos (FSC)</option>
         </select>
       </div>
       <div class="ac-filter-group">
@@ -2018,17 +2050,22 @@ const CAL_MEETINGS = [
   { id:'8.27', status:'done',    date:'11/11/2026', time:'14h00', week:2, name:'Agenda Diária — Limite de Crédito (Validação Novo Fluxo sem PUSH)', ataFile:'ATA 2026-11-11 14h- Agenda diária - Limite de Crédito (Validaçao no novo Fluxo sem PUSH) @ Wed, Nov 11, 2026 2_00pm – 3_00pm (GMT-3).pdf' },
   { id:'8.28', status:'done',    date:'11/11/2026', time:'16h00', week:2, name:'Salesforce — Alinhamento dos Squads e Dailys do Projeto', duration:'1h10', ataFile:'ATA 2026-11-11 16h - Salesforce - Alinhamento dos squads e dailys do projeto @ Wed, Nov 11, 2026 4_00pm – 5_00pm (GMT-3).pdf' },
   { id:'8.29', status:'done',    date:'12/11/2026', time:'11h00', week:3, name:'Salesforce — Trackamento no Super App', ataFile:'ATA 2026-11-12 11h - Salesforce - Trackamento no Superapp.docx' },
-  { id:'8.37', status:'future',  date:'17/11/2026', time:'10h30', week:4, name:'Acessos/Encarteiramento', duration:'1h', ataFile:'' },
   { id:'8.30', status:'done',    date:'13/11/2026', time:'15h00', week:3, name:'Salesforce — Arquitetura de Conectividade', duration:'1h25', ataFile:'ATA 2026-11-13 15h - Salesforce - Arquitetura de Conectividade @ Fri, Nov 13, 2026 3_00pm – 3_30pm (GMT-3).pdf' },
-  { id:'8.31', status:'future',  date:'16/11/2026', time:'15h00', week:4, name:'Salesforce — Kickoff Estrutura Squads', duration:'1h', ataFile:'' },
-  { id:'8.36', status:'future',  date:'18/11/2026', time:'16h00', week:4, name:'Agenda Diária — UC2 Depósito (Validação do Novo Fluxo sem PUSH)', ataFile:'' },
-  { id:'8.38', status:'future',  date:'16/11/2026', time:'11h00', week:4, name:'Personas/Grupos', ataFile:'' },
-  { id:'8.32', status:'future',  date:'16/11/2026', time:'16h00', week:4, name:'Agenda Diária — UC2 Carrinho Abandonado', ataFile:'' },
-  { id:'8.33', status:'future',  date:'17/11/2026', time:'16h00', week:4, name:'Arquitetura Business Unit — Cross Todos os Casos de Uso (Bruno Aprioto + Fábio Grande)', ataFile:'' },
-  { id:'8.35', status:'future',  date:'19/11/2026', time:'16h00', week:4, name:'Agenda Diária — Levantamento de Caso de Uso', ataFile:'' },
-  { id:'8.42', status:'future',  date:'18/11/2026', time:'10h00', week:4, name:'Follow-up RTF — Validação Modelo e Requisitos de Infra (OpenShift/Kubernetes, Load Balancer, SSD) · Luís (Caixa) + Bruno Aniceto (SF)', ataFile:'' },
-  { id:'8.40', status:'future',  date:'16/11/2026', time:'14h00', week:4, name:'Detalhamento APIs (Samuel + Fábio Grande)', ataFile:'' },
-  { id:'8.41', status:'future',  date:'17/11/2026', time:'14h00', week:4, name:'Visualização Desenho Arq. SuperApp (Samuel + Humphrey)', ataFile:'' }
+  { id:'8.31', status:'done',    date:'16/11/2026', time:'09h00', week:4, name:'PC — Projeto Caixa (Status Report Semanal)', duration:'1h14', ataFile:'ATA 2026-11-16 09h - PC - Projeto Caixa (Status Report Semanal).md' },
+  { id:'8.38', status:'done',    date:'16/11/2026', time:'11h00', week:4, name:'Personas/Grupos (Financial Services)', duration:'2h14', ataFile:'ATA 2026-11-16 11h - Personas e Grupos (Financial Services Cloud - Private Banking).md' },
+  { id:'8.34', status:'future',  date:'16/11/2026', time:'15h00', week:4, name:'Docs Entrega do Marco 2 (Avaliação Técnica + Change Management)', ataFile:'' },
+  { id:'8.39', status:'future',  date:'16/11/2026', time:'16h00', week:4, name:'Conectividade CAIXA (Urgente)', ataFile:'' },
+  { id:'8.32', status:'future',  date:'16/11/2026', time:'16h00', week:4, name:'Agenda Diária — UC2 Carrinho Abandonado (Tamie + Fábio)', ataFile:'' },
+  { id:'8.37', status:'future',  date:'17/11/2026', time:'09h30', week:4, name:'Plano de Implantação — Caso de Uso 1 (Fabio, Bruno, Karina)', ataFile:'' },
+  { id:'8.43', status:'future',  date:'17/11/2026', time:'10h30', week:4, name:'FS Acessos / Encarteiramento', ataFile:'' },
+  { id:'8.41', status:'future',  date:'17/11/2026', time:'14h00', week:4, name:'Exploração do CCP (Fabio + Samuel, Renan, Maciel)', ataFile:'' },
+  { id:'8.44', status:'future',  date:'17/11/2026', time:'15h00', week:4, name:'Detalhamento APIs de Personalização APP (Samuel + Fábio)', ataFile:'' },
+  { id:'8.33', status:'future',  date:'17/11/2026', time:'16h00', week:4, name:'Arquitetura Business Unit — Cross Todos os Casos de Uso (Bruno + Fábio)', ataFile:'' },
+  { id:'8.45', status:'future',  date:'17/11/2026', time:'17h00', week:4, name:'Kickoff Estrutura de Squads', ataFile:'' },
+  { id:'8.36', status:'future',  date:'18/11/2026', time:'16h00', week:4, name:'Agenda Diária — Caso de Uso 1 (Outros Tipos)', ataFile:'' },
+  { id:'8.46', status:'future',  date:'19/11/2026', time:'10h30', week:4, name:'Apresentação SF MC com foco no Journey Builder (Samuel, CS — Renata e Cleyton)', ataFile:'' },
+  { id:'8.47', status:'future',  date:'19/11/2026', time:'14h00', week:4, name:'Agenda Fixa Financial com Lino (seg e qui)', ataFile:'' },
+  { id:'8.35', status:'future',  date:'19/11/2026', time:'16h00', week:4, name:'Agenda Diária — UC3 Exploração do Caso Onboarding', ataFile:'' }
 ];
 
 const CAL_WEEKS = [
@@ -2420,7 +2457,18 @@ const AC_ACOES = [
   {id:83,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'Agendar reunião de follow-up com Luís (Caixa) para validação do modelo RTF e alinhamento dos requisitos de infraestrutura (OpenShift/Kubernetes, Load Balancer, SSD). Contato direto autorizado.',resp:'Bruno Aniceto de Araújo (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
   {id:84,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'[RTF — Plano Adotado] Avaliar tecnicamente os requisitos de infraestrutura para implantação do MuleSoft Runtime Fabric (RTF): servidores Linux/OpenShift, liberação de saída HTTPS porta 443, Load Balancer interno (F5/HAProxy/NGINX) e discos SSD. E-mail com requisitos enviado por Bruno Aniceto em 13/11.',resp:'Bruno Aprigio e Silva (Caixa) / Time de Engenharia Caixa',respOrg:'Caixa',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Em Andamento'},
   {id:85,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'Aprovar formalmente o modelo MuleSoft RTF como arquitetura de integração — APIs MuleSoft 100% dentro dos servidores da Caixa, sem exposição de IPs, sem AWS Direct Connect, apenas saída HTTPS/443 para o Control Plane.',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
-  {id:86,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'Fornecer lista exata de URLs/IPs dos domínios Anypoint Platform necessários para liberação de tráfego de saída (Outbound HTTPS/443) no ambiente RTF da Caixa.',resp:'Bruno Aniceto de Araújo (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'}
+  {id:86,reuniaoId:'8.30',reuniaoNome:'Arquitetura de Conectividade',reuniaoData:'13/11/2026',acao:'Fornecer lista exata de URLs/IPs dos domínios Anypoint Platform necessários para liberação de tráfego de saída (Outbound HTTPS/443) no ambiente RTF da Caixa.',resp:'Bruno Aniceto de Araújo (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:87,reuniaoId:'8.31',reuniaoNome:'PC — Projeto Caixa (Status Report Semanal)',reuniaoData:'16/11/2026',acao:'Enviar estimativa de volumetria de mensageria (média diária baseada em 1 mês).',resp:'Fábio Grande (Caixa)',respOrg:'Caixa',prazo:'2026-11-18',prazoDisplay:'18/Nov/2026',status:'Futuro'},
+  {id:88,reuniaoId:'8.31',reuniaoNome:'PC — Projeto Caixa (Status Report Semanal)',reuniaoData:'16/11/2026',acao:'Preparar e enviar relatórios técnicos com as opções de conectividade (Fase 1 e Fase 2) para a Caixa tomar decisão formal.',resp:'Andreas Miller / Bruno Aniceto (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:89,reuniaoId:'8.31',reuniaoNome:'PC — Projeto Caixa (Status Report Semanal)',reuniaoData:'16/11/2026',acao:'Confirmar viabilidade de conexão Cloud-to-Cloud com Google Cloud (tracking/tagueamento) além do Azure/Databricks.',resp:'Bruno Aprigio e Silva (Caixa) / Bruno Aniceto (Salesforce)',respOrg:'Caixa + Salesforce',prazo:'2026-11-18',prazoDisplay:'18/Nov/2026',status:'Futuro'},
+  {id:90,reuniaoId:'8.31',reuniaoNome:'PC — Projeto Caixa (Status Report Semanal)',reuniaoData:'16/11/2026',acao:'Realizar reunião de Exploração do CCP — explicar alcance, limitações e necessidade de cruzamento de chaves.',resp:'Fábio Grande (Caixa) + Samuel, Renan, Maciel (Salesforce)',respOrg:'Caixa + Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:91,reuniaoId:'8.31',reuniaoNome:'PC — Projeto Caixa (Status Report Semanal)',reuniaoData:'16/11/2026',acao:'Fechar agendas da semana de Brasília (24–26/Nov) até quarta 18/Nov.',resp:'Fábio Grande (Caixa) / Adriana Visentin (Salesforce)',respOrg:'Caixa + Salesforce',prazo:'2026-11-18',prazoDisplay:'18/Nov/2026',status:'Futuro'},
+  {id:92,reuniaoId:'8.38',reuniaoNome:'Personas e Grupos (Financial Services Cloud)',reuniaoData:'16/11/2026',acao:'Agendar grupos focais com Assistentes deslocados (5 participantes, remoto).',resp:'Lino Muffato (Caixa)',respOrg:'Caixa',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:93,reuniaoId:'8.38',reuniaoNome:'Personas e Grupos (Financial Services Cloud)',reuniaoData:'16/11/2026',acao:'Agendar grupos focais com Bankers deslocados (remoto).',resp:'Lino Muffato (Caixa)',respOrg:'Caixa',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:94,reuniaoId:'8.38',reuniaoNome:'Personas e Grupos (Financial Services Cloud)',reuniaoData:'16/11/2026',acao:'Confirmar e conduzir visita presencial na agência da Paulista para Bankers e Assistentes SP.',resp:'Mariana Izukawa (Salesforce) / Lino Muffato (Caixa)',respOrg:'Salesforce + Caixa',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Futuro'},
+  {id:95,reuniaoId:'8.38',reuniaoNome:'Personas e Grupos (Financial Services Cloud)',reuniaoData:'16/11/2026',acao:'Agendar grupos focais com Superintendentes Regionais (3 grupos: 4+3+1) e agenda com Estratégico do Segmento às 14h.',resp:'Lino Muffato (Caixa)',respOrg:'Caixa',prazo:'2026-11-18',prazoDisplay:'18/Nov/2026',status:'Futuro'},
+  {id:96,reuniaoId:'8.38',reuniaoNome:'Personas e Grupos (Financial Services Cloud)',reuniaoData:'16/11/2026',acao:'Enviar recorrência da agenda fixa FSC (segundas e quintas às 14h) a partir da próxima semana.',resp:'Adriana Visentin (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:97,reuniaoId:'8.38',reuniaoNome:'Personas e Grupos (Financial Services Cloud)',reuniaoData:'16/11/2026',acao:'Levantar e compartilhar benchmarks de FSC em Wealth Management/Private Banking de outras IFs.',resp:'Camila Pacheco / Mariana Izukawa (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Futuro'}
 ];
 acLoadStorage();
 
