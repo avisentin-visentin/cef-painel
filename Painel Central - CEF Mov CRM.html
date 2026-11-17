@@ -1041,28 +1041,94 @@
         <div class="cu-header">
           <div class="cu-num" style="background:#003087;">1</div>
           <div>
-            <div class="cu-name">Oferta de Crédito para Clientes com Limite Disponível</div>
+            <div class="cu-name">Oferta de Crédito</div>
             <div class="cu-id">Caso de Uso 1 · Marketing Cloud · Batch</div>
           </div>
           <span class="cu-status-pill cu-status-em-andamento">🔄 Em andamento</span>
         </div>
-        <div class="cu-desc">Ofertas de cartão de crédito, limite de conta e crédito pessoal para clientes com limite disponível, integradas aos resultados da avaliação de crédito em lote (batch). Jornada redesenhada sem SDK/Push — canais: Banner App, WhatsApp, SMS e E-mail.</div>
-        <div class="cu-progress">
-          <div class="cu-prog-row">
-            <span class="cu-prog-label">PLANEJADO</span>
-            <div class="cu-prog-bar-wrap"><div class="cu-prog-bar cu-prog-plan" style="width:39%"></div></div>
-            <span class="cu-prog-pct" style="color:#003087">39%</span>
+        <div class="cu-desc">Ofertas de crédito para clientes com limite disponível, integradas aos resultados da avaliação de crédito em lote (batch). Jornada redesenhada sem SDK/Push — canais: Banner App, WhatsApp, SMS e E-mail.</div>
+
+        <!-- Sub-casos CU1 -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0;">
+
+          <!-- 1.1 Crédito Pessoal -->
+          <div style="background:#f0f4fa;border:1px solid #c5d3e8;border-radius:8px;padding:10px;cursor:pointer;transition:box-shadow .2s,border-color .2s;" onclick="(function(){const base=window.location.href.replace(/\/[^\/]*$/,'/');window.location.href=base+'Plano_Implementacao.html';})()" onmouseenter="this.style.boxShadow='0 4px 12px rgba(0,48,135,.18)';this.style.borderColor='#003087'" onmouseleave="this.style.boxShadow='';this.style.borderColor='#c5d3e8'">
+            <div style="font-size:10px;font-weight:700;color:#003087;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">1.1</div>
+            <div style="font-size:12px;font-weight:600;color:#1a2a4a;margin-bottom:10px;line-height:1.3;">Limite Disponível — Crédito Pessoal <span style="font-size:9px;color:#003087;font-weight:400;">↗</span></div>
+            <div style="margin-bottom:5px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Planejado</span>
+                <span style="font-size:10px;font-weight:700;color:#003087;" id="cu11-plan-pct">0%</span>
+              </div>
+              <div style="background:#dde6f5;border-radius:4px;height:8px;overflow:hidden;">
+                <div id="cu11-plan-bar" style="background:#003087;height:100%;width:0%;border-radius:4px;transition:width .6s ease;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Realizado</span>
+                <span style="font-size:10px;font-weight:700;color:#1a7f4e;" id="cu11-real-pct">0%</span>
+              </div>
+              <div style="background:#d4edda;border-radius:4px;height:8px;overflow:hidden;">
+                <div id="cu11-real-bar" style="background:#1a7f4e;height:100%;width:0%;border-radius:4px;transition:width .6s ease;"></div>
+              </div>
+            </div>
           </div>
-          <div class="cu-prog-row">
-            <span class="cu-prog-label">REALIZADO</span>
-            <div class="cu-prog-bar-wrap"><div class="cu-prog-bar cu-prog-real" style="width:45%"></div></div>
-            <span class="cu-prog-pct" style="color:#1a7f4e">45%</span>
+
+          <!-- 1.2 Cartão de Crédito -->
+          <div style="background:#f0f4fa;border:1px solid #c5d3e8;border-radius:8px;padding:10px;">
+            <div style="font-size:10px;font-weight:700;color:#003087;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">1.2</div>
+            <div style="font-size:12px;font-weight:600;color:#1a2a4a;margin-bottom:10px;line-height:1.3;">Cartão de Crédito</div>
+            <div style="margin-bottom:5px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Planejado</span>
+                <span style="font-size:10px;font-weight:700;color:#003087;" id="cu12-plan-pct">0%</span>
+              </div>
+              <div style="background:#dde6f5;border-radius:4px;height:8px;overflow:hidden;">
+                <div id="cu12-plan-bar" style="background:#003087;height:100%;width:0%;border-radius:4px;transition:width .6s ease;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Realizado</span>
+                <span style="font-size:10px;font-weight:700;color:#1a7f4e;" id="cu12-real-pct">0%</span>
+              </div>
+              <div style="background:#d4edda;border-radius:4px;height:8px;overflow:hidden;">
+                <div id="cu12-real-bar" style="background:#1a7f4e;height:100%;width:0%;border-radius:4px;transition:width .6s ease;"></div>
+              </div>
+            </div>
           </div>
-        </div>
+
+          <!-- 1.3 Limite de Conta -->
+          <div style="background:#f0f4fa;border:1px solid #c5d3e8;border-radius:8px;padding:10px;">
+            <div style="font-size:10px;font-weight:700;color:#003087;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">1.3</div>
+            <div style="font-size:12px;font-weight:600;color:#1a2a4a;margin-bottom:10px;line-height:1.3;">Limite de Conta</div>
+            <div style="margin-bottom:5px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Planejado</span>
+                <span style="font-size:10px;font-weight:700;color:#003087;" id="cu13-plan-pct">0%</span>
+              </div>
+              <div style="background:#dde6f5;border-radius:4px;height:8px;overflow:hidden;">
+                <div id="cu13-plan-bar" style="background:#003087;height:100%;width:0%;border-radius:4px;transition:width .6s ease;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Realizado</span>
+                <span style="font-size:10px;font-weight:700;color:#1a7f4e;" id="cu13-real-pct">0%</span>
+              </div>
+              <div style="background:#d4edda;border-radius:4px;height:8px;overflow:hidden;">
+                <div id="cu13-real-bar" style="background:#1a7f4e;height:100%;width:0%;border-radius:4px;transition:width .6s ease;"></div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- fim sub-casos -->
+
         <div class="cu-meta">
-          <span class="cu-meta-item">👤 <strong>PO Salesforce:</strong> Josie</span>
-          <span class="cu-meta-item">👤 <strong>PO Caixa:</strong> Luciana Ruda</span>
-          <span class="cu-meta-item">📅 <strong>Meta:</strong> Jan/2027</span>
+          <span class="cu-meta-item">👤 <strong>PO Salesforce:</strong> Karina Curvina</span>
+          <span class="cu-meta-item">👤 <strong>PO Caixa:</strong> Josie</span>
+          <span class="cu-meta-item">📅 <strong>Meta Go Live:</strong> ~23/Dez/2026</span>
           <span class="cu-meta-item">🏷️ MC Engagement · Data Cloud · Personalization</span>
         </div>
       </div>
@@ -1077,22 +1143,62 @@
           </div>
           <span class="cu-status-pill cu-status-em-andamento">🔄 Em andamento</span>
         </div>
-        <div class="cu-desc">
-          <strong>2.1 — Carrinho Abandonado:</strong> Recuperação de clientes que iniciaram e abandonaram uma contratação.<br>
-          <strong>2.2 — Oferta de Investimento / Depósito:</strong> Campanhas near real-time baseadas em eventos de depósito em conta.
-        </div>
-        <div class="cu-progress">
-          <div class="cu-prog-row">
-            <span class="cu-prog-label">PLANEJADO</span>
-            <div class="cu-prog-bar-wrap"><div class="cu-prog-bar cu-prog-plan" style="width:11%"></div></div>
-            <span class="cu-prog-pct" style="color:#c75000">11%</span>
+
+        <!-- Sub-casos CU2 -->
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0;">
+
+          <!-- 2.1 Carrinho Abandonado -->
+          <div style="background:#f0faf4;border:1px solid #b2d8c0;border-radius:8px;padding:10px;">
+            <div style="font-size:10px;font-weight:700;color:#1a7f4e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">2.1</div>
+            <div style="font-size:12px;font-weight:600;color:#1a2a4a;margin-bottom:4px;line-height:1.3;">Carrinho Abandonado</div>
+            <div style="font-size:11px;color:#556;margin-bottom:10px;line-height:1.4;">Recuperação de clientes que iniciaram e abandonaram uma contratação no Super App.</div>
+            <div style="margin-bottom:5px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Planejado</span>
+                <span style="font-size:10px;font-weight:700;color:#1a7f4e;">0%</span>
+              </div>
+              <div style="background:#c8ecd5;border-radius:4px;height:8px;overflow:hidden;">
+                <div style="background:#1a7f4e;height:100%;width:0%;border-radius:4px;transition:width .6s ease;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Realizado</span>
+                <span style="font-size:10px;font-weight:700;color:#0d5c35;">0%</span>
+              </div>
+              <div style="background:#a8dbb8;border-radius:4px;height:8px;overflow:hidden;">
+                <div style="background:#0d5c35;height:100%;width:0%;border-radius:4px;transition:width .6s ease;"></div>
+              </div>
+            </div>
           </div>
-          <div class="cu-prog-row">
-            <span class="cu-prog-label">REALIZADO</span>
-            <div class="cu-prog-bar-wrap"><div class="cu-prog-bar cu-prog-real" style="width:18%"></div></div>
-            <span class="cu-prog-pct" style="color:#1a7f4e">18%</span>
+
+          <!-- 2.2 Oferta de Investimento -->
+          <div style="background:#f0faf4;border:1px solid #b2d8c0;border-radius:8px;padding:10px;">
+            <div style="font-size:10px;font-weight:700;color:#1a7f4e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">2.2</div>
+            <div style="font-size:12px;font-weight:600;color:#1a2a4a;margin-bottom:4px;line-height:1.3;">Oferta de Investimento / Depósito</div>
+            <div style="font-size:11px;color:#556;margin-bottom:10px;line-height:1.4;">Campanhas near real-time baseadas em eventos de depósito em conta corrente.</div>
+            <div style="margin-bottom:5px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Planejado</span>
+                <span style="font-size:10px;font-weight:700;color:#1a7f4e;">0%</span>
+              </div>
+              <div style="background:#c8ecd5;border-radius:4px;height:8px;overflow:hidden;">
+                <div style="background:#1a7f4e;height:100%;width:0%;border-radius:4px;transition:width .6s ease;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+                <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Realizado</span>
+                <span style="font-size:10px;font-weight:700;color:#0d5c35;">0%</span>
+              </div>
+              <div style="background:#a8dbb8;border-radius:4px;height:8px;overflow:hidden;">
+                <div style="background:#0d5c35;height:100%;width:0%;border-radius:4px;transition:width .6s ease;"></div>
+              </div>
+            </div>
           </div>
-        </div>
+
+        </div><!-- fim sub-casos CU2 -->
+
         <div class="cu-meta">
           <span class="cu-meta-item">👤 <strong>PO Salesforce:</strong> Tami (2.1) / Eduardo (2.2)</span>
           <span class="cu-meta-item">👤 <strong>PO Caixa:</strong> Esnaldo (2.1) / Thiago Farias (2.2)</span>
