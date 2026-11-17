@@ -1,0 +1,3215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plano de Implementação SFMC 30 dias — Azure Blob Storage</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f4f6f9;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, #0070d2 0%, #032d60 100%);
+      color: white;
+      padding: 48px 40px 36px;
+    }
+    header .tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #7eb4f5;
+      margin-bottom: 10px;
+    }
+    header h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+    header p { font-size: 15px; color: #b3d4f5; margin-bottom: 28px; }
+    .badges { display: flex; gap: 10px; flex-wrap: wrap; }
+    .badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* LEGEND */
+    .legend {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      padding: 20px 40px;
+      background: white;
+      border-bottom: 1px solid #e0e6ed;
+      align-items: center;
+    }
+    .legend-title { font-size: 12px; font-weight: 700; color: #6b7a99; text-transform: uppercase; letter-spacing: 1px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #3a4560; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+    /* OVERVIEW */
+    .overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      padding: 24px 40px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e0e6ed;
+    }
+    .overview-card { background: #f0f5ff; border-radius: 10px; padding: 16px 20px; }
+    .overview-card .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #0070d2; margin-bottom: 4px; }
+    .overview-card .value { font-size: 14px; font-weight: 600; color: #032d60; }
+
+    /* MAIN */
+    main { max-width: 1100px; margin: 0 auto; padding: 36px 40px 60px; }
+
+    /* WEEK BLOCK */
+    .week { margin-bottom: 36px; }
+    .week-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 24px;
+      border-radius: 12px 12px 0 0;
+      color: white;
+    }
+    .w1 .week-header { background: #0070d2; }
+    .w2 .week-header { background: #1db954; }
+    .w3 .week-header { background: #ff6b35; }
+    .w4 .week-header { background: #7b2d8b; }
+
+    .week-number {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 17px; flex-shrink: 0;
+    }
+    .week-title h2 { font-size: 17px; font-weight: 700; }
+    .week-title span { font-size: 13px; opacity: 0.85; color: rgba(255,255,255,0.9); display:block; }
+
+    /* ACTIVITY TABLE */
+    .act-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 0 0 12px 12px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+    .act-table thead tr { background: #f0f4f8; }
+    .act-table thead th {
+      padding: 11px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #6b7a99;
+      border-bottom: 2px solid #e0e6ed;
+    }
+    .act-table tbody tr { border-bottom: 1px solid #f0f3f8; }
+    .act-table tbody tr:last-child { border-bottom: none; }
+    .act-table tbody tr:hover { background: #f8fbff; }
+    .act-table tbody td { padding: 12px 16px; font-size: 13.5px; color: #3a4560; vertical-align: middle; }
+
+    .col-area { width: 130px; }
+    .col-activity { }
+    .col-resp { width: 130px; }
+    .col-status { width: 120px; }
+    .col-prazo { width: 110px; }
+
+    .prazo-cell {
+      font-size: 14px;
+      font-weight: 700;
+      color: #032d60;
+      white-space: nowrap;
+    }
+    .prazo-cell.vazio { color: #c0c8d8; font-weight: 400; font-size: 13px; }
+
+    /* CAMINHO CRÍTICO */
+    .critico-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      color: #856404;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-left: 8px;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    /* AREA BADGE */
+    .area-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .area-sfmc    { background: #e8f4fd; color: #0070d2; }
+    .area-dc      { background: #fef3e2; color: #b06000; }
+    .area-person  { background: #f3e8fd; color: #7b2d8b; }
+    .area-email   { background: #e8f5e9; color: #1a7a3c; }
+    .area-sms     { background: #fff8e1; color: #8a6200; }
+    .area-whatsapp{ background: #e8fdf1; color: #1db954; }
+    .area-journey { background: #fde8f0; color: #b0004e; }
+    .area-qa      { background: #f0f0f0; color: #4a4a6a; }
+
+    /* RESPONSIBLE */
+    .resp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .resp-sf   { background: #e8f4fd; color: #0070d2; }
+    .resp-cli  { background: #fff0e8; color: #c04000; }
+    .resp-both { background: #f3e8fd; color: #7b2d8b; }
+
+    /* STATUS */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 11px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .s-todo     { background: #f0f3f8; color: #6b7a99; }
+    .s-progress { background: #fff3cd; color: #856404; }
+    .s-done     { background: #d4edda; color: #155724; }
+    .s-blocked  { background: #ffe5e5; color: #c0392b; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .s-todo .status-dot     { background: #6b7a99; }
+    .s-progress .status-dot { background: #f0a000; }
+    .s-done .status-dot     { background: #1db954; }
+    .s-blocked .status-dot  { background: #c0392b; }
+
+    /* DELIVERABLE */
+    .deliverable {
+      margin-top: 0;
+      background: #f0fff4;
+      border-left: 4px solid #1db954;
+      border-radius: 0 0 8px 0;
+      padding: 11px 18px;
+      font-size: 13.5px;
+      color: #1a4731;
+    }
+    .deliverable strong { color: #0d7a3e; }
+
+    /* SECTION TITLE */
+    .section-title {
+      font-size: 20px; font-weight: 700; color: #032d60;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e0e6ed;
+    }
+
+    /* GENERIC TABLE */
+    table.gen-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      margin-bottom: 32px;
+    }
+    table.gen-table thead tr { background: #032d60; color: white; }
+    table.gen-table thead th { padding: 13px 18px; text-align: left; font-size: 13px; font-weight: 600; }
+    table.gen-table tbody tr:nth-child(even) { background: #f7f9fc; }
+    table.gen-table tbody td { padding: 12px 18px; font-size: 13.5px; color: #3a4560; border-bottom: 1px solid #edf0f5; vertical-align: top; }
+
+    .risk-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+    .risk-high   { background: #ffe5e5; color: #c0392b; }
+    .risk-medium { background: #fff3cd; color: #856404; }
+
+    /* CHECKLIST */
+    .checklist { background: white; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 24px 28px; margin-bottom: 32px; }
+    .checklist ul { list-style: none; }
+    .checklist ul li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f3f8; font-size: 14px; color: #3a4560; }
+    .checklist ul li:last-child { border-bottom: none; }
+    .checklist ul li .box { width: 18px; height: 18px; border: 2px solid #0070d2; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+
+    footer { text-align: center; padding: 24px; font-size: 12px; color: #9aa5bc; border-top: 1px solid #e0e6ed; }
+
+    /* TAB NAV */
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      background: #032d60;
+      padding: 0 40px;
+      overflow-x: auto;
+    }
+    .tab-nav button {
+      background: transparent;
+      border: none;
+      color: #7eb4f5;
+      padding: 14px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .tab-nav button:hover { color: white; }
+    .tab-nav button.active { color: white; border-bottom-color: #00a1e0; }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* DOC SECTION CARDS */
+    .doc-section {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    .doc-section-header {
+      padding: 16px 24px;
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .doc-section-body { padding: 24px 28px; }
+    .doc-section-body p { font-size: 14px; color: #3a4560; margin-bottom: 12px; line-height: 1.7; }
+    .doc-section-body h4 { font-size: 13px; font-weight: 700; color: #032d60; text-transform: uppercase; letter-spacing: 0.8px; margin: 20px 0 8px; }
+    .doc-section-body ul { padding-left: 20px; }
+    .doc-section-body ul li { font-size: 14px; color: #3a4560; margin-bottom: 6px; line-height: 1.6; }
+
+    /* REVIEW STATUS TABLE */
+    .rev-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    .rev-table th { background: #f0f4f8; padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #6b7a99; border-bottom: 2px solid #e0e6ed; }
+    .rev-table td { padding: 12px 14px; font-size: 13.5px; color: #3a4560; border-bottom: 1px solid #f0f3f8; vertical-align: middle; }
+    .rev-table tr:last-child td { border-bottom: none; }
+    .rev-table tr:hover td { background: #f8fbff; }
+
+    /* JOURNEY TRACKER */
+    .journey-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .journey-card-header {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #032d60, #0070d2);
+      color: white;
+    }
+    .journey-card-header h3 { font-size: 15px; font-weight: 700; }
+    .journey-card-header span { font-size: 12px; opacity: 0.8; }
+    .journey-card-body { padding: 20px 24px; }
+    .journey-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f3f8;
+    }
+    .journey-step:last-child { border-bottom: none; }
+    .step-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-icon.email { background: #e8f5e9; color: #1a7a3c; }
+    .step-icon.sms   { background: #fff8e1; color: #8a6200; }
+    .step-icon.wpp   { background: #e8fdf1; color: #1db954; }
+    .step-icon.wait  { background: #f0f4f8; color: #6b7a99; }
+    .step-icon.split { background: #fde8f0; color: #b0004e; }
+    .step-info h5 { font-size: 13.5px; font-weight: 700; color: #032d60; margin-bottom: 2px; }
+    .step-info p  { font-size: 12.5px; color: #6b7a99; }
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-top: 16px; }
+    .kpi-card { background: #f8fafc; border-radius: 10px; padding: 14px 16px; text-align: center; }
+    .kpi-card .kpi-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #6b7a99; margin-bottom: 4px; }
+    .kpi-card .kpi-value { font-size: 22px; font-weight: 800; color: #032d60; }
+    .kpi-card .kpi-sub { font-size: 11px; color: #9aa5bc; margin-top: 2px; }
+    .kpi-card.green .kpi-value { color: #1a7a3c; }
+    .kpi-card.amber .kpi-value { color: #8a6200; }
+    .kpi-card.red   .kpi-value { color: #c0392b; }
+
+    /* ARCH DIAGRAM */
+    .arch-layer {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      align-items: stretch;
+    }
+    .arch-label {
+      width: 110px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #6b7a99;
+      padding-right: 12px;
+      border-right: 2px solid #e0e6ed;
+    }
+    .arch-boxes { display: flex; gap: 10px; flex-wrap: wrap; flex: 1; }
+    .arch-box {
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .arch-box.blue   { background: #e8f4fd; color: #0070d2; border: 1px solid #b3d4f5; }
+    .arch-box.orange { background: #fef3e2; color: #b06000; border: 1px solid #f5d8a0; }
+    .arch-box.green  { background: #e8f5e9; color: #1a7a3c; border: 1px solid #a8d5b0; }
+    .arch-box.purple { background: #f3e8fd; color: #7b2d8b; border: 1px solid #d0a8e8; }
+    .arch-box.amber  { background: #fff8e1; color: #8a6200; border: 1px solid #f5d878; }
+    .arch-box.gray   { background: #f0f4f8; color: #3a4560; border: 1px solid #d0d8e8; }
+    .arch-arrow { text-align: center; color: #b0b8cc; font-size: 18px; padding: 4px 0; }
+
+    /* DATA DOC */
+    .data-entity {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .data-entity-header {
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .data-entity-table { width: 100%; border-collapse: collapse; }
+    .data-entity-table th { background: #f0f4f8; padding: 9px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: #6b7a99; border-bottom: 1px solid #e0e6ed; }
+    .data-entity-table td { padding: 10px 16px; font-size: 13px; color: #3a4560; border-bottom: 1px solid #f0f3f8; }
+    .data-entity-table tr:last-child td { border-bottom: none; }
+    .type-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+    .type-string { background: #e8f4fd; color: #0070d2; }
+    .type-date   { background: #fef3e2; color: #b06000; }
+    .type-bool   { background: #e8f5e9; color: #1a7a3c; }
+    .type-num    { background: #f3e8fd; color: #7b2d8b; }
+    .pk-badge    { display: inline-block; padding: 1px 7px; border-radius: 5px; font-size: 10px; font-weight: 700; background: #032d60; color: white; margin-left: 6px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="tag">Documento de Projeto</div>
+  <h1>Plano de Implementação — SFMC + Personalization + Data Cloud</h1>
+  <p>Habilitação em 30 dias &nbsp;·&nbsp; Email &nbsp;·&nbsp; SMS &nbsp;·&nbsp; WhatsApp &nbsp;·&nbsp; Azure Blob Storage</p>
+  <div class="badges">
+    <span class="badge">Salesforce Marketing Cloud</span>
+    <span class="badge">Data Cloud</span>
+    <span class="badge">Personalization</span>
+    <span class="badge">Azure Blob Storage</span>
+  </div>
+</header>
+
+<nav class="tab-nav">
+  <button class="active" onclick="showTab('plano', this)">📋 Plano de Implementação</button>
+
+  <button onclick="showTab('features', this)">🛠 Features Ativadas</button>
+  <button onclick="showTab('uc1', this)">💳 UC1 — Limite de Crédito</button>
+  <button onclick="showTab('criticos', this)">🚨 Pontos Críticos</button>
+</nav>
+
+<!-- ===== ABA: PLANO ===== -->
+<div id="tab-plano" class="tab-pane active">
+
+<div class="legend">
+  <span class="legend-title">Responsável:</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#0070d2"></span> Salesforce</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#c04000"></span> Cliente</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#7b2d8b"></span> Ambos</span>
+  &nbsp;&nbsp;
+  <span class="legend-title">Status:</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#6b7a99"></span> A Fazer</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#f0a000"></span> Em Andamento</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#1db954"></span> Concluído</span>
+  <span class="legend-item"><span class="legend-dot" style="background:#c0392b"></span> Bloqueado</span>
+  &nbsp;&nbsp;
+  <span class="legend-title">Atenção:</span>
+  <span class="legend-item" style="background:#fff3cd; border:1px solid #ffc107; padding:2px 10px; border-radius:6px; font-size:12px; font-weight:700; color:#856404;">⚠ Crítico — sem isso nada avança</span>
+</div>
+
+<div class="overview">
+  <div class="overview-card"><div class="label">Duração</div><div class="value">30 dias (4 semanas)</div></div>
+  <div class="overview-card"><div class="label">Canais</div><div class="value">Email · SMS · WhatsApp</div></div>
+  <div class="overview-card"><div class="label">Integração</div><div class="value">Azure Blob Storage → Data Cloud</div></div>
+  <div class="overview-card"><div class="label">Produtos</div><div class="value">SFMC · Data Cloud · Personalization</div></div>
+</div>
+
+<!-- ===== GANTT v3 ===== -->
+<div style="max-width:1100px; margin:20px auto 0; padding:0 40px;">
+<div id="gantt-wrap" style="background:white; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,0.1); margin:0 0 32px; overflow:hidden; font-family:'Segoe UI',Arial,sans-serif;">
+  <div style="background:#032d60; padding:14px 20px; font-size:13px; font-weight:700; color:#7eb4f5; letter-spacing:.5px;">📊 CRONOGRAMA GANTT — 10/11 a 20/12/2026</div>
+  <!-- PLACEHOLDER SWAP -->
+<style>
+/* ── GANTT v3 ─────────────────────────────────────────── */
+:root{
+  --name:268px;
+  --days:41;
+  --day-w:18px;
+}
+#g3{
+  overflow-x:auto;
+  overflow-y:visible;
+}
+#g3-inner{
+  min-width:calc(var(--name) + var(--days) * var(--day-w));
+  position:relative;
+}
+/* Cabeçalho semanas */
+.g3-head{
+  display:flex;
+  background:#0a3d7a;
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+.g3-head-name{
+  width:var(--name);
+  flex-shrink:0;
+  padding:10px 14px;
+  border-right:1px solid rgba(255,255,255,.15);
+  color:#7eb4f5;
+  font-size:10px;
+  letter-spacing:.5px;
+  position:sticky;
+  left:0;
+  z-index:6;
+  background:#0a3d7a;
+}
+.g3-head-wk{
+  text-align:center;
+  padding:7px 4px 5px;
+  border-right:1px solid rgba(255,255,255,.1);
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  align-items:center;
+}
+.g3-head-wk small{font-size:9px;font-weight:400;opacity:.7;}
+.g3-head-wk.wk4{background:rgba(176,0,78,.35);}
+/* Row */
+.g3-row{
+  display:flex;
+  border-bottom:1px solid #e8edf5;
+  align-items:stretch;
+  position:relative;
+}
+.g3-row:last-child{border-bottom:none;}
+.g3-label{
+  width:var(--name);
+  flex-shrink:0;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border-right:1px solid #e8edf5;
+  background:#fff;
+  position:sticky;
+  left:0;
+  z-index:4;
+  min-height:68px;
+}
+.g3-label .dot{
+  width:10px;height:10px;border-radius:2px;flex-shrink:0;
+}
+.g3-label span{font-size:11px;font-weight:700;color:#2a2a3e;line-height:1.3;}
+.g3-label .sub{font-size:9px;font-weight:400;color:#8a95ad;display:block;}
+/* Track */
+.g3-track{
+  flex:1;
+  position:relative;
+  min-height:68px;
+  background:#fafbfd;
+}
+/* Faixas zebra semanas */
+.g3-track::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,
+      transparent calc(0/48*100%),
+      transparent calc(0/48*100%),
+      rgba(3,45,96,.04) calc(0/48*100%),
+      rgba(3,45,96,.04) calc(13/48*100%),
+      transparent calc(13/48*100%),
+      transparent calc(24/48*100%),
+      rgba(3,45,96,.04) calc(24/48*100%),
+      rgba(3,45,96,.04) calc(36/48*100%),
+      transparent calc(36/48*100%)
+    );
+  pointer-events:none;
+  z-index:0;
+}
+/* Faixas fim de semana */
+.g3-track::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,
+      transparent calc(0/48*100%),
+      transparent calc(3/48*100%),
+      rgba(3,45,96,.07) calc(3/48*100%),
+      rgba(3,45,96,.07) calc(5/48*100%),
+      transparent calc(5/48*100%),
+      transparent calc(10/48*100%),
+      rgba(3,45,96,.07) calc(10/48*100%),
+      rgba(3,45,96,.07) calc(12/48*100%),
+      transparent calc(12/48*100%),
+      transparent calc(17/48*100%),
+      rgba(3,45,96,.07) calc(17/48*100%),
+      rgba(3,45,96,.07) calc(19/48*100%),
+      transparent calc(19/48*100%),
+      transparent calc(24/48*100%),
+      rgba(3,45,96,.07) calc(24/48*100%),
+      rgba(3,45,96,.07) calc(26/48*100%),
+      transparent calc(26/48*100%),
+      transparent calc(31/48*100%),
+      rgba(3,45,96,.07) calc(31/48*100%),
+      rgba(3,45,96,.07) calc(33/48*100%),
+      transparent calc(33/48*100%),
+      transparent calc(38/48*100%),
+      rgba(3,45,96,.07) calc(38/48*100%),
+      rgba(3,45,96,.07) calc(40/48*100%),
+      transparent calc(40/48*100%),
+      transparent calc(45/48*100%),
+      rgba(3,45,96,.07) calc(45/48*100%),
+      rgba(3,45,96,.07) calc(47/48*100%),
+      transparent calc(47/48*100%)
+    );
+  pointer-events:none;
+  z-index:0;
+}
+/* Go-Live line */
+.g3-golive-line{
+  position:absolute;
+  top:0;bottom:0;
+  left:calc(35.5/48*100%);
+  width:2px;
+  background:repeating-linear-gradient(to bottom,#b0004e 0 6px,transparent 6px 10px);
+  z-index:3;
+  pointer-events:none;
+}
+/* Bar — zona superior da row (10→26px de cima) */
+.gantt-bar{
+  position:absolute;
+  height:16px;
+  border-radius:5px;
+  top:8px;
+  display:flex;
+  align-items:center;
+  padding:0 7px;
+  overflow:hidden;
+  z-index:1;
+  font-size:9px;
+  font-weight:600;
+  color:#fff;
+  white-space:nowrap;
+  box-shadow:0 1px 4px rgba(0,0,0,.18);
+}
+/* Milestone — zona central (losango centrado em 34px) */
+.gantt-ms{
+  position:absolute;
+  width:11px;height:11px;
+  top:34px;
+  transform:translateX(-50%) rotate(45deg);
+  z-index:2;
+  cursor:pointer;
+  outline-offset:3px;
+  box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.gantt-ms:focus{outline:2px solid #0070d2;border-radius:1px;}
+.gantt-ms.is-crit{background:#f5c800;}
+.gantt-ms.is-blocked{border-color:#c0392b!important; border-width:2px!important;}
+.gantt-ms.is-crit.is-blocked{background:#f5c800;border-color:#c0392b!important;}
+/* Milestone label — zona inferior (abaixo do losango) */
+.ms-label{
+  position:absolute;
+  top:48px;
+  transform:translateX(-50%);
+  font-size:8px;
+  font-weight:700;
+  white-space:nowrap;
+  pointer-events:none;
+  z-index:2;
+  line-height:1;
+}
+/* no-date badge */
+.g3-nodate{
+  position:absolute;
+  left:8px;top:50%;transform:translateY(-50%);
+  font-size:10px;font-style:italic;color:#9aa5be;
+  z-index:1;
+}
+/* Tooltip via title rendered by browser — accessible */
+/* Go-live tag */
+.gl-tag{
+  position:absolute;
+  top:0px;
+  left:calc(35.5/48*100%);
+  transform:translateX(-50%);
+  background:#b0004e;
+  color:#fff;
+  font-size:8px;
+  font-weight:700;
+  padding:1px 5px;
+  border-radius:0 0 3px 3px;
+  white-space:nowrap;
+  z-index:4;
+}
+/* Legend */
+#g3-legend{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  padding:10px 14px;
+  background:#f4f6f9;
+  border-top:1px solid #e0e6ed;
+  font-size:11px;
+  color:#4a5568;
+  align-items:center;
+}
+.g3-leg{display:flex;align-items:center;gap:6px;}
+.g3-leg-bar{width:28px;height:10px;border-radius:3px;background:#6b7a99;}
+.g3-leg-ms{
+  width:10px;height:10px;
+  transform:rotate(45deg);
+  flex-shrink:0;
+}
+.g3-leg-we{width:14px;height:14px;background:rgba(3,45,96,.07);border:1px solid rgba(3,45,96,.15);}
+.g3-leg-gl{width:2px;height:14px;background:repeating-linear-gradient(to bottom,#b0004e 0 4px,transparent 4px 7px);}
+</style>
+
+<div id="g3">
+ <div id="g3-inner">
+
+  <!-- ── CABEÇALHO ──────────────────────────────────── -->
+  <!-- Janela total: 18/11 (idx0) → 04/01 (idx32) = 33 dias -->
+  <div class="g3-head">
+    <div class="g3-head-name">FRENTE / ÁREA</div>
+    <div class="g3-head-wk" style="flex:13 1 0;">Sem 1<small>18/11–30/11</small></div>
+    <div class="g3-head-wk" style="flex:11 1 0;">Sem 2<small>01/12–11/12</small></div>
+    <div class="g3-head-wk wk4" style="flex:12 1 0;">Sem 3 <span style="font-size:1.7em;line-height:1;vertical-align:middle;">🎅🛷</span><small>14/12–23/12</small></div>
+    <div class="g3-head-wk" style="flex:12 1 0;">Sem 4<small>24/12–04/01</small></div>
+  </div>
+
+  <!-- ── ROW 1: Fundação SFMC ───────────────────────── -->
+  <!-- 18/11=idx0 · 23/11=idx2 · 30/11=idx7 · 02/12=idx9 | 33 dias total -->
+  <div class="g3-row">
+    <div class="g3-label">
+      <div class="dot" style="background:#0070d2;"></div>
+      <span>Fundação e Setup de Ambiente</span>
+    </div>
+    <div class="g3-track">
+      <div class="g3-golive-line"></div>
+      <!-- barra 18/11→02/12 : idx0→idx9 width=10/33 -->
+      <div class="gantt-bar" style="background:#0070d2;left:0%;width:calc(15.909/48*100%);">Fundação SFMC</div>
+      <!-- ms 18/11 idx=0 crit: Início atividades / Connector Azure / Creds / IAM -->
+      <div class="gantt-ms is-crit" style="background:#f5c800;border:2px solid #0070d2;left:calc(5.5/48*100%);" tabindex="0" title="23/11 · Crítico — Connector Azure · Credenciais · IAM · Usuários · Einstein" aria-label="Marco 23/11 Crítico: Setup Azure"></div>
+      <div class="ms-label" style="left:calc(5.5/48*100%);color:#0070d2;">23/11</div>
+      <!-- ms 23/11 idx=2: DMO base -->
+      <div class="gantt-ms" style="background:#fff;border:2px solid #0070d2;left:calc(5.5/48*100%);" tabindex="0" title="23/11 · DMO base · Data Model" aria-label="Marco 23/11: DMO base"></div>
+      <div class="ms-label" style="left:calc(5.5/48*100%);color:#0070d2;">23/11</div>
+      <!-- ms 30/11 idx=7: Bundles -->
+      <div class="gantt-ms is-crit" style="background:#f5c800;border:2px solid #0070d2;left:calc(12.5/48*100%);" tabindex="0" title="30/11 · Crítico — Integração bundles DC (SFMC, PZ, Azure)" aria-label="Marco 30/11 Crítico: Bundles DC"></div>
+      <div class="ms-label" style="left:calc(12.5/48*100%);color:#0070d2;">30/11</div>
+      <!-- ms 02/12 idx=9: Data Spaces + Einstein -->
+      <div class="gantt-ms" style="background:#fff;border:2px solid #0070d2;left:calc(14.5/48*100%);" tabindex="0" title="02/12 · Data Space 1 e 2 · Einstein STO/ES/MI" aria-label="Marco 02/12: Data Spaces e Einstein"></div>
+      <div class="ms-label" style="left:calc(14.5/48*100%);color:#0070d2;">02/12</div>
+    </div>
+  </div>
+
+  <!-- ── ROW 2: Email ───────────────────────────────── -->
+  <!-- 18/11=idx0 · 26/11=idx5 · 30/11=idx7 -->
+  <div class="g3-row">
+    <div class="g3-label">
+      <div class="dot" style="background:#1a7a3c;"></div>
+      <span>Email<span class="sub">Canal nativo · novo IP · domínio</span></span>
+    </div>
+    <div class="g3-track">
+      <div class="g3-golive-line"></div>
+      <!-- barra 18/11→30/11 : idx0→idx7 width=8/33 -->
+      <div class="gantt-bar" style="background:#1a7a3c;left:calc(5/48*100%);width:calc(7.727/48*100%);">Setup → Canal operacional</div>
+      <!-- ms 18/11 idx=0 crit: SAP, IPs, SPF/DKIM/DMARC, RMM -->
+      <div class="gantt-ms is-crit" style="background:#f5c800;border:2px solid #1a7a3c;left:calc(5.5/48*100%);" tabindex="0" title="23/11 · Crítico — SAP · IPs dedicados · SPF/DKIM/DMARC · RMM" aria-label="Marco 23/11 Crítico: SAP/IPs/SPF/DKIM"></div>
+      <div class="ms-label" style="left:calc(5.5/48*100%);color:#1a7a3c;">23/11</div>
+      <!-- ms 26/11 idx=5: Templates, Sender/Delivery Profile, Seed list -->
+      <div class="gantt-ms" style="background:#fff;border:2px solid #1a7a3c;left:calc(8.5/48*100%);" tabindex="0" title="26/11 · Templates base · Sender/Delivery Profile · Seed list" aria-label="Marco 26/11: Templates e seed list"></div>
+      <div class="ms-label" style="left:calc(8.5/48*100%);color:#1a7a3c;">26/11</div>
+      <!-- ms 30/11 idx=7: Preference Center -->
+      <div class="gantt-ms" style="background:#fff;border:2px solid #1a7a3c;left:calc(12.5/48*100%);" tabindex="0" title="30/11 · Preference Center / Unsubscribe page" aria-label="Marco 30/11: Preference Center"></div>
+      <div class="ms-label" style="left:calc(12.5/48*100%);color:#1a7a3c;">30/11</div>
+    </div>
+  </div>
+
+  <!-- ── ROW 3: SMS ─────────────────────────────────── -->
+  <!-- 18/11=idx0 · 23/11=idx2 -->
+  <div class="g3-row">
+    <div class="g3-label">
+      <div class="dot" style="background:#8a6200;"></div>
+      <span>SMS — MobileConnect<span class="sub">Provisionamento em andamento · 29/10</span></span>
+    </div>
+    <div class="g3-track">
+      <div class="g3-golive-line"></div>
+      <!-- barra 18/11→23/11 : idx0→idx2 width=3/33 -->
+      <div class="gantt-bar" style="background:#8a6200;left:0%;width:calc(4.773/48*100%);">Setup SMS</div>
+      <!-- ms 18/11 idx=0: Número, template, opt-in -->
+      <div class="gantt-ms is-crit" style="background:#f5c800;border:2px solid #8a6200;left:calc(0.5/48*100%);" tabindex="0" title="18/11 · Crítico — Número cadastrado · Template SMS · Opt-in/out" aria-label="Marco 18/11 Crítico: Setup SMS"></div>
+      <div class="ms-label" style="left:calc(0.5/48*100%);color:#8a6200;">18/11</div>
+      <!-- ms 23/11 idx=2: Teste SMS -->
+      <div class="gantt-ms" style="background:#fff;border:2px solid #8a6200;left:calc(5.5/48*100%);" tabindex="0" title="23/11 · Teste de entrega SMS" aria-label="Marco 23/11: Teste SMS"></div>
+      <div class="ms-label" style="left:calc(5.5/48*100%);color:#8a6200;">23/11</div>
+    </div>
+  </div>
+
+  <!-- ── ROW 4: WhatsApp ────────────────────────────── -->
+  <!-- 18/11=idx0 · 18/12=idx19 -->
+  <div class="g3-row">
+    <div class="g3-label">
+      <div class="dot" style="background:#0d7a3e;"></div>
+      <span>WhatsApp — Nativo Salesforce<span class="sub">Novo número · sem Genesys no MVP</span></span>
+    </div>
+    <div class="g3-track">
+      <div class="g3-golive-line"></div>
+      <!-- barra 25/11→03/12 : idx7→idx16 (9 dias) -->
+      <div class="gantt-bar" style="background:#0d7a3e;left:calc(7/48*100%);width:calc(8/48*100%);">Habilitação WA</div>
+      <!-- ms 03/12 idx=15 crit: fim da habilitação do canal -->
+      <div class="gantt-ms is-crit" style="background:#f5c800;border:2px solid #0d7a3e;left:calc(14.5/48*100%);" tabindex="0" title="25/11 a 02/12 · Crítico — Habilitação canal nativo SFMC · Meta Business Manager" aria-label="Marco 02/12 Crítico: Habilitação WA nativo"></div>
+      <div class="ms-label" style="left:calc(14.5/48*100%);color:#0d7a3e;">02/12</div>
+      <!-- ms HSM templates: bloqueado (sem data fixa) -->
+      <div class="gantt-ms is-blocked" style="background:#fff;border:2px solid #c0392b;left:calc(13.5/48*100%);" tabindex="0" title="01/12 · Bloqueado — Submissão e aprovação HSM Meta (dependência cliente)" aria-label="Marco Bloqueado: HSM Meta"></div>
+      <div class="ms-label" style="left:calc(13.5/48*100%);color:#c0392b;">HSM ⚠</div>
+    </div>
+  </div>
+
+  <!-- ── ROW 5: Data Cloud ──────────────────────────── -->
+  <!-- 23/11=idx2 · 10/12=idx14 · 15/12=idx17 -->
+  <div class="g3-row">
+    <div class="g3-label">
+      <div class="dot" style="background:#c04000;"></div>
+      <span>Data Cloud · Setup e Ingestão<span class="sub">Data Space Marketing + Private</span></span>
+    </div>
+    <div class="g3-track">
+      <div class="g3-golive-line"></div>
+      <!-- barra 23/11→15/12 : idx2→idx17 width=16/33 -->
+      <div class="gantt-bar" style="background:#c04000;left:calc(19/48*100%);width:calc(9.637/48*100%);">Pipeline Azure → DC → SFMC</div>
+      <!-- ms 23/11 idx=2 crit: Ingestão Azure, Data Streams, DMOs -->
+      <div class="gantt-ms is-crit" style="background:#f5c800;border:2px solid #c04000;left:calc(19.5/48*100%);" tabindex="0" title="07/12 · Crítico — Data Streams · Mapeamento DMOs" aria-label="Marco 07/12 Crítico: Ingestão DC"></div>
+      <div class="ms-label" style="left:calc(19.5/48*100%);color:#c04000;">07/12</div>
+      <!-- ms 10/12 idx=14 crit: Identity Resolution -->
+      <div class="gantt-ms is-crit" style="background:#f5c800;border:2px solid #c04000;left:calc(22.5/48*100%);" tabindex="0" title="10/12 · Crítico — Identity Resolution CPF · email · telefone" aria-label="Marco 10/12 Crítico: Identity Resolution"></div>
+      <div class="ms-label" style="left:calc(22.5/48*100%);color:#c04000;">10/12</div>
+      <!-- ms 07/12 idx=12: Segmentos, Ativação, DEs, Data Views -->
+      <div class="gantt-ms" style="background:#fff;border:2px solid #c04000;left:calc(26.5/48*100%);" tabindex="0" title="14/12 · Segmentos · Ativação SFMC · Publicação DEs · Data Views" aria-label="Marco 14/12: Segmentos e ativação"></div>
+      <div class="ms-label" style="left:calc(26.5/48*100%);color:#c04000;">14/12</div>
+    </div>
+  </div>
+
+  <!-- ── ROW 7: Jornada UC1 ─────────────────────────── -->
+  <!-- 07/12=idx12 · 10/12=idx14 · 14/12=idx16 · 23/12=idx22 GO-LIVE -->
+  <div class="g3-row">
+    <div class="g3-label">
+      <div class="dot" style="background:#b0004e;"></div>
+      <span>Jornada — Limite de Crédito<span class="sub">UC1 · Entry: Segment Activation DC</span></span>
+    </div>
+    <div class="g3-track">
+      <div class="g3-golive-line"></div>
+      <div class="gl-tag"><span style="font-size:1.7em;line-height:1;vertical-align:middle;">🎅🛷</span> Go-Live 23/12</div>
+      <!-- barra 07/12→23/12 : idx12→idx22 width=11/33 -->
+      <div class="gantt-bar" style="background:#b0004e;left:calc(27/48*100%);width:calc(9/48*100%);">Jornada · QA · Go-Live</div>
+      <!-- ms 07/12 idx=12 crit: Setup + Criação jornada -->
+      <div class="gantt-ms is-crit" style="background:#f5c800;border:2px solid #b0004e;left:calc(27.5/48*100%);" tabindex="0" title="15/12 · Crítico — Setup jornada · Criação Journey Builder" aria-label="Marco 15/12 Crítico: Criação da jornada"></div>
+      <div class="ms-label" style="left:calc(27.5/48*100%);color:#b0004e;">15/12</div>
+      <!-- ms 10/12 idx=14: Testes -->
+      <div class="gantt-ms" style="background:#fff;border:2px solid #b0004e;left:calc(29.5/48*100%);" tabindex="0" title="17/12 · Testes · Test Mode completo" aria-label="Marco 17/12: Testes"></div>
+      <div class="ms-label" style="left:calc(29.5/48*100%);color:#b0004e;">17/12</div>
+      <!-- ms 14/12 idx=16: Aprovação -->
+      <div class="gantt-ms" style="background:#fff;border:2px solid #b0004e;left:calc(30.5/48*100%);" tabindex="0" title="18/12 · Aprovação · Validação LGPD e AMPscript" aria-label="Marco 18/12: Aprovação"></div>
+      <div class="ms-label" style="left:calc(30.5/48*100%);color:#b0004e;">18/12</div>
+      <!-- ms 23/12 idx=22 CRIT GO-LIVE -->
+      <div class="gantt-ms is-crit" style="background:#f5c800;border:2px solid #b0004e;left:calc(35.5/48*100%);" tabindex="0" title="23/12 · Crítico · GO-LIVE — Soft launch e monitoramento" aria-label="Marco 23/12 Crítico: Go-Live"></div>
+      <div class="ms-label" style="left:calc(35.5/48*100%);color:#b0004e;font-weight:900;">23/12 <span style="font-size:1.7em;line-height:1;vertical-align:middle;">🎅🛷</span></div>
+    </div>
+  </div>
+
+  <!-- ── ROW 10: Documentação ───────────────────────── -->
+  <!-- Só marcos -->
+  <div class="g3-row">
+    <div class="g3-label">
+      <div class="dot" style="background:#1a3a8a;"></div>
+      <span>Documentação do Projeto</span>
+    </div>
+    <div class="g3-track">
+      <div class="g3-golive-line"></div>
+      <!-- ms 10/12 idx=14 crit: Planejamento Estratégico de Dados -->
+      <div class="gantt-ms is-crit" style="background:#f5c800;border:2px solid #1a3a8a;left:calc(14.5/48*100%);" tabindex="0" title="02/12 · Crítico — Entrega do Planejamento Estratégico de Dados" aria-label="Marco 02/12 Crítico: Planejamento Estratégico"></div>
+      <div class="ms-label" style="left:calc(14.5/48*100%);color:#1a3a8a;">02/12</div>
+      <!-- ms 04/01 idx=32 crit: Revisão Final -->
+      <div class="gantt-ms is-crit" style="background:#f5c800;border:2px solid #1a3a8a;left:calc(39.5/48*100%);" tabindex="0" title="27/12 · Crítico — Revisão Estratégica e Avaliação Técnica" aria-label="Marco 27/12 Crítico: Revisão Final"></div>
+      <div class="ms-label" style="left:calc(39.5/48*100%);color:#1a3a8a;">27/12</div>
+    </div>
+  </div>
+
+ </div><!-- /g3-inner -->
+</div><!-- /g3 -->
+
+<!-- ── LEGENDA ───────────────────────────────────────── -->
+<div id="g3-legend">
+  <span style="font-size:10px;font-weight:700;color:#6b7a99;text-transform:uppercase;letter-spacing:.8px;">Legenda:</span>
+  <div class="g3-leg"><div class="g3-leg-bar"></div><span>Janela do bloco</span></div>
+  <div class="g3-leg"><div class="g3-leg-ms" style="background:#fff;border:2px solid #555;"></div><span>Prazo / Marco</span></div>
+  <div class="g3-leg"><div class="g3-leg-ms" style="background:#f5c800;border:2px solid #555;"></div><span>Crítico</span></div>
+  <div class="g3-leg"><div class="g3-leg-ms" style="background:#fff;border:2px solid #c0392b;border-width:2px;"></div><span>Bloqueado</span></div>
+  <div class="g3-leg"><div class="g3-leg-ms" style="background:#f5c800;border:2px solid #c0392b;"></div><span>Crítico + Bloqueado</span></div>
+  <div class="g3-leg"><div class="g3-leg-we"></div><span>Fim de semana</span></div>
+  <div class="g3-leg"><div class="g3-leg-gl"></div><span>Go-Live 23/12</span></div>
+</div>
+</div><!-- /gantt-wrap -->
+</div><!-- /gantt-container -->
+
+<main>
+
+  <!-- ===== SEMANA 1 ===== -->
+  <div class="week w1">
+    <div class="week-header">
+      <div class="week-number">1</div>
+      <div class="week-title">
+        <h2>Fundação e Setup — SFMC (1 BU) e Data Cloud</h2>
+        <span>18/11 – 02/12</span>
+      </div>
+    </div>
+    <table class="act-table">
+      <thead>
+        <tr>
+          <th class="col-area">Área</th>
+          <th class="col-activity">Atividade</th>
+          <th class="col-resp">Responsável</th>
+          <th class="col-status">Status</th>
+          <th class="col-prazo">Prazo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="area-badge area-sfmc">SFMC Core</span></td>
+          <td>Provisionamento da BU (Business Unit)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-done"><span class="status-dot"></span>Concluído</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-sfmc">SFMC Core</span></td>
+          <td>Criação da estrutura de pastas (Data Extensions, Content, Journeys)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-progress"><span class="status-dot"></span>Em Andamento</span></td>
+          <td><span class="prazo-cell">18/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-sfmc">SFMC Core</span></td>
+          <td>Setup de usuários e perfis de acesso</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">23/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-sfmc">SFMC Core</span></td>
+          <td>Definir prazos de layouts de comunicação para solicitação das peças</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">até 23/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Data Cloud</span></td>
+          <td>Ativação do tenant e configuração inicial <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-done"><span class="status-dot"></span>Concluído</span></td>
+          <td><span class="prazo-cell">18/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Data Cloud</span></td>
+          <td>Definição do Data Model (DMO) base</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-progress"><span class="status-dot"></span>Em Andamento</span></td>
+          <td><span class="prazo-cell">23/11 – 30/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Data Cloud</span></td>
+          <td style="color:#c0392b; font-weight:600;">Configuração do connector Azure Blob Storage no Data Cloud</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-blocked"><span class="status-dot"></span>Aguardando planejamento da caixa</span></td>
+          <td><span class="prazo-cell">30/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Data Cloud</span></td>
+          <td style="color:#c0392b; font-weight:600;">Fornecer credenciais Azure (Storage Account Name, Account Key ou SAS Token, Container Name, schema) <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          <td><span class="status-badge s-blocked"><span class="status-dot"></span>Aguardando planejamento da caixa</span></td>
+          <td><span class="prazo-cell">30/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Data Cloud</span></td>
+          <td style="color:#c0392b; font-weight:600;">Configurar permissões de acesso no Azure (IAM Role ou SAS Token com leitura no Container) <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          <td><span class="status-badge s-blocked"><span class="status-dot"></span>Aguardando planejamento da caixa</span></td>
+          <td><span class="prazo-cell">30/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Data Cloud</span></td>
+          <td>Integração de bundles no Data Cloud (SFMC, Personalization, Azure) <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">30/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Data Cloud</span></td>
+          <td>Configuração do Data Space 1 (Marketing — segmentação e ativação)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">02/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Data Cloud</span></td>
+          <td>Configuração do Data Space 2 (Private — dados e relatórios)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">02/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-sfmc">Einstein</span></td>
+          <td>Habilitação do Einstein Send Time Optimization (STO) — otimização de horário de envio por perfil de engajamento <span style="color:#888; font-style:italic; font-size:11px;">(opcional)</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">23/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-sfmc">Einstein</span></td>
+          <td>Habilitação do Einstein Engagement Scoring — score de propensão de abertura/clique por contato <span style="color:#888; font-style:italic; font-size:11px;">(opcional)</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">23/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-sfmc">Einstein</span></td>
+          <td>Habilitação do Einstein Messaging Insights — alertas automáticos de anomalias de entrega e opt-out <span style="color:#888; font-style:italic; font-size:11px;">(opcional)</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">23/11</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="deliverable"><strong>Entregável:</strong> Ambiente funcional, domínios autenticados, Azure conectado ao Data Cloud, bundles integrados, 2 Data Spaces configurados, Einstein habilitado</div>
+  </div>
+
+  <!-- ===== MULESOFT ===== -->
+  <div style="margin-bottom:36px; padding:14px 20px; background:#fdf0f0; border-left:4px solid #c0392b; border-radius:0 8px 8px 0;">
+    <strong style="color:#c0392b; font-size:14px;">🔴 MuleSoft — Fora do Escopo Atual</strong>
+    <p style="margin-top:8px; font-size:13px; color:#7a1a1a; line-height:1.6;">Este plano ainda não considera as integrações via MuleSoft. As integrações atuais são diretas com o Data Cloud. O cronograma precisará ser revisado após a definição das integrações MuleSoft e dos fluxos de integração.</p>
+  </div>
+
+  <!-- ===== PONTO DE ATENÇÃO: CRIATIVO ===== -->
+  <div style="margin-bottom:36px; padding:14px 20px; background:#fff8e1; border-left:4px solid #e0a800; border-radius:0 8px 8px 0;">
+    <strong style="color:#8a6100; font-size:14px;">⚠️ Ponto de Atenção — Fluxo de Criação de Criativo</strong>
+    <p style="margin-top:8px; font-size:13px; color:#5c4300; line-height:1.6;">Verificar com o banco o fluxo de criação de criativo (briefing, produção, revisão/compliance e aprovação) para garantir que os prazos de aprovação sejam compatíveis com o cronograma de go-live.</p>
+  </div>
+
+  <!-- ===== EMAIL ===== -->
+  <div class="week w2">
+    <div class="week-header">
+      <div class="week-number" style="font-size:13px;">✉</div>
+      <div class="week-title">
+        <h2>Email</h2>
+        <span>18/11 – 14/12 · Premissa: novo IP · domínio canal nativo</span>
+      </div>
+    </div>
+    <table class="act-table">
+      <thead>
+        <tr>
+          <th class="col-area">Canal</th>
+          <th class="col-activity">Atividade</th>
+          <th class="col-resp">Responsável</th>
+          <th class="col-status">Status</th>
+          <th class="col-prazo">Prazo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="area-badge area-email">Reunião</span></td>
+          <td>Reunião time Jambeiro — alinhamento de setup de email, IP e domínio <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">12/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-email">Email</span></td>
+          <td>Configuração de SAP e IPs dedicados de envio</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">23/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-email">Email</span></td>
+          <td>Setup de domínio de envio e autenticação (SPF, DKIM, DMARC) <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">23/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-email">Email</span></td>
+          <td>Configuração de Reply Mail Management</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">23/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-email">Email</span></td>
+          <td>Criação de templates de email para o cliente (header, footer, variáveis de personalização AMPscript)</td>
+          <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">26/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-email">Email</span></td>
+          <td>Planejamento de IP Warming — definição de cronograma, volumes de envio e segmentação por engajamento <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">02/12</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="deliverable"><strong>Entregável:</strong> Canal Email operacional com domínio autenticado, templates do cliente prontos e plano de IP Warming definido</div>
+  </div>
+
+  <!-- ===== SMS ===== -->
+  <div class="week" style="border-left: 4px solid #8a6200;">
+    <div class="week-header" style="background: linear-gradient(135deg, #f0a000 0%, #8a6200 100%);">
+      <div class="week-number" style="background: rgba(255,255,255,0.25); font-size:13px;">SMS</div>
+      <div class="week-title">
+        <h2>SMS — MobileConnect <small style="font-size:12px; font-weight:400; opacity:1; color:white;">· Premissa: canal nativo Salesforce</small></h2>
+        <span>Em andamento — bloqueado pelo provisionamento</span>
+      </div>
+    </div>
+    <table class="act-table">
+      <thead>
+        <tr>
+          <th class="col-area">Canal</th>
+          <th class="col-activity">Atividade</th>
+          <th class="col-resp">Responsável</th>
+          <th class="col-status">Status</th>
+          <th class="col-prazo">Prazo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="area-badge area-sms">SMS</span></td>
+          <td>Provisionamento do MobileConnect / short code <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-progress"><span class="status-dot"></span>Em Andamento</span></td>
+          <td><span class="prazo-cell">Iniciado 29/10</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-sms">SMS</span></td>
+          <td>Solicitação de From Name (nome remetente SMS)</td>
+          <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          <td><span class="status-badge s-blocked"><span class="status-dot"></span>Bloqueado</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-sms">SMS</span></td>
+          <td>Configuração de MobileConnect e keywords (STOP, AJUDA)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-blocked"><span class="status-dot"></span>Bloqueado</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-sms">SMS</span></td>
+          <td>Criação de template de SMS com compliance de opt-out</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-blocked"><span class="status-dot"></span>Bloqueado</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-sms">SMS</span></td>
+          <td>Teste de envio end-to-end</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-blocked"><span class="status-dot"></span>Bloqueado</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="deliverable"><strong>Entregável:</strong> Canal SMS operacional com keywords e template de opt-out configurados</div>
+  </div>
+
+  <!-- ===== WHATSAPP ===== -->
+  <div class="week" style="border-left: 4px solid #1db954;">
+    <div class="week-header" style="background: linear-gradient(135deg, #1db954 0%, #0d7a3e 100%);">
+      <div class="week-number" style="background: rgba(255,255,255,0.25);">WA</div>
+      <div class="week-title">
+        <h2>WhatsApp — Integração Nativa Salesforce <small style="font-size:12px; font-weight:400; opacity:1; color:white;">· Premissa: novo número · sem integração Genesys no MVP</small></h2>
+        <span>26/11 – 04/12 · Número cadastrado Salesforce exclusivo para marketing</span>
+      </div>
+    </div>
+    <table class="act-table">
+      <thead>
+        <tr>
+          <th class="col-area">Canal</th>
+          <th class="col-activity">Atividade</th>
+          <th class="col-resp">Responsável</th>
+          <th class="col-status">Status</th>
+          <th class="col-prazo">Prazo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="area-badge area-whatsapp">WhatsApp</span></td>
+          <td>Habilitação do canal WhatsApp nativo no SFMC (Salesforce WhatsApp Integration) <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">25/11 – 02/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-whatsapp">WhatsApp</span></td>
+          <td>Vinculação da conta Meta Business Manager ao SFMC</td>
+          <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">25/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-whatsapp">WhatsApp</span></td>
+          <td>Submissão e aprovação de HSM templates na Meta <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          <td><span class="status-badge s-blocked"><span class="status-dot"></span>Bloqueado</span></td>
+          <td><span class="prazo-cell">01/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-whatsapp">WhatsApp</span></td>
+          <td>Criação do fluxo de opt-in e opt-out para WhatsApp (LGPD — consentimento explícito para canal)</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">27/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-whatsapp">WhatsApp</span></td>
+          <td>Planejamento de disparos WhatsApp — definição de janelas de envio, frequência, limites por contato e regras de supressão <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">30/11</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="deliverable"><strong>Entregável:</strong> Canal WhatsApp nativo ativo no SFMC · Fluxo opt-in/out configurado · Plano de disparos definido · HSM aprovado</div>
+  </div>
+
+  <!-- ===== DATA CLOUD ===== -->
+  <div class="week w3">
+    <div class="week-header">
+      <div class="week-number" style="font-size:11px;">DC</div>
+      <div class="week-title">
+        <h2>Data Cloud: Ingestão e Unificação</h2>
+        <span>14/12 – 28/12</span>
+      </div>
+    </div>
+    <table class="act-table">
+      <thead>
+        <tr>
+          <th class="col-area">Área</th>
+          <th class="col-activity">Atividade</th>
+          <th class="col-resp">Responsável</th>
+          <th class="col-status">Status</th>
+          <th class="col-prazo">Prazo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="area-badge area-dc">Ingestão</span></td>
+          <td>Disponibilização dos arquivos no Azure Blob Storage <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">até 04/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Ingestão</span></td>
+          <td>Configuração dos Data Streams a partir do Azure Blob Storage (batch/scheduled)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">07/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Ingestão</span></td>
+          <td>Mapeamento dos campos para DMOs (Individual, Contact Point Email, Phone)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">07/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Ingestão</span></td>
+          <td>Configuração de Identity Resolution (regras de match — email, CPF, phone) <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">10/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Segmentação</span></td>
+          <td>Criação dos primeiros Segments no Data Cloud</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">11/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Segmentação</span></td>
+          <td>Ativação dos segmentos para o SFMC via Data Cloud Connector</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">14/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Segmentação</span></td>
+          <td>Publicação dos segmentos como Data Extensions no SFMC</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">14/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Relatórios</span></td>
+          <td>Configuração de relatórios via Data Views no SFMC (Sent, Bounce, Open, Click, Unsub)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">14/12</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="deliverable"><strong>Entregável:</strong> Pipeline Azure → Data Cloud → SFMC funcional, Identity Resolution ativa, segmentos criados e ativados no SFMC, relatórios de Data Views ativos</div>
+  </div>
+
+  <!-- ===== PERSONALIZATION ===== -->
+  <div class="week" style="border-left: 4px solid #7b2d8b;">
+    <div class="week-header" style="background: linear-gradient(135deg, #7b2d8b 0%, #4a1060 100%);">
+      <div class="week-number" style="background: rgba(255,255,255,0.25); font-size:11px;">PZ</div>
+      <div class="week-title">
+        <h2>Personalization — Server-Side (App)</h2>
+        <span>14/12 – 28/12 · dependência: time do app</span>
+      </div>
+    </div>
+    <div style="margin:12px 16px; padding:10px 16px; background:#fdf0f0; border-left:4px solid #c0392b; border-radius:0 8px 8px 0;">
+      <strong style="color:#c0392b; font-size:13px;">🔴 Dependência: MuleSoft</strong>
+      <p style="margin-top:6px; font-size:12px; color:#7a1a1a; line-height:1.6;">Dependência da definição das integrações via MuleSoft, ainda fora do escopo atual do plano. O cronograma desta frente pode ser revisado após essa definição.</p>
+    </div>
+    <table class="act-table">
+      <thead>
+        <tr>
+          <th class="col-area">Área</th>
+          <th class="col-activity">Atividade</th>
+          <th class="col-resp">Responsável</th>
+          <th class="col-status">Status</th>
+          <th class="col-prazo">Prazo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="area-badge area-person">Personalization</span></td>
+          <td>Definição do escopo: 1 área de conteúdo no app para personalização server-side <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">26/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-person">Personalization</span></td>
+          <td>Especificação técnica da integração server-side API (endpoints, payload, autenticação) <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">26/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-person">Personalization</span></td>
+          <td>Configuração do dataset e catálogo de conteúdo no Personalization</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">26/11</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-person">Personalization</span></td>
+          <td>Implementação da chamada server-side API pelo time do app</td>
+          <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          <td><span class="status-badge s-blocked"><span class="status-dot"></span>Bloqueado</span></td>
+          <td><span class="prazo-cell" style="color:#856404; font-size:11px; white-space:normal;">⚠ Verificar roadmap do app</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-person">Personalization</span></td>
+          <td>Setup da receita de personalização para a área de conteúdo definida</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-blocked"><span class="status-dot"></span>Bloqueado</span></td>
+          <td><span class="prazo-cell" style="color:#856404; font-size:11px; white-space:normal;">⚠ Verificar roadmap do app</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-person">Personalization</span></td>
+          <td>Teste end-to-end da personalização no app (request → resposta → renderização)</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-blocked"><span class="status-dot"></span>Bloqueado</span></td>
+          <td><span class="prazo-cell" style="color:#856404; font-size:11px; white-space:normal;">⚠ Verificar roadmap do app</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="deliverable"><strong>Entregável:</strong> 1 área de conteúdo no app personalizada via server-side API · prazo condicionado ao roadmap do time do app</div>
+  </div>
+
+  <!-- ===== SEMANA 4 — JORNADAS ===== -->
+  <div class="week w4">
+    <div class="week-header">
+      <div class="week-number">4</div>
+      <div class="week-title">
+        <h2>UC1 — Jornada Limite de Crédito</h2>
+        <span>08/12 – 23/12 · Entry: Segment Activation Data Cloud</span>
+      </div>
+    </div>
+    <table class="act-table">
+      <thead>
+        <tr>
+          <th class="col-area">Área</th>
+          <th class="col-activity">Atividade</th>
+          <th class="col-resp">Responsável</th>
+          <th class="col-status">Status</th>
+          <th class="col-prazo">Prazo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="area-badge area-dc">Data Cloud</span></td>
+          <td>Ingestão de dados do caso de uso 1 (Azure Blob Storage → Data Cloud) <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">até 08/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-journey">Journey Builder</span></td>
+          <td>Criação da jornada — Entry via Segment Activation do Data Cloud <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">15/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-journey">Journey Builder</span></td>
+          <td>Configuração de 1 canal com repique — Email D+0 <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">15/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-qa">QA</span></td>
+          <td>Teste em modo Test Mode — validar fluxo completo</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">17/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-qa">QA</span></td>
+          <td>Validação de compliance LGPD</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">18/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-journey">Go-Live</span></td>
+          <td>Ativação para grupo reduzido (soft launch — mínimo canal Email) <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">23/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-journey">Go-Live</span></td>
+          <td>Monitoramento: bounce, deliverability, opt-out rate</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">23/12</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="deliverable"><strong>Entregável:</strong> UC1 Jornada Limite de Crédito ativa — 1 canal com repique (Email), go-live 23/12</div>
+
+    <div style="margin:12px 20px 20px; background:linear-gradient(135deg,#fff8e1,#fff3cd); border:2px solid #f5c800; border-radius:10px; padding:14px 16px;">
+      <div style="font-size:12px; font-weight:700; color:#7a5c00; margin-bottom:10px;">⭐ Objetivo esperado — Go-Live 23/12</div>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+        <span style="background:#f5c800; color:#3a2d00; border-radius:20px; padding:4px 12px; font-size:11px; font-weight:600;">📧 1 canal ativo (Email)</span>
+        <span style="background:#f5c800; color:#3a2d00; border-radius:20px; padding:4px 12px; font-size:11px; font-weight:600;">⚡ Entrada de dados via Segment Activation DC</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== JORNADA DEPÓSITO ===== -->
+  <div class="week" style="border-left: 4px solid #00728a;">
+    <div class="week-header" style="background: linear-gradient(135deg, #00728a 0%, #004a5c 100%);">
+      <div class="week-number" style="background: rgba(255,255,255,0.25); font-size:11px;">JB</div>
+      <div class="week-title">
+        <h2>UC2.2 — Jornada Depósito · Integração MuleSoft + MQ <small style="font-size:12px; font-weight:400; color:white; opacity:1;">· Em Backlog</small></h2>
+        <span>Dependência: MuleSoft → fila MQ → Data Cloud → API Event SFMC</span>
+      </div>
+    </div>
+    <div style="margin:12px 16px; padding:10px 16px; background:#fdf0f0; border-left:4px solid #c0392b; border-radius:0 8px 8px 0;">
+      <strong style="color:#c0392b; font-size:13px;">🔴 Dependência: MuleSoft</strong>
+      <p style="margin-top:6px; font-size:12px; color:#7a1a1a; line-height:1.6;">Esta jornada depende da integração MuleSoft → fila MQ → Data Cloud → API Event SFMC. Sem prazo definido até a conclusão do desenho e da entrega da integração MuleSoft.</p>
+    </div>
+    <table class="act-table">
+      <thead>
+        <tr>
+          <th class="col-area">Área</th>
+          <th class="col-activity">Atividade</th>
+          <th class="col-resp">Responsável</th>
+          <th class="col-status">Status</th>
+          <th class="col-prazo">Prazo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="area-badge area-dc">Integração</span></td>
+          <td>Definição do contrato de evento MuleSoft → fila MQ → Data Cloud (payload, campos obrigatórios, trigger de depósito) <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Integração</span></td>
+          <td>Configuração da fila MQ — MuleSoft publica evento → Data Cloud consome e aciona API Event no SFMC <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Integração</span></td>
+          <td>Configuração do API Event no SFMC — disparado pelo Data Cloud após consumo da fila MQ (entry source da jornada)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Modelagem</span></td>
+          <td>Modelagem do Data Extension de entrada (campos do evento: CPF, valor, tipo depósito, canal, timestamp)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Segmentação</span></td>
+          <td>Criação do segmento no Data Cloud: clientes com depósito realizado nas últimas 24h</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-dc">Segmentação</span></td>
+          <td>Publicação do segmento como Data Extension no SFMC via Data Cloud Connector</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-journey">Journey Builder</span></td>
+          <td>Criação da jornada "Depósito" — Entry via API Event (evento MQ) <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-journey">Journey Builder</span></td>
+          <td>Configuração D+0 — Email de confirmação de depósito com personalização AMPscript (valor, data, canal)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-journey">Journey Builder</span></td>
+          <td>Decision Split: valor do depósito ≥ threshold → comunicação diferenciada (SMS ou WhatsApp)</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-journey">Journey Builder</span></td>
+          <td>Configuração de Exit Criteria (depósito cancelado ou estornado) e Re-entry desabilitada</td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-qa">QA</span></td>
+          <td>Teste end-to-end: publicar evento na fila MQ → entrada na jornada → envio do canal</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge area-qa">QA</span></td>
+          <td>Validação de compliance: opt-out, LGPD e dados sensíveis (valor financeiro)</td>
+          <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell vazio">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="deliverable"><strong>Entregável:</strong> Jornada Depósito ativa — fluxo MuleSoft → fila MQ → Data Cloud → API Event SFMC, confirmação por Email + canal adicional por valor</div>
+  </div>
+
+  <!-- ===== DOCUMENTAÇÃO DO PROJETO ===== -->
+  <div class="week" style="border-left: 4px solid #032d60;">
+    <div class="week-header" style="background: linear-gradient(135deg, #1a1a2e 0%, #032d60 100%);">
+      <div class="week-number" style="background: rgba(255,255,255,0.25); font-size:11px;">DOC</div>
+      <div class="week-title">
+        <h2>Documentação do Projeto</h2>
+        <span>Revisão e aprovação paralela ao plano técnico</span>
+      </div>
+    </div>
+    <table class="act-table">
+      <thead>
+        <tr>
+          <th class="col-area">Documento</th>
+          <th class="col-activity">Atividade</th>
+          <th class="col-resp">Responsável</th>
+          <th class="col-status">Status</th>
+          <th class="col-prazo">Prazo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="area-badge" style="background:#e8f0fe;color:#1a3a8a;">Estratégico</span></td>
+          <td>Revisão do Planejamento Estratégico <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">27/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge" style="background:#dce8fd;color:#0050a0;">Arquitetura</span></td>
+          <td>Revisão da Avaliação Técnica <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">27/12</span></td>
+        </tr>
+        <tr>
+          <td><span class="area-badge" style="background:#fff0e8;color:#8a4000;">Dados</span></td>
+          <td>Entrega do Planejamento Estratégico de Dados <span class="critico-icon">⚠ Crítico</span></td>
+          <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+          <td><span class="prazo-cell">02/12</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="deliverable"><strong>Entregável:</strong> 3 documentos — Revisão Estratégica (27/12), Revisão Técnica (27/12), Planejamento de Dados (02/12)</div>
+  </div>
+
+  <div style="display:none;">
+  <div style="background:white; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,0.07); overflow:hidden; margin-bottom:40px;">
+
+    <!-- HEADER -->
+    <div style="display:grid; grid-template-columns:180px repeat(5,1fr); background:#032d60; color:white;">
+      <div style="padding:14px 16px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#7eb4f5;">Área / Entregável</div>
+      <div style="padding:14px 16px; border-left:1px solid rgba(255,255,255,0.1); text-align:center;">
+        <div style="font-size:12px; font-weight:700;">Sem 1</div>
+        <div style="font-size:10px; opacity:.7; margin-top:2px;">18/11–01/12</div>
+      </div>
+      <div style="padding:14px 16px; border-left:1px solid rgba(255,255,255,0.1); text-align:center;">
+        <div style="font-size:12px; font-weight:700;">Sem 2</div>
+        <div style="font-size:10px; opacity:.7; margin-top:2px;">02/12–14/12</div>
+      </div>
+      <div style="padding:14px 16px; border-left:1px solid rgba(255,255,255,0.1); text-align:center;">
+        <div style="font-size:12px; font-weight:700;">Sem 3</div>
+        <div style="font-size:10px; opacity:.7; margin-top:2px;">14–23/12</div>
+      </div>
+      <div style="padding:14px 16px; border-left:1px solid rgba(255,255,255,0.1); text-align:center;">
+        <div style="font-size:12px; font-weight:700;">Sem 4</div>
+        <div style="font-size:10px; opacity:.7; margin-top:2px;">24–23/12</div>
+      </div>
+      <div style="padding:14px 16px; border-left:1px solid rgba(255,255,255,0.1); text-align:center;">
+        <div style="font-size:12px; font-weight:700;">Sem 5</div>
+        <div style="font-size:10px; opacity:.7; margin-top:2px;">24/12–04/01</div>
+      </div>
+    </div>
+
+    <!-- ESCALA: 10/11=0 → 04/01=40 dias · 1 dia = 2.5% · col labels = 5 semanas -->
+    <!-- Header semanas -->
+    <div style="display:flex;">
+      <div style="width:160px; flex-shrink:0; background:#032d60;"></div>
+      <div style="flex:1; display:grid; grid-template-columns:20% 17.5% 25% 12.5% 25%; background:#032d60; color:white;">
+        <div style="padding:10px 12px; border-left:1px solid rgba(255,255,255,0.15); text-align:center;"><div style="font-size:11px; font-weight:700;">Sem 1</div><div style="font-size:10px; opacity:.65;">18/11–01/12</div></div>
+        <div style="padding:10px 12px; border-left:1px solid rgba(255,255,255,0.15); text-align:center;"><div style="font-size:11px; font-weight:700;">Sem 2</div><div style="font-size:10px; opacity:.65;">02/12–14/12</div></div>
+        <div style="padding:10px 12px; border-left:1px solid rgba(255,255,255,0.15); text-align:center;"><div style="font-size:11px; font-weight:700;">Sem 3</div><div style="font-size:10px; opacity:.65;">14–23/12</div></div>
+        <div style="padding:10px 12px; border-left:1px solid rgba(255,255,255,0.15); text-align:center;"><div style="font-size:11px; font-weight:700;">Sem 4</div><div style="font-size:10px; opacity:.65;">24–23/12</div></div>
+        <div style="padding:10px 12px; border-left:1px solid rgba(255,255,255,0.15); text-align:center;"><div style="font-size:11px; font-weight:700;">Sem 5</div><div style="font-size:10px; opacity:.65;">24/12–04/01</div></div>
+      </div>
+    </div>
+
+    <!-- Macro: left% = (startDay/40)*100, width% = ((endDay-startDay)/40)*100, diamond left% = (day/40)*100 -->
+
+    <!-- SFMC Core · janela 18/11–01/12 = dia0→dia8 · prazo Einstein 18/11=dia8 -->
+    <div style="display:flex; border-bottom:1px solid #f0f3f8; align-items:center; min-height:44px;">
+      <div style="width:160px; flex-shrink:0; padding:8px 14px; font-size:11px; font-weight:700; color:#0070d2; background:#f8fafc;">SFMC Core</div>
+      <div style="flex:1; position:relative; height:44px; background:repeating-linear-gradient(90deg,#f8fafc,#f8fafc calc(20% - 1px),#e8edf5 calc(20% - 1px),#e8edf5 20%,#f8fafc 20%,#f8fafc calc(37.5% - 1px),#e8edf5 calc(37.5% - 1px),#e8edf5 37.5%,#f8fafc 37.5%,#f8fafc calc(62.5% - 1px),#e8edf5 calc(62.5% - 1px),#e8edf5 62.5%,#f8fafc 62.5%,#f8fafc calc(75% - 1px),#e8edf5 calc(75% - 1px),#e8edf5 75%,#f8fafc 75%,#f8fafc 100%);">
+        <!-- barra 0%→20% -->
+        <div style="position:absolute; left:0%; width:20%; top:11px; height:22px; background:#0070d2; border-radius:4px; display:flex; align-items:center; padding-left:8px;"><span style="color:white; font-size:10px; font-weight:600; white-space:nowrap;">Fundação SFMC</span></div>
+        <!-- prazo 18/11 = dia8 = 20% -->
+        <div style="position:absolute; left:calc(20% - 7px); top:6px; width:14px; height:14px; background:#0070d2; border:2px solid white; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(20% - 16px); top:24px; font-size:9px; color:#0070d2; font-weight:700; white-space:nowrap;">15/12</div>
+      </div>
+    </div>
+
+    <!-- Fundação DC · janela 18/11–01/12 = dia0→dia8 · inclui Tenant, DMO, Azure -->
+    <div style="display:flex; border-bottom:1px solid #f0f3f8; align-items:center; min-height:44px;">
+      <div style="width:160px; flex-shrink:0; padding:8px 14px; font-size:11px; font-weight:700; color:#ff6b35; background:#f8fafc;">☁ DC Fundação</div>
+      <div style="flex:1; position:relative; height:44px; background:repeating-linear-gradient(90deg,#f8fafc,#f8fafc calc(20% - 1px),#e8edf5 calc(20% - 1px),#e8edf5 20%,#f8fafc 20%,#f8fafc calc(37.5% - 1px),#e8edf5 calc(37.5% - 1px),#e8edf5 37.5%,#f8fafc 37.5%,#f8fafc calc(62.5% - 1px),#e8edf5 calc(62.5% - 1px),#e8edf5 62.5%,#f8fafc 62.5%,#f8fafc calc(75% - 1px),#e8edf5 calc(75% - 1px),#e8edf5 75%,#f8fafc 75%,#f8fafc 100%);">
+        <div style="position:absolute; left:0%; width:20%; top:11px; height:22px; background:#ff6b35; border-radius:4px; display:flex; align-items:center; padding-left:8px;"><span style="color:white; font-size:10px; font-weight:600; white-space:nowrap;">Tenant · DMO · Azure</span></div>
+        <!-- prazo 15/11 = dia5 = 12.5% -->
+        <div style="position:absolute; left:calc(12.5% - 7px); top:6px; width:14px; height:14px; background:#ff6b35; border:2px solid white; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(12.5% - 12px); top:24px; font-size:9px; color:#ff6b35; font-weight:700;">26/11</div>
+      </div>
+    </div>
+
+    <!-- DC Ingestão · janela 30/11–15/12 = dia15→dia25 = 37.5%→62.5% -->
+    <div style="display:flex; border-bottom:1px solid #f0f3f8; align-items:center; min-height:44px;">
+      <div style="width:160px; flex-shrink:0; padding:8px 14px; font-size:11px; font-weight:700; color:#c04000; background:#f8fafc;">☁ DC Ingestão</div>
+      <div style="flex:1; position:relative; height:44px; background:repeating-linear-gradient(90deg,#f8fafc,#f8fafc calc(20% - 1px),#e8edf5 calc(20% - 1px),#e8edf5 20%,#f8fafc 20%,#f8fafc calc(37.5% - 1px),#e8edf5 calc(37.5% - 1px),#e8edf5 37.5%,#f8fafc 37.5%,#f8fafc calc(62.5% - 1px),#e8edf5 calc(62.5% - 1px),#e8edf5 62.5%,#f8fafc 62.5%,#f8fafc calc(75% - 1px),#e8edf5 calc(75% - 1px),#e8edf5 75%,#f8fafc 75%,#f8fafc 100%);">
+        <div style="position:absolute; left:37.5%; width:25%; top:11px; height:22px; background:#c04000; border-radius:4px; display:flex; align-items:center; padding-left:8px;"><span style="color:white; font-size:10px; font-weight:600; white-space:nowrap;">Pipeline Azure→DC→SFMC</span></div>
+        <!-- prazo 15/12 = dia25 = 62.5% -->
+        <div style="position:absolute; left:calc(62.5% - 7px); top:6px; width:14px; height:14px; background:#c04000; border:2px solid white; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(62.5% - 12px); top:24px; font-size:9px; color:#c04000; font-weight:700;">28/12</div>
+      </div>
+    </div>
+
+    <!-- Email · janela 10–30/11 = dia0→dia15 = 0%→37.5% · prazo 15/11=12.5%, 30/11=37.5% -->
+    <div style="display:flex; border-bottom:1px solid #f0f3f8; align-items:center; min-height:44px;">
+      <div style="width:160px; flex-shrink:0; padding:8px 14px; font-size:11px; font-weight:700; color:#1a7a3c; background:#f8fafc;">✉ Email</div>
+      <div style="flex:1; position:relative; height:44px; background:repeating-linear-gradient(90deg,#f8fafc,#f8fafc calc(20% - 1px),#e8edf5 calc(20% - 1px),#e8edf5 20%,#f8fafc 20%,#f8fafc calc(37.5% - 1px),#e8edf5 calc(37.5% - 1px),#e8edf5 37.5%,#f8fafc 37.5%,#f8fafc calc(62.5% - 1px),#e8edf5 calc(62.5% - 1px),#e8edf5 62.5%,#f8fafc 62.5%,#f8fafc calc(75% - 1px),#e8edf5 calc(75% - 1px),#e8edf5 75%,#f8fafc 75%,#f8fafc 100%);">
+        <div style="position:absolute; left:0%; width:37.5%; top:11px; height:22px; background:#1a7a3c; border-radius:4px;"></div>
+        <!-- prazo 15/11 = 12.5% -->
+        <div style="position:absolute; left:calc(12.5% - 7px); top:6px; width:14px; height:14px; background:#1a7a3c; border:2px solid white; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(12.5% - 12px); top:24px; font-size:9px; color:#1a7a3c; font-weight:700;">26/11</div>
+        <!-- prazo 30/11 = 37.5% -->
+        <div style="position:absolute; left:calc(37.5% - 7px); top:6px; width:14px; height:14px; background:#1db954; border:2px solid white; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(37.5% - 12px); top:24px; font-size:9px; color:#1a7a3c; font-weight:700;">28/12</div>
+        <div style="position:absolute; left:4px; top:14px; font-size:10px; color:white; font-weight:600;">Canal operacional</div>
+      </div>
+    </div>
+
+    <!-- WhatsApp · janela 10–23/11 = dia0→dia10 = 0%→25% · prazo 15/11=12.5%, 23/11=25% -->
+    <div style="display:flex; border-bottom:1px solid #f0f3f8; align-items:center; min-height:44px;">
+      <div style="width:160px; flex-shrink:0; padding:8px 14px; font-size:11px; font-weight:700; color:#1db954; background:#f8fafc;">💬 WhatsApp</div>
+      <div style="flex:1; position:relative; height:44px; background:repeating-linear-gradient(90deg,#f8fafc,#f8fafc calc(20% - 1px),#e8edf5 calc(20% - 1px),#e8edf5 20%,#f8fafc 20%,#f8fafc calc(37.5% - 1px),#e8edf5 calc(37.5% - 1px),#e8edf5 37.5%,#f8fafc 37.5%,#f8fafc calc(62.5% - 1px),#e8edf5 calc(62.5% - 1px),#e8edf5 62.5%,#f8fafc 62.5%,#f8fafc calc(75% - 1px),#e8edf5 calc(75% - 1px),#e8edf5 75%,#f8fafc 75%,#f8fafc 100%);">
+        <div style="position:absolute; left:0%; width:25%; top:11px; height:22px; background:#1db954; border-radius:4px;"></div>
+        <!-- prazo 15/11 = 12.5% -->
+        <div style="position:absolute; left:calc(12.5% - 7px); top:6px; width:14px; height:14px; background:#1db954; border:2px solid white; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(12.5% - 12px); top:24px; font-size:9px; color:#1a7a3c; font-weight:700;">26/11</div>
+        <!-- prazo 23/11 = 25% -->
+        <div style="position:absolute; left:calc(25% - 7px); top:6px; width:14px; height:14px; background:#0d7a3e; border:2px solid white; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(25% - 12px); top:24px; font-size:9px; color:#1a7a3c; font-weight:700;">29/12</div>
+        <div style="position:absolute; left:4px; top:14px; font-size:10px; color:white; font-weight:600;">Canal operacional</div>
+      </div>
+    </div>
+
+    <!-- UC1 Lim. Crédito · janela 14/12–04/01 = dia23→dia30 = 57.5%→75% · prazos 14/12=57.5%, 21/12=70%, 04/01=75% -->
+    <div style="display:flex; border-bottom:1px solid #f0f3f8; align-items:center; min-height:44px;">
+      <div style="width:160px; flex-shrink:0; padding:8px 14px; font-size:11px; font-weight:700; color:#7b2d8b; background:#f8fafc;">💳 UC1 Lim. Crédito</div>
+      <div style="flex:1; position:relative; height:44px; background:repeating-linear-gradient(90deg,#f8fafc,#f8fafc calc(20% - 1px),#e8edf5 calc(20% - 1px),#e8edf5 20%,#f8fafc 20%,#f8fafc calc(37.5% - 1px),#e8edf5 calc(37.5% - 1px),#e8edf5 37.5%,#f8fafc 37.5%,#f8fafc calc(62.5% - 1px),#e8edf5 calc(62.5% - 1px),#e8edf5 62.5%,#f8fafc 62.5%,#f8fafc calc(75% - 1px),#e8edf5 calc(75% - 1px),#e8edf5 75%,#f8fafc 75%,#f8fafc 100%);">
+        <div style="position:absolute; left:57.5%; width:17.5%; top:11px; height:22px; background:#7b2d8b; border-radius:4px; display:flex; align-items:center; padding-left:8px;"><span style="color:white; font-size:10px; font-weight:600; white-space:nowrap;">Jornada · QA · Go-Live</span></div>
+        <!-- prazo 14/12 = 57.5% -->
+        <div style="position:absolute; left:calc(57.5% - 7px); top:6px; width:14px; height:14px; background:#7b2d8b; border:2px solid white; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(57.5% - 10px); top:24px; font-size:9px; color:#7b2d8b; font-weight:700;">24/12</div>
+        <!-- prazo 21/12 = 70% -->
+        <div style="position:absolute; left:calc(70% - 7px); top:6px; width:14px; height:14px; background:#7b2d8b; border:2px solid white; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(70% - 10px); top:24px; font-size:9px; color:#7b2d8b; font-weight:700;">29/12</div>
+        <!-- prazo 04/01 = 75% -->
+        <div style="position:absolute; left:calc(75% - 7px); top:6px; width:14px; height:14px; background:#b0004e; border:2px solid #f5c800; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(75% - 18px); top:24px; font-size:9px; color:#b0004e; font-weight:700;"><span style="font-size:1.7em;line-height:1;vertical-align:middle;">🎅🛷</span> 04/01</div>
+      </div>
+    </div>
+
+    <!-- Documentação · prazo 10/12=55%, 04/01=100% -->
+    <div style="display:flex; align-items:center; min-height:44px;">
+      <div style="width:160px; flex-shrink:0; padding:8px 14px; font-size:11px; font-weight:700; color:#1a3a8a; background:#f8fafc;">📄 Documentação</div>
+      <div style="flex:1; position:relative; height:44px; background:repeating-linear-gradient(90deg,#f8fafc,#f8fafc calc(20% - 1px),#e8edf5 calc(20% - 1px),#e8edf5 20%,#f8fafc 20%,#f8fafc calc(37.5% - 1px),#e8edf5 calc(37.5% - 1px),#e8edf5 37.5%,#f8fafc 37.5%,#f8fafc calc(62.5% - 1px),#e8edf5 calc(62.5% - 1px),#e8edf5 62.5%,#f8fafc 62.5%,#f8fafc calc(75% - 1px),#e8edf5 calc(75% - 1px),#e8edf5 75%,#f8fafc 75%,#f8fafc 100%);">
+        <!-- prazo 10/12 = 55% -->
+        <div style="position:absolute; left:calc(55% - 7px); top:6px; width:14px; height:14px; background:#1a3a8a; border:2px solid white; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(55% - 10px); top:24px; font-size:9px; color:#1a3a8a; font-weight:700;">23/12</div>
+        <!-- prazo 04/01 = 100% -->
+        <div style="position:absolute; left:calc(100% - 14px); top:6px; width:14px; height:14px; background:#032d60; border:2px solid white; border-radius:2px; transform:rotate(45deg); box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>
+        <div style="position:absolute; left:calc(100% - 22px); top:24px; font-size:9px; color:#032d60; font-weight:700;">04/01</div>
+      </div>
+    </div>
+
+  </div>
+
+
+</main>
+
+<footer>
+  Plano de Implementação SFMC + Personalization + Data Cloud &nbsp;·&nbsp; 30 dias &nbsp;·&nbsp; Azure Blob Storage &nbsp;·&nbsp; Gerado em novembro de 2026
+</footer>
+
+</div><!-- /tab-plano -->
+
+
+<!-- ===== ABA: DOCUMENTO ESTRATÉGICO (REMOVIDA) ===== -->
+<div id="tab-estrategico" class="tab-pane">
+<main style="display:none;">
+
+  <div class="section-title" style="margin-top:8px;">Revisão de Documento Estratégico</div>
+
+  <div class="doc-section">
+    <div class="doc-section-header" style="background: linear-gradient(135deg,#032d60,#0070d2);">
+      <span style="font-size:20px;">🎯</span>
+      <span>Visão e Objetivos do Projeto</span>
+    </div>
+    <div class="doc-section-body">
+      <h4>Objetivo Principal</h4>
+      <p>Habilitar a plataforma Salesforce Marketing Cloud como canal unificado de comunicação digital, integrando Email, SMS e WhatsApp com dados centralizados no Data Cloud via Azure Blob Storage, permitindo jornadas personalizadas em escala com inteligência Einstein.</p>
+      <h4>Objetivos Específicos</h4>
+      <ul>
+        <li>Provisionar e configurar o ambiente SFMC (BU, IPs, domínios, canais) em até 30/11</li>
+        <li>Integrar Azure Blob Storage ao Data Cloud para ingestão e unificação de dados de clientes</li>
+        <li>Habilitar os 3 canais de comunicação: Email (23/11), SMS e WhatsApp (19/11)</li>
+        <li>Lançar a jornada piloto "Limite de Crédito" em 23/12 com mínimo 1 canal ativo</li>
+        <li>Habilitar features Einstein: STO, Engagement Scoring e Messaging Insights</li>
+        <li>Garantir conformidade com LGPD em todos os canais e jornadas</li>
+      </ul>
+      <h4>Escopo</h4>
+      <ul>
+        <li><strong>In Scope:</strong> SFMC (Email, SMS, WhatsApp), Data Cloud (2 Data Spaces, Identity Resolution, Segmentação), Personalization server-side (1 área de conteúdo no app), Azure Blob Storage connector, Einstein STO / Engagement Scoring / Messaging Insights</li>
+        <li><strong>Out of Scope:</strong> CRM (Salesforce Sales/Service Cloud), integração com ERPs, web tracking via beacon JavaScript, outros canais (push notification, in-app messaging nativo)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="doc-section-header" style="background: linear-gradient(135deg,#7b2d8b,#4a1060);">
+      <span style="font-size:20px;">📌</span>
+      <span>Critérios de Sucesso e KPIs de Go-Live</span>
+    </div>
+    <div class="doc-section-body">
+      <table class="rev-table">
+        <thead><tr><th>KPI</th><th>Meta</th><th>Canal</th><th>Prazo de Medição</th></tr></thead>
+        <tbody>
+          <tr><td>Taxa de entrega (deliverability)</td><td>&gt; 95%</td><td>Email</td><td>7 dias pós go-live</td></tr>
+          <tr><td>Taxa de abertura</td><td>&gt; 20%</td><td>Email</td><td>7 dias pós go-live</td></tr>
+          <tr><td>Bounce rate</td><td>&lt; 2%</td><td>Email</td><td>7 dias pós go-live</td></tr>
+          <tr><td>Opt-out rate</td><td>&lt; 0,5%</td><td>Todos</td><td>7 dias pós go-live</td></tr>
+          <tr><td>Taxa de match — Identity Resolution</td><td>&gt; 70%</td><td>Data Cloud</td><td>Semana 1 de ingestão</td></tr>
+          <tr><td>Jornada ativa com mínimo 1 canal</td><td>100%</td><td>Journey Builder</td><td>23/12</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="doc-section-header" style="background: linear-gradient(135deg,#ff6b35,#c04000);">
+      <span style="font-size:20px;">⚠️</span>
+      <span>Riscos Estratégicos e Plano de Mitigação</span>
+    </div>
+    <div class="doc-section-body">
+      <table class="rev-table">
+        <thead><tr><th>Risco</th><th>Impacto</th><th>Probabilidade</th><th>Mitigação</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Aprovação HSM WhatsApp demorar &gt; 10 dias úteis</td>
+            <td><span class="risk-badge risk-high">Alto</span></td>
+            <td>Média</td>
+            <td>Submeter templates na Semana 1; ter email como canal fallback no go-live</td>
+          </tr>
+          <tr>
+            <td>Short code SMS não aprovado até go-live</td>
+            <td><span class="risk-badge risk-high">Alto</span></td>
+            <td>Média</td>
+            <td>Usar long code provisório; confirmar prazo com operadora</td>
+          </tr>
+          <tr>
+            <td>Credenciais Azure inválidas ou sem permissão de leitura</td>
+            <td><span class="risk-badge risk-high">Alto</span></td>
+            <td>Baixa</td>
+            <td>Validar Storage Account + SAS Token no kick-off técnico (24/11)</td>
+          </tr>
+          <tr>
+            <td>Time de app não disponível para integração Personalization</td>
+            <td><span class="risk-badge risk-medium">Médio</span></td>
+            <td>Alta</td>
+            <td>Desacoplar Personalization do go-live; entregar em sprint posterior</td>
+          </tr>
+          <tr>
+            <td>Dados no Azure com baixa qualidade / campos faltantes</td>
+            <td><span class="risk-badge risk-medium">Médio</span></td>
+            <td>Média</td>
+            <td>Validar a qualidade dos dados na ingestão (até 08/12); ajustar DMOs antes de Identity Resolution</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="doc-section-header" style="background: linear-gradient(135deg,#1db954,#0d7a3e);">
+      <span style="font-size:20px;">👥</span>
+      <span>Papéis e Responsabilidades</span>
+    </div>
+    <div class="doc-section-body">
+      <table class="rev-table">
+        <thead><tr><th>Papel</th><th>Responsável</th><th>Entregas Críticas</th></tr></thead>
+        <tbody>
+          <tr><td>Arquiteto de Solução SFMC</td><td><span class="resp-badge resp-sf">⚡ Salesforce</span></td><td>Setup BU, IPs, Data Cloud, Journey Builder, Einstein</td></tr>
+          <tr><td>Especialista de Canais</td><td><span class="resp-badge resp-sf">⚡ Salesforce</span></td><td>Email (SAP, domínio, templates), SMS (MobileConnect), WhatsApp (nativo)</td></tr>
+          <tr><td>Especialista Data Cloud</td><td><span class="resp-badge resp-sf">⚡ Salesforce</span></td><td>Bundles, Data Spaces, DMOs, Identity Resolution, Segmentação</td></tr>
+          <tr><td>Gerente de Projeto (Cliente)</td><td><span class="resp-badge resp-cli">🏢 Cliente</span></td><td>Alinhamento interno, aprovações, fornecimento de credenciais e dados</td></tr>
+          <tr><td>Time de Infraestrutura / Azure</td><td><span class="resp-badge resp-cli">🏢 Cliente</span></td><td>Storage Account, SAS Token, Container, permissões IAM</td></tr>
+          <tr><td>Time de DNS / Domínio</td><td><span class="resp-badge resp-cli">🏢 Cliente</span></td><td>Registros SPF, DKIM, DMARC no DNS</td></tr>
+          <tr><td>Time do App (Mobile)</td><td><span class="resp-badge resp-cli">🏢 Cliente</span></td><td>Integração server-side API Personalization (condicionado ao roadmap)</td></tr>
+          <tr><td>Meta Business Manager</td><td><span class="resp-badge resp-cli">🏢 Cliente</span></td><td>Vinculação ao SFMC, aprovação de HSM templates</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+</div><!-- /tab-estrategico -->
+
+
+<!-- ===== ABA: ARQUITETURA TÉCNICA (REMOVIDA) ===== -->
+<div id="tab-arquitetura" class="tab-pane" style="display:none!important;">
+<main>
+
+  <div class="section-title" style="margin-top:8px;">Revisão de Arquitetura Técnica</div>
+
+  <div class="doc-section">
+    <div class="doc-section-header" style="background: linear-gradient(135deg,#032d60,#0070d2);">
+      <span style="font-size:20px;">🏗</span>
+      <span>Diagrama de Arquitetura — Visão em Camadas</span>
+    </div>
+    <div class="doc-section-body">
+
+      <div class="arch-layer">
+        <div class="arch-label">Dados<br>Origem</div>
+        <div class="arch-boxes">
+          <div class="arch-box gray">🗄 Azure Blob Storage<br><small style="font-weight:400;font-size:11px;">Storage Account · Container · SAS Token</small></div>
+          <div class="arch-box gray">📱 App Mobile<br><small style="font-weight:400;font-size:11px;">Eventos server-side</small></div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">▼ Connector Nativo / API</div>
+
+      <div class="arch-layer">
+        <div class="arch-label">Data<br>Cloud</div>
+        <div class="arch-boxes">
+          <div class="arch-box orange">Data Streams (batch)</div>
+          <div class="arch-box orange">DMOs (Individual, ContactPoint)</div>
+          <div class="arch-box orange">Identity Resolution</div>
+          <div class="arch-box orange">Segments</div>
+          <div class="arch-box orange">Data Space 1 (Marketing)</div>
+          <div class="arch-box orange">Data Space 2 (Private)</div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">▼ Data Cloud Connector / Segment Activation</div>
+
+      <div class="arch-layer">
+        <div class="arch-label">SFMC<br>Core</div>
+        <div class="arch-boxes">
+          <div class="arch-box blue">Business Unit</div>
+          <div class="arch-box blue">Data Extensions (Segmentos)</div>
+          <div class="arch-box blue">Journey Builder</div>
+          <div class="arch-box blue">Einstein STO</div>
+          <div class="arch-box blue">Einstein Engagement Scoring</div>
+          <div class="arch-box blue">Messaging Insights</div>
+          <div class="arch-box blue">Data Views (Relatórios)</div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">▼ Canais de Comunicação</div>
+
+      <div class="arch-layer">
+        <div class="arch-label">Canais</div>
+        <div class="arch-boxes">
+          <div class="arch-box green">✉ Email<br><small style="font-weight:400;font-size:11px;">SAP · IPs · SPF/DKIM/DMARC</small></div>
+          <div class="arch-box amber">📱 SMS<br><small style="font-weight:400;font-size:11px;">MobileConnect · Short Code</small></div>
+          <div class="arch-box green">💬 WhatsApp<br><small style="font-weight:400;font-size:11px;">Nativo SFMC · Meta BM · HSM</small></div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">▼ Personalização</div>
+
+      <div class="arch-layer">
+        <div class="arch-label">Person-<br>alization</div>
+        <div class="arch-boxes">
+          <div class="arch-box purple">Server-Side API<br><small style="font-weight:400;font-size:11px;">1 área de conteúdo · App mobile</small></div>
+          <div class="arch-box purple">Dataset + Catálogo</div>
+          <div class="arch-box purple">Receita de Recomendação</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="doc-section-header" style="background: linear-gradient(135deg,#ff6b35,#c04000);">
+      <span style="font-size:20px;">🔗</span>
+      <span>Integrações e Dependências Técnicas</span>
+    </div>
+    <div class="doc-section-body">
+      <table class="rev-table">
+        <thead><tr><th>Integração</th><th>Tipo</th><th>Credenciais Necessárias</th><th>Responsável</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Azure Blob Storage → Data Cloud</td>
+            <td>Connector nativo (batch/scheduled)</td>
+            <td>Storage Account Name, Account Key ou SAS Token, Container Name</td>
+            <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          </tr>
+          <tr>
+            <td>Data Cloud → SFMC</td>
+            <td>Data Cloud Connector (Segment Activation)</td>
+            <td>Configuração interna SFMC — sem credenciais externas</td>
+            <td><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          </tr>
+          <tr>
+            <td>SFMC → WhatsApp (Meta)</td>
+            <td>Integração nativa Salesforce</td>
+            <td>Meta Business Manager ID, WhatsApp Business Account ID</td>
+            <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          </tr>
+          <tr>
+            <td>SFMC → SMS (MobileConnect)</td>
+            <td>Short/Long Code via operadora</td>
+            <td>Short code contratado, From Name, keywords</td>
+            <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          </tr>
+          <tr>
+            <td>App → Personalization (server-side)</td>
+            <td>REST API server-side</td>
+            <td>API Key Personalization, Dataset ID, endpoint de recomendação</td>
+            <td><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          </tr>
+          <tr>
+            <td>DNS → SFMC (Email Auth)</td>
+            <td>Registros DNS (TXT/CNAME)</td>
+            <td>SPF record, DKIM CNAME, DMARC TXT</td>
+            <td><span class="resp-badge resp-cli">🏢 Cliente</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="doc-section-header" style="background: linear-gradient(135deg,#1db954,#0d7a3e);">
+      <span style="font-size:20px;">⚙️</span>
+      <span>Decisões de Arquitetura e Justificativas</span>
+    </div>
+    <div class="doc-section-body">
+      <table class="rev-table">
+        <thead><tr><th>Decisão</th><th>Opções Consideradas</th><th>Escolha</th><th>Justificativa</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Armazenamento de dados de origem</td>
+            <td>Amazon S3, Google Cloud Storage, Azure Blob Storage</td>
+            <td><strong>Azure Blob Storage</strong></td>
+            <td>Infraestrutura já existente no cliente; connector nativo Data Cloud disponível</td>
+          </tr>
+          <tr>
+            <td>Canal WhatsApp</td>
+            <td>360dialog, Sinch, Twilio (third-party), Integração Nativa Salesforce</td>
+            <td><strong>Integração Nativa Salesforce</strong></td>
+            <td>Elimina parceiro intermediário; atividade nativa no Journey Builder; menor complexidade operacional</td>
+          </tr>
+          <tr>
+            <td>Personalização no app</td>
+            <td>Beacon JS (web), Server-Side API, SDK mobile</td>
+            <td><strong>Server-Side API</strong></td>
+            <td>App já possui backend; evita dependência de SDK; controle total do time de app</td>
+          </tr>
+          <tr>
+            <td>Número de Data Spaces</td>
+            <td>1 único, 2 separados, múltiplos por produto</td>
+            <td><strong>2 Data Spaces</strong></td>
+            <td>Separação entre dados de marketing (ativação) e private (dados restritos) — melhor governança</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+</div><!-- /tab-arquitetura -->
+
+
+<!-- ===== ABA: DOCUMENTO DE DADOS (REMOVIDA) ===== -->
+<div id="tab-dados" class="tab-pane" style="display:none!important;">
+<main>
+
+  <div class="section-title" style="margin-top:8px;">Documento de Dados — Data Cloud</div>
+
+  <div class="doc-section">
+    <div class="doc-section-header" style="background: linear-gradient(135deg,#ff6b35,#c04000);">
+      <span style="font-size:20px;">🗄</span>
+      <span>Data Model Objects (DMOs) — Mapeamento de Campos</span>
+    </div>
+    <div class="doc-section-body">
+
+      <div class="data-entity">
+        <div class="data-entity-header" style="background:#fef3e2; color:#b06000;">
+          <span>👤</span> Individual (Perfil Unificado do Cliente)
+        </div>
+        <table class="data-entity-table">
+          <thead><tr><th>Campo DMO</th><th>Campo Origem (Azure)</th><th>Tipo</th><th>Obrigatório</th></tr></thead>
+          <tbody>
+            <tr><td>Id <span class="pk-badge">PK</span></td><td>customer_id</td><td><span class="type-badge type-string">String</span></td><td>✓</td></tr>
+            <tr><td>FirstName</td><td>first_name</td><td><span class="type-badge type-string">String</span></td><td>✓</td></tr>
+            <tr><td>LastName</td><td>last_name</td><td><span class="type-badge type-string">String</span></td><td>✓</td></tr>
+            <tr><td>BirthDate</td><td>birth_date</td><td><span class="type-badge type-date">Date</span></td><td>—</td></tr>
+            <tr><td>IndividualIdentifier (CPF)</td><td>cpf</td><td><span class="type-badge type-string">String</span></td><td>✓ (Identity Resolution)</td></tr>
+            <tr><td>HasOptedOutProcessing</td><td>lgpd_opt_out</td><td><span class="type-badge type-bool">Boolean</span></td><td>✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="data-entity">
+        <div class="data-entity-header" style="background:#e8f4fd; color:#0070d2;">
+          <span>✉</span> Contact Point Email
+        </div>
+        <table class="data-entity-table">
+          <thead><tr><th>Campo DMO</th><th>Campo Origem (Azure)</th><th>Tipo</th><th>Obrigatório</th></tr></thead>
+          <tbody>
+            <tr><td>Id <span class="pk-badge">PK</span></td><td>email_id</td><td><span class="type-badge type-string">String</span></td><td>✓</td></tr>
+            <tr><td>EmailAddress</td><td>email</td><td><span class="type-badge type-string">String</span></td><td>✓</td></tr>
+            <tr><td>IndividualId</td><td>customer_id</td><td><span class="type-badge type-string">String (FK)</span></td><td>✓</td></tr>
+            <tr><td>HasOptedOutEmail</td><td>email_opt_out</td><td><span class="type-badge type-bool">Boolean</span></td><td>✓</td></tr>
+            <tr><td>EmailDomain</td><td><em>derivado do email</em></td><td><span class="type-badge type-string">String</span></td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="data-entity">
+        <div class="data-entity-header" style="background:#fff8e1; color:#8a6200;">
+          <span>📱</span> Contact Point Phone
+        </div>
+        <table class="data-entity-table">
+          <thead><tr><th>Campo DMO</th><th>Campo Origem (Azure)</th><th>Tipo</th><th>Obrigatório</th></tr></thead>
+          <tbody>
+            <tr><td>Id <span class="pk-badge">PK</span></td><td>phone_id</td><td><span class="type-badge type-string">String</span></td><td>✓</td></tr>
+            <tr><td>TelephoneNumber</td><td>phone_number</td><td><span class="type-badge type-string">String</span></td><td>✓</td></tr>
+            <tr><td>IndividualId</td><td>customer_id</td><td><span class="type-badge type-string">String (FK)</span></td><td>✓</td></tr>
+            <tr><td>HasOptedOutSMS</td><td>sms_opt_out</td><td><span class="type-badge type-bool">Boolean</span></td><td>✓</td></tr>
+            <tr><td>FormattedE164PhoneNumber</td><td><em>normalizado +55</em></td><td><span class="type-badge type-string">String</span></td><td>✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="data-entity">
+        <div class="data-entity-header" style="background:#fde8f0; color:#b0004e;">
+          <span>💳</span> Objeto Customizado — Limite de Crédito (Jornada Piloto)
+        </div>
+        <table class="data-entity-table">
+          <thead><tr><th>Campo DMO</th><th>Campo Origem (Azure)</th><th>Tipo</th><th>Uso</th></tr></thead>
+          <tbody>
+            <tr><td>Id <span class="pk-badge">PK</span></td><td>credit_event_id</td><td><span class="type-badge type-string">String</span></td><td>Identificador do evento</td></tr>
+            <tr><td>IndividualId</td><td>customer_id</td><td><span class="type-badge type-string">String (FK)</span></td><td>Vinculação ao perfil</td></tr>
+            <tr><td>CreditLimit</td><td>limite_credito</td><td><span class="type-badge type-num">Número</span></td><td>Valor do limite disponível</td></tr>
+            <tr><td>CreditUsedPercent</td><td>perc_utilizado</td><td><span class="type-badge type-num">Número</span></td><td>Critério de entrada na jornada</td></tr>
+            <tr><td>CreditStatus</td><td>status_credito</td><td><span class="type-badge type-string">String</span></td><td>active / suspended / blocked</td></tr>
+            <tr><td>EventDate</td><td>data_evento</td><td><span class="type-badge type-date">Date</span></td><td>Data do evento de alteração de limite</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="doc-section-header" style="background: linear-gradient(135deg,#032d60,#0070d2);">
+      <span style="font-size:20px;">🔍</span>
+      <span>Regras de Identity Resolution</span>
+    </div>
+    <div class="doc-section-body">
+      <table class="rev-table">
+        <thead><tr><th>Prioridade</th><th>Regra de Match</th><th>Campo</th><th>Normalização</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1</strong></td><td>Match por CPF (exact)</td><td>IndividualIdentifier</td><td>Remover pontos e traços</td></tr>
+          <tr><td><strong>2</strong></td><td>Match por email (exact, case-insensitive)</td><td>EmailAddress</td><td>Lowercase + trim</td></tr>
+          <tr><td><strong>3</strong></td><td>Match por telefone (exact E.164)</td><td>TelephoneNumber</td><td>Formato +55 + DDD + número</td></tr>
+        </tbody>
+      </table>
+      <h4>Data Spaces e segregação de dados</h4>
+      <ul>
+        <li><strong>Data Space 1 — Marketing:</strong> Individual, ContactPointEmail, ContactPointPhone, Segmentos de ativação, Objeto Limite de Crédito</li>
+        <li><strong>Data Space 2 — Private:</strong> Data Views (Sent, Bounce, Open, Click, Unsub), métricas de engajamento, relatórios históricos</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="doc-section">
+    <div class="doc-section-header" style="background: linear-gradient(135deg,#7b2d8b,#4a1060);">
+      <span style="font-size:20px;">📊</span>
+      <span>Data Views — Relatórios SFMC</span>
+    </div>
+    <div class="doc-section-body">
+      <table class="rev-table">
+        <thead><tr><th>Data View</th><th>Descrição</th><th>Campos Chave</th></tr></thead>
+        <tbody>
+          <tr><td>_Sent</td><td>Todos os envios realizados</td><td>SubscriberKey, JobID, EventDate, TriggeredSendDefinitionObjectID</td></tr>
+          <tr><td>_Bounce</td><td>Bounces hard e soft</td><td>SubscriberKey, BounceCategory, BounceSubcategory, EventDate</td></tr>
+          <tr><td>_Open</td><td>Aberturas de email (únicas e totais)</td><td>SubscriberKey, JobID, IsUnique, EventDate</td></tr>
+          <tr><td>_Click</td><td>Cliques em links</td><td>SubscriberKey, JobID, URL, IsUnique, EventDate</td></tr>
+          <tr><td>_Unsubscribe</td><td>Opt-outs registrados</td><td>SubscriberKey, JobID, EventDate</td></tr>
+          <tr><td>_JourneyActivity</td><td>Atividades na jornada por contato</td><td>SubscriberKey, JourneyName, ActivityName, ActivityType, EventDate</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+</div><!-- /tab-dados -->
+
+
+<!-- ===== ABA: JORNADAS — ACOMPANHAMENTO ===== -->
+
+
+<!-- ===== ABA: UC1 — LIMITE DE CRÉDITO ===== -->
+<div id="tab-uc1" class="tab-pane">
+<div style="max-width:960px; margin:0 auto; padding:32px 24px;">
+
+  <!-- GANTT -->
+  <div style="background:#f8fafc; border-radius:14px; border:1px solid #e8edf5; padding:24px; margin-bottom:28px;">
+    <h3 style="margin:0 0 20px; font-size:15px; color:#1a2a4a;">📊 Cronograma — Gantt UC1</h3>
+
+    <!-- Legenda de datas -->
+    <div style="display:grid; grid-template-columns:200px repeat(8,1fr); margin-bottom:4px;">
+      <div></div>
+      <div style="text-align:center; font-size:10px; font-weight:700; color:#6b7a99;">14/12</div>
+      <div style="text-align:center; font-size:10px; font-weight:700; color:#6b7a99;">15/12</div>
+      <div style="text-align:center; font-size:10px; font-weight:700; color:#6b7a99;">16/12</div>
+      <div style="text-align:center; font-size:10px; font-weight:700; color:#6b7a99;">17/12</div>
+      <div style="text-align:center; font-size:10px; font-weight:700; color:#6b7a99;">18/12</div>
+      <div style="text-align:center; font-size:10px; font-weight:700; color:#6b7a99;">21/12</div>
+      <div style="text-align:center; font-size:10px; font-weight:700; color:#6b7a99; color:#b0004e;">22/12</div>
+      <div style="text-align:center; font-size:10px; font-weight:700; color:#b0004e;">23/12 <span style="font-size:1.7em;line-height:1;vertical-align:middle;">🎅🛷</span></div>
+    </div>
+
+    <!-- Linha: Criação da jornada -->
+    <div style="display:grid; grid-template-columns:200px repeat(8,1fr); margin-bottom:6px; align-items:center;">
+      <div style="font-size:11px; color:#3a4a6a; padding-right:10px;">Criação da jornada</div>
+      <div style="background:#7b2d8b; border-radius:6px; height:22px; display:flex; align-items:center; justify-content:center; font-size:10px; color:white; font-weight:600; grid-column: 3 / 4;">⚡</div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+    </div>
+
+    <!-- Linha: Config. canal Email + repique -->
+    <div style="display:grid; grid-template-columns:200px repeat(8,1fr); margin-bottom:6px; align-items:center;">
+      <div style="font-size:11px; color:#3a4a6a; padding-right:10px;">Canal Email + repique</div>
+      <div style="background:#1a7a3c; border-radius:6px; height:22px; display:flex; align-items:center; justify-content:center; font-size:10px; color:white; font-weight:600; grid-column: 3 / 4;">📧</div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+    </div>
+
+    <!-- Linha: QA Test Mode -->
+    <div style="display:grid; grid-template-columns:200px repeat(8,1fr); margin-bottom:6px; align-items:center;">
+      <div style="font-size:11px; color:#3a4a6a; padding-right:10px;">QA — Test Mode</div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#0070d2; border-radius:6px; height:22px; display:flex; align-items:center; justify-content:center; font-size:10px; color:white; font-weight:600; grid-column: 5 / 6;">🧪</div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+    </div>
+
+    <!-- Linha: QA LGPD -->
+    <div style="display:grid; grid-template-columns:200px repeat(8,1fr); margin-bottom:6px; align-items:center;">
+      <div style="font-size:11px; color:#3a4a6a; padding-right:10px;">QA — LGPD</div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#0070d2; border-radius:6px; height:22px; display:flex; align-items:center; justify-content:center; font-size:10px; color:white; font-weight:600; grid-column: 6 / 7;">✅</div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+    </div>
+
+    <!-- Linha: Go-Live -->
+    <div style="display:grid; grid-template-columns:200px repeat(8,1fr); align-items:center;">
+      <div style="font-size:11px; color:#3a4a6a; padding-right:10px;"><span style="font-size:1.7em;line-height:1;vertical-align:middle;">🎅🛷</span> Go-Live</div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#eef0f5; border-radius:3px; height:22px;"></div>
+      <div style="background:#b0004e; border-radius:6px; height:22px; display:flex; align-items:center; justify-content:center; font-size:10px; color:white; font-weight:600; grid-column: 9 / 10;"><span style="font-size:1.7em;line-height:1;vertical-align:middle;">🎅🛷</span></div>
+    </div>
+
+  </div>
+
+  <!-- HEADER -->
+  <div style="background:linear-gradient(135deg,#7b2d8b 0%,#4a1060 100%); border-radius:14px; padding:28px 32px; color:white; margin-bottom:28px;">
+    <div style="font-size:11px; font-weight:700; letter-spacing:2px; opacity:0.75; margin-bottom:6px;">CASO DE USO 1</div>
+    <h2 style="margin:0 0 6px; font-size:24px;">💳 Jornada — Limite de Crédito</h2>
+    <p style="margin:0; opacity:0.85; font-size:14px;">Go-Live: 23/12 · Entry: Segment Activation Data Cloud · 1 canal com repique (canal a definir)</p>
+  </div>
+
+  <!-- OBJETIVO -->
+  <div style="background:#f8fafc; border-radius:12px; border:1px solid #e8edf5; padding:20px 24px; margin-bottom:24px;">
+    <h3 style="margin:0 0 10px; font-size:15px; color:#1a2a4a;">🎯 Objetivo</h3>
+    <p style="margin:0; color:#3a4a6a; font-size:14px; line-height:1.6;">Engajar clientes com alto uso de limite de crédito por meio de comunicação proativa, utilizando ativação de segmento via Data Cloud e entrega por 1 canal com repique configurado. O canal de entrega será definido conforme disponibilidade no go-live.</p>
+  </div>
+
+  <!-- REGRA DE EVOLUÇÃO -->
+  <div style="background:linear-gradient(135deg,#e8f0ff,#f0f4ff); border:2px solid #0070d2; border-radius:12px; padding:20px 24px; margin-bottom:24px;">
+    <h3 style="margin:0 0 14px; font-size:15px; color:#032d60;">📐 Regra de Evolução da Jornada</h3>
+    <p style="margin:0 0 16px; font-size:13px; color:#2a3a5a; line-height:1.6;"><strong>A jornada começa com a integração funcionando + 1 canal ativo (a definir) + repique configurado.</strong> Novos canais são adicionados progressivamente à medida que ficam disponíveis — sem refazer a estrutura da jornada.</p>
+    <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:stretch;">
+
+      <!-- Fase 1 -->
+      <div style="flex:1; min-width:180px; background:white; border-radius:10px; border:2px solid #0070d2; padding:14px 16px;">
+        <div style="font-size:10px; font-weight:700; color:#0070d2; text-transform:uppercase; letter-spacing:.8px; margin-bottom:6px;">Fase 1 — Go-Live 23/12</div>
+        <div style="display:flex; flex-direction:column; gap:5px;">
+          <span style="font-size:12px; color:#032d60;">⚡ Integração ativa<br><span style="font-size:11px; color:#6b7a99; font-weight:400;">Segment Activation DC</span></span>
+          <span style="font-size:12px; color:#6b7a99; font-weight:700; font-style:italic;">📣 1 canal + repique<br><span style="font-size:10px; font-weight:400;">canal a definir</span></span>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; font-size:20px; color:#c0c8d8; padding:0 4px;">→</div>
+
+      <!-- Fase 2 -->
+      <div style="flex:1; min-width:180px; background:white; border-radius:10px; border:2px solid #8a6200; border-style:dashed; padding:14px 16px; opacity:.85;">
+        <div style="font-size:10px; font-weight:700; color:#8a6200; text-transform:uppercase; letter-spacing:.8px; margin-bottom:6px;">Fase 2 — 2º canal disponível</div>
+        <div style="display:flex; flex-direction:column; gap:5px;">
+          <span style="font-size:12px; color:#6b7a99; font-weight:700; font-style:italic;">📣 Canal inicial mantido</span>
+          <span style="font-size:12px; color:#8a6200; font-weight:700;">+ 2º canal adicionado</span>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; font-size:20px; color:#c0c8d8; padding:0 4px;">→</div>
+
+      <!-- Fase 3 -->
+      <div style="flex:1; min-width:180px; background:white; border-radius:10px; border:2px solid #0d7a3e; border-style:dashed; padding:14px 16px; opacity:.85;">
+        <div style="font-size:10px; font-weight:700; color:#0d7a3e; text-transform:uppercase; letter-spacing:.8px; margin-bottom:6px;">Fase 3 — 3º canal disponível</div>
+        <div style="display:flex; flex-direction:column; gap:5px;">
+          <span style="font-size:12px; color:#6b7a99; font-weight:700; font-style:italic;">📣 Canais anteriores</span>
+          <span style="font-size:12px; color:#0d7a3e; font-weight:700;">+ 3º canal adicionado</span>
+        </div>
+      </div>
+
+    </div>
+    <div style="margin-top:12px; padding:8px 14px; background:rgba(0,112,210,.08); border-radius:8px; font-size:12px; color:#032d60;">
+      <strong>Princípio:</strong> nunca refazer a jornada — cada novo canal entra como um novo branch no Decision Split existente. &nbsp;·&nbsp; <strong>Canal do go-live:</strong> a definir conforme disponibilidade.
+    </div>
+  </div>
+
+  <!-- FLUXO DA JORNADA -->
+  <div style="background:#f8fafc; border-radius:12px; border:1px solid #e8edf5; padding:20px 24px; margin-bottom:24px;">
+    <h3 style="margin:0 0 16px; font-size:15px; color:#1a2a4a;">🔀 Fluxo da Jornada</h3>
+    <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+      <div style="background:#0070d2; color:white; border-radius:10px; padding:10px 16px; font-size:12px; font-weight:700; text-align:center;">⚡ Entry<br><span style="font-weight:400; font-size:11px;">Segment Activation DC</span></div>
+      <div style="color:#c0c8d8; font-size:18px;">→</div>
+      <div style="background:#6b7a99; color:white; border-radius:10px; padding:10px 16px; font-size:12px; font-weight:700; text-align:center;">📣 Canal D+0<br><span style="font-weight:400; font-size:11px;">a definir · comunicação inicial</span></div>
+      <div style="color:#c0c8d8; font-size:18px;">→</div>
+      <div style="background:#7b2d8b; color:white; border-radius:10px; padding:10px 16px; font-size:12px; font-weight:700; text-align:center;">🔀 Decision Split<br><span style="font-weight:400; font-size:11px;">Engajou / Não engajou</span></div>
+      <div style="color:#c0c8d8; font-size:18px;">→</div>
+      <div style="background:#c04000; color:white; border-radius:10px; padding:10px 16px; font-size:12px; font-weight:700; text-align:center;">🔁 Repique<br><span style="font-weight:400; font-size:11px;">mesmo canal D+3 (não engajou)</span></div>
+      <div style="color:#c0c8d8; font-size:18px;">→</div>
+      <div style="background:#6b7a99; color:white; border-radius:10px; padding:10px 16px; font-size:12px; font-weight:700; text-align:center;">🚪 Exit<br><span style="font-weight:400; font-size:11px;">Opt-out ou CreditStatus ≠ active</span></div>
+    </div>
+    <div style="margin-top:12px; padding:10px 14px; background:#f0f4ff; border-radius:8px; font-size:12px; color:#3a4a6a;">
+      <strong>Re-entry:</strong> Permitida após 30 dias &nbsp;·&nbsp; <strong>Exit Criteria:</strong> opt-out em qualquer canal &nbsp;·&nbsp; <strong>Canal:</strong> a definir conforme disponibilidade no go-live
+    </div>
+  </div>
+
+  <!-- MOCKUPS DE COMUNICAÇÃO -->
+  <div style="background:#f8fafc; border-radius:12px; border:1px solid #e8edf5; padding:20px 24px; margin-bottom:24px;">
+    <h3 style="margin:0 0 6px; font-size:15px; color:#1a2a4a;">📱 Mockup de Comunicação — por Canal</h3>
+    <p style="margin:0 0 20px; font-size:12px; color:#8a95ad;">Gatilho: 1 dia após validação do limite disponível · Rascunho ilustrativo · Conteúdo e tom a validar com cliente</p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:20px; align-items:start;">
+
+      <!-- ── EMAIL ── -->
+      <div>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+          <span style="background:#1a7a3c; color:white; font-size:10px; font-weight:700; padding:3px 10px; border-radius:10px;">📧 EMAIL</span>
+          <span style="font-size:10px; color:#8a95ad;">D+1 após validação do limite</span>
+        </div>
+        <!-- device frame -->
+        <div style="background:white; border-radius:12px; border:1px solid #dde3ee; box-shadow:0 4px 16px rgba(0,0,0,.08); overflow:hidden;">
+          <!-- email client chrome -->
+          <div style="background:#f4f6f9; padding:8px 12px; border-bottom:1px solid #e0e6ed; font-size:10px; color:#6b7a99;">
+            <div style="font-weight:700; color:#2a2a3e; margin-bottom:1px;">De: [Nome da Marca] &lt;noreply@marca.com.br&gt;</div>
+            <div>Assunto: <strong style="color:#032d60;">Prezado(a) [Nome], seu limite de crédito está disponível para utilização</strong></div>
+          </div>
+          <!-- body -->
+          <div style="padding:16px 16px 0;">
+            <!-- logo placeholder -->
+            <div style="background:#0070d2; border-radius:6px; height:32px; display:flex; align-items:center; padding:0 12px; margin-bottom:14px;">
+              <span style="color:white; font-size:11px; font-weight:700; letter-spacing:1px;">[LOGO DA MARCA]</span>
+            </div>
+            <!-- hero -->
+            <div style="background:linear-gradient(135deg,#032d60,#0070d2); border-radius:8px; padding:18px 16px; margin-bottom:14px; text-align:center;">
+              <div style="font-size:28px; margin-bottom:4px;">🎉</div>
+              <div style="color:white; font-size:13px; font-weight:700; margin-bottom:4px;">Limite de crédito disponível para utilização</div>
+              <div style="color:#b3d4f5; font-size:11px;">Acesse sua conta para verificar</div>
+            </div>
+            <!-- copy -->
+            <p style="margin:0 0 10px; font-size:12px; color:#2a3a5a; line-height:1.6;">Prezado(a) <strong>[Nome]</strong>,</p>
+            <p style="margin:0 0 14px; font-size:12px; color:#3a4a6a; line-height:1.6;">Informamos que o senhor(a) possui <strong>limite de crédito disponível</strong> em sua conta. Para utilizá-lo, acesse nossa plataforma.</p>
+            <!-- CTA -->
+            <div style="text-align:center; margin-bottom:14px;">
+              <div style="display:inline-block; background:#0070d2; color:white; font-size:12px; font-weight:700; padding:10px 24px; border-radius:6px;">Contratar limite →</div>
+            </div>
+          </div>
+          <!-- footer -->
+          <div style="background:#f4f6f9; padding:10px 16px; font-size:9px; color:#9aa5be; text-align:center; border-top:1px solid #e0e6ed;">
+            Você recebe este e-mail pois é cliente [Marca]. &nbsp;·&nbsp; <u>Descadastrar</u>
+          </div>
+        </div>
+        <!-- repique note -->
+        <div style="margin-top:8px; padding:8px 12px; background:#e8f5ee; border-radius:8px; font-size:11px; color:#1a7a3c; border-left:3px solid #1a7a3c;">
+          🔁 <strong>Repique D+3</strong> — mesmo layout, assunto alternativo:<br>
+          <em>"Prezado(a) [Nome], seu limite de crédito permanece disponível. Acesse nossa plataforma para utilizá-lo."</em>
+        </div>
+      </div>
+
+      <!-- ── SMS ── -->
+      <div>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+          <span style="background:#8a6200; color:white; font-size:10px; font-weight:700; padding:3px 10px; border-radius:10px;">💬 SMS</span>
+          <span style="font-size:10px; color:#8a95ad;">D+1 após validação do limite</span>
+        </div>
+        <!-- phone frame -->
+        <div style="background:#1a1a2e; border-radius:24px; padding:10px; box-shadow:0 4px 20px rgba(0,0,0,.25); max-width:260px; margin:0 auto;">
+          <!-- notch -->
+          <div style="background:#0d0d1a; border-radius:16px 16px 0 0; padding:6px 0 4px; text-align:center;">
+            <div style="display:inline-block; background:#333; border-radius:10px; width:60px; height:5px;"></div>
+          </div>
+          <!-- screen -->
+          <div style="background:#f0f2f5; border-radius:10px; padding:12px; min-height:200px;">
+            <!-- status bar -->
+            <div style="font-size:9px; color:#8a95ad; text-align:right; margin-bottom:8px;">9:41 ▉▉▉</div>
+            <!-- sender chip -->
+            <div style="text-align:center; margin-bottom:8px;">
+              <div style="display:inline-block; background:#e8edf5; border-radius:8px; padding:3px 10px; font-size:10px; font-weight:700; color:#2a3a5a;">[MARCA]</div>
+            </div>
+            <!-- bubble -->
+            <div style="background:white; border-radius:14px 14px 14px 4px; padding:12px 14px; box-shadow:0 1px 3px rgba(0,0,0,.1); font-size:12px; color:#1a1a2e; line-height:1.5; margin-bottom:6px;">
+              <strong>[Marca]:</strong> [Nome], informamos que o sr(a) possui limite de crédito disponível em sua conta. Acesse: <span style="color:#0070d2; text-decoration:underline;">bit.ly/[link-curto]</span><br><br>
+              Para cancelar: SAIR
+            </div>
+            <div style="font-size:9px; color:#9aa5be; text-align:right;">✓✓ 09:41</div>
+          </div>
+          <!-- home bar -->
+          <div style="text-align:center; padding:8px 0 2px;">
+            <div style="display:inline-block; background:#444; border-radius:10px; width:80px; height:4px;"></div>
+          </div>
+        </div>
+        <!-- repique note -->
+        <div style="margin-top:8px; padding:8px 12px; background:#fdf5e0; border-radius:8px; font-size:11px; color:#8a6200; border-left:3px solid #8a6200;">
+          🔁 <strong>Repique D+3</strong> — SMS alternativo:<br>
+          <em>"[Nome], seu limite de crédito permanece disponível. Acesse: bit.ly/[link] — Para cancelar: SAIR"</em>
+        </div>
+      </div>
+
+      <!-- ── WHATSAPP ── -->
+      <div>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+          <span style="background:#0d7a3e; color:white; font-size:10px; font-weight:700; padding:3px 10px; border-radius:10px;">📱 WHATSAPP</span>
+          <span style="font-size:10px; color:#8a95ad;">D+1 após validação · HSM pré-aprovado Meta</span>
+        </div>
+        <!-- phone frame WA -->
+        <div style="background:#1a1a2e; border-radius:24px; padding:10px; box-shadow:0 4px 20px rgba(0,0,0,.25); max-width:260px; margin:0 auto;">
+          <div style="background:#0d0d1a; border-radius:16px 16px 0 0; padding:6px 0 4px; text-align:center;">
+            <div style="display:inline-block; background:#333; border-radius:10px; width:60px; height:5px;"></div>
+          </div>
+          <div style="background:#e5ddd5; border-radius:10px; min-height:220px; overflow:hidden;">
+            <!-- WA header -->
+            <div style="background:#075e54; padding:8px 12px; display:flex; align-items:center; gap:8px;">
+              <div style="width:28px; height:28px; border-radius:50%; background:#128c7e; display:flex; align-items:center; justify-content:center; font-size:12px; color:white; font-weight:700; flex-shrink:0;">[M]</div>
+              <div>
+                <div style="font-size:11px; font-weight:700; color:white;">[Nome da Marca]</div>
+                <div style="font-size:9px; color:#b2dfdb;">Conta Business Oficial ✓</div>
+              </div>
+            </div>
+            <!-- WA chat bg -->
+            <div style="padding:10px; background-image:repeating-linear-gradient(45deg,rgba(0,0,0,.015) 0px,rgba(0,0,0,.015) 2px,transparent 2px,transparent 8px);">
+              <!-- HSM bubble -->
+              <div style="background:white; border-radius:0 10px 10px 10px; padding:10px 12px; box-shadow:0 1px 2px rgba(0,0,0,.15); max-width:90%; margin-bottom:4px;">
+                <!-- header image placeholder -->
+                <div style="background:linear-gradient(135deg,#075e54,#128c7e); border-radius:6px; height:60px; display:flex; align-items:center; justify-content:center; margin-bottom:8px;">
+                  <span style="color:white; font-size:10px; font-weight:700;">[IMAGEM / BANNER HSM]</span>
+                </div>
+                <div style="font-size:12px; color:#1a1a2e; line-height:1.5; margin-bottom:8px;">
+                  Prezado(a) <strong>{{1}}</strong>,<br><br>
+                  Informamos que o senhor(a) possui <strong>limite de crédito disponível</strong> em sua conta. Acesse nossa plataforma para utilizá-lo.
+                </div>
+                <!-- CTA button -->
+                <div style="border-top:1px solid #e8edf5; padding-top:8px; text-align:center;">
+                  <div style="font-size:12px; font-weight:700; color:#128c7e;">🔗 Contratar limite</div>
+                </div>
+              </div>
+              <div style="font-size:9px; color:#9aa5be; text-align:right; margin-bottom:6px;">✓✓ 09:41</div>
+              <!-- quick replies -->
+              <div style="display:flex; flex-direction:column; gap:4px;">
+                <div style="background:white; border-radius:8px; padding:7px 12px; text-align:center; font-size:11px; color:#128c7e; font-weight:700; box-shadow:0 1px 2px rgba(0,0,0,.1);">✅ Contratar limite</div>
+                <div style="background:white; border-radius:8px; padding:7px 12px; text-align:center; font-size:11px; color:#c0392b; font-weight:700; box-shadow:0 1px 2px rgba(0,0,0,.1);">🚫 Não desejo receber comunicações</div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center; padding:8px 0 2px; background:#1a1a2e; border-radius:0 0 16px 16px;">
+            <div style="display:inline-block; background:#444; border-radius:10px; width:80px; height:4px;"></div>
+          </div>
+        </div>
+        <!-- repique note -->
+        <div style="margin-top:8px; padding:8px 12px; background:#e8f5ee; border-radius:8px; font-size:11px; color:#0d7a3e; border-left:3px solid #0d7a3e;">
+          🔁 <strong>Repique D+3</strong> — novo HSM aprovado:<br>
+          <em>"Prezado(a) {{1}}, seu limite de crédito permanece disponível em sua conta. Acesse agora →"</em>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- disclaimer -->
+    <div style="margin-top:16px; padding:10px 14px; background:#fff8e1; border-radius:8px; font-size:11px; color:#7a5c00; border:1px solid #f5c800;">
+      <strong>📝 Conteúdo ilustrativo.</strong> Textos, imagens, links e variáveis (<code>{{1}}</code>, <code>{{2}}</code>) a serem definidos e aprovados com o cliente. Templates HSM de WhatsApp precisam de aprovação prévia da Meta antes do go-live.
+    </div>
+  </div>
+
+  <!-- PREMISSAS -->
+  <div style="background:#f8fafc; border-radius:12px; border:1px solid #e8edf5; padding:20px 24px; margin-bottom:24px;">
+    <h3 style="margin:0 0 12px; font-size:15px; color:#1a2a4a;">📌 Premissas</h3>
+    <ul style="margin:0; padding-left:18px; color:#3a4a6a; font-size:14px; line-height:2;">
+      <li>Pipeline Azure → Data Cloud ativo e segmento publicado no SFMC até 15/12</li>
+      <li><strong>Go-live exige:</strong> integração ativa + ao menos 1 canal operacional com repique configurado</li>
+      <li><strong>Canal do go-live:</strong> a definir — depende de qual estiver pronto em 23/12</li>
+      <li>Cada novo canal é adicionado à jornada quando estiver operacional, sem refazer a estrutura</li>
+    </ul>
+  </div>
+
+  <!-- CRONOGRAMA UC1 -->
+  <div style="background:#f8fafc; border-radius:12px; border:1px solid #e8edf5; padding:20px 24px; margin-bottom:24px;">
+    <h3 style="margin:0 0 16px; font-size:15px; color:#1a2a4a;">📅 Cronograma</h3>
+    <table style="width:100%; border-collapse:collapse; font-size:13px;">
+      <thead>
+        <tr style="background:#7b2d8b; color:white;">
+          <th style="padding:10px 14px; text-align:left; border-radius:6px 0 0 0;">Data</th>
+          <th style="padding:10px 14px; text-align:left;">Atividade</th>
+          <th style="padding:10px 14px; text-align:left;">Responsável</th>
+          <th style="padding:10px 14px; text-align:left; border-radius:0 6px 0 0;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #f0f3f8;">
+          <td style="padding:10px 14px; font-weight:600; color:#7b2d8b;">15/12</td>
+          <td style="padding:10px 14px;">Criação da jornada — Entry via Segment Activation</td>
+          <td style="padding:10px 14px;"><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td style="padding:10px 14px;"><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #f0f3f8;">
+          <td style="padding:10px 14px; font-weight:600; color:#7b2d8b;">15/12</td>
+          <td style="padding:10px 14px;">Configuração de 1 canal com repique — canal a definir D+0</td>
+          <td style="padding:10px 14px;"><span class="resp-badge resp-sf">⚡ Salesforce</span></td>
+          <td style="padding:10px 14px;"><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #f0f3f8;">
+          <td style="padding:10px 14px; font-weight:600; color:#7b2d8b;">17/12</td>
+          <td style="padding:10px 14px;">QA — Teste em modo Test Mode</td>
+          <td style="padding:10px 14px;"><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td style="padding:10px 14px;"><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #f0f3f8;">
+          <td style="padding:10px 14px; font-weight:600; color:#7b2d8b;">18/12</td>
+          <td style="padding:10px 14px;">QA — Validação de compliance LGPD</td>
+          <td style="padding:10px 14px;"><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td style="padding:10px 14px;"><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid #f0f3f8;">
+          <td style="padding:10px 14px; font-weight:600; color:#b0004e;">23/12</td>
+          <td style="padding:10px 14px;"><span style="font-size:1.7em;line-height:1;vertical-align:middle;">🎅🛷</span> Go-Live — soft launch grupo reduzido</td>
+          <td style="padding:10px 14px;"><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td style="padding:10px 14px;"><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+        </tr>
+        <tr>
+          <td style="padding:10px 14px; font-weight:600; color:#b0004e;">23/12</td>
+          <td style="padding:10px 14px;">Monitoramento: bounce, deliverability, opt-out</td>
+          <td style="padding:10px 14px;"><span class="resp-badge resp-both">⚡ Ambos</span></td>
+          <td style="padding:10px 14px;"><span class="status-badge s-todo"><span class="status-dot"></span>A Fazer</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- JANELA DE ATRIBUIÇÃO + KPIs -->
+  <div style="background:white; border-radius:12px; border:1px solid #e8edf5; padding:20px 24px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,.05);">
+    <h3 style="margin:0 0 18px; font-size:15px; color:#1a2a4a;">📏 Janela de Atribuição de Conversão &amp; KPIs</h3>
+
+    <!-- Janela de atribuição -->
+    <div style="background:#f0f4ff; border-left:4px solid #0070d2; border-radius:0 8px 8px 0; padding:14px 18px; margin-bottom:20px;">
+      <div style="font-size:12px; font-weight:700; color:#0070d2; text-transform:uppercase; letter-spacing:.6px; margin-bottom:6px;">Janela de Atribuição</div>
+      <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;">
+        <span style="font-size:28px; font-weight:700; color:#032d60;">30 dias</span>
+        <span style="font-size:13px; color:#3a4a6a; line-height:1.5;">A partir do primeiro contato na jornada.<br>Qualquer conversão registrada dentro desse período é atribuída à jornada.</span>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div style="font-size:12px; font-weight:700; color:#6b7a99; text-transform:uppercase; letter-spacing:.6px; margin-bottom:12px;">KPIs de Acompanhamento</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px;">
+
+      <!-- Entrega -->
+      <div style="background:#f8fafc; border-radius:10px; border:1px solid #e8edf5; padding:14px 16px;">
+        <div style="font-size:10px; font-weight:700; color:#0070d2; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">📤 Entrega</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Taxa de entrega</span>
+            <span style="font-size:11px; font-weight:700; color:#032d60; background:#e8f0ff; padding:2px 8px; border-radius:10px;">&gt; 95%</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Bounce rate</span>
+            <span style="font-size:11px; font-weight:700; color:#032d60; background:#e8f0ff; padding:2px 8px; border-radius:10px;">&lt; 2%</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Opt-out rate</span>
+            <span style="font-size:11px; font-weight:700; color:#032d60; background:#e8f0ff; padding:2px 8px; border-radius:10px;">&lt; 0,5%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Engajamento -->
+      <div style="background:#f8fafc; border-radius:10px; border:1px solid #e8edf5; padding:14px 16px;">
+        <div style="font-size:10px; font-weight:700; color:#7b2d8b; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">👆 Engajamento</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Open / Visualização</span>
+            <span style="font-size:11px; font-weight:700; color:#7b2d8b; background:#f5eeff; padding:2px 8px; border-radius:10px;">a definir</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">CTR (clique)</span>
+            <span style="font-size:11px; font-weight:700; color:#7b2d8b; background:#f5eeff; padding:2px 8px; border-radius:10px;">a definir</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Taxa de repique engajado</span>
+            <span style="font-size:11px; font-weight:700; color:#7b2d8b; background:#f5eeff; padding:2px 8px; border-radius:10px;">a definir</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conversão -->
+      <div style="background:#f8fafc; border-radius:10px; border:1px solid #e8edf5; padding:14px 16px;">
+        <div style="font-size:10px; font-weight:700; color:#b0004e; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">🎯 Conversão (30 dias)</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Baseline atual</span>
+            <span style="font-size:11px; font-weight:700; color:#b0004e; background:#ffe8f0; padding:2px 8px; border-radius:10px;">0,35%</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Meta pós-jornada</span>
+            <span style="font-size:11px; font-weight:700; color:#b0004e; background:#ffe8f0; padding:2px 8px; border-radius:10px;">a definir</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Evento de conversão</span>
+            <span style="font-size:11px; font-weight:700; color:#b0004e; background:#ffe8f0; padding:2px 8px; border-radius:10px;">a definir</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Janela</span>
+            <span style="font-size:11px; font-weight:700; color:#b0004e; background:#ffe8f0; padding:2px 8px; border-radius:10px;">30 dias</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jornada -->
+      <div style="background:#f8fafc; border-radius:10px; border:1px solid #e8edf5; padding:14px 16px;">
+        <div style="font-size:10px; font-weight:700; color:#1a7a3c; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">🔄 Jornada</div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Entradas únicas</span>
+            <span style="font-size:11px; font-weight:700; color:#1a7a3c; background:#edfff5; padding:2px 8px; border-radius:10px;">monitorar</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Saídas por opt-out</span>
+            <span style="font-size:11px; font-weight:700; color:#1a7a3c; background:#edfff5; padding:2px 8px; border-radius:10px;">monitorar</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; color:#3a4a6a;">Re-entradas (30d)</span>
+            <span style="font-size:11px; font-weight:700; color:#1a7a3c; background:#edfff5; padding:2px 8px; border-radius:10px;">monitorar</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Baseline + Impacto -->
+    <div style="margin-top:16px; background:linear-gradient(135deg,#f0f4ff,#e8f0ff); border-radius:10px; border:1px solid #b8cef5; padding:16px 20px;">
+      <div style="font-size:11px; font-weight:700; color:#0070d2; text-transform:uppercase; letter-spacing:.6px; margin-bottom:12px;">📊 Base &amp; Impacto Potencial</div>
+      <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center;">
+
+        <div style="text-align:center;">
+          <div style="font-size:11px; color:#6b7a99; margin-bottom:2px;">Base inicial</div>
+          <div style="font-size:24px; font-weight:700; color:#032d60;">4,5M</div>
+          <div style="font-size:10px; color:#6b7a99;">clientes</div>
+        </div>
+
+        <div style="font-size:22px; color:#b8cef5;">×</div>
+
+        <div style="text-align:center;">
+          <div style="font-size:11px; color:#6b7a99; margin-bottom:2px;">Baseline conversão</div>
+          <div style="font-size:24px; font-weight:700; color:#b0004e;">0,35%</div>
+          <div style="font-size:10px; color:#6b7a99;">atual (sem jornada)</div>
+        </div>
+
+        <div style="font-size:22px; color:#b8cef5;">=</div>
+
+        <div style="text-align:center;">
+          <div style="font-size:11px; color:#6b7a99; margin-bottom:2px;">Conversões baseline</div>
+          <div style="font-size:24px; font-weight:700; color:#032d60;">~15.750</div>
+          <div style="font-size:10px; color:#6b7a99;">por ciclo de 30 dias</div>
+        </div>
+
+        <div style="width:1px; height:48px; background:#b8cef5; margin:0 4px;"></div>
+
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:11px; color:#6b7a99; margin-bottom:2px;">Impacto incremental estimado</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <div style="background:white; border-radius:8px; border:1px solid #b8cef5; padding:6px 12px; text-align:center;">
+              <div style="font-size:9px; color:#6b7a99;">+0,1 pp</div>
+              <div style="font-size:13px; font-weight:700; color:#0070d2;">+4.500</div>
+            </div>
+            <div style="background:white; border-radius:8px; border:1px solid #b8cef5; padding:6px 12px; text-align:center;">
+              <div style="font-size:9px; color:#6b7a99;">+0,2 pp</div>
+              <div style="font-size:13px; font-weight:700; color:#0070d2;">+9.000</div>
+            </div>
+            <div style="background:white; border-radius:8px; border:1px solid #b8cef5; padding:6px 12px; text-align:center;">
+              <div style="font-size:9px; color:#6b7a99;">+0,5 pp</div>
+              <div style="font-size:13px; font-weight:700; color:#0070d2;">+22.500</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="margin-top:12px; padding:10px 14px; background:#fff8e1; border-radius:8px; font-size:12px; color:#7a5c00; border:1px solid #f5c800;">
+      <strong>⚠ Meta de conversão pós-jornada</strong> a ser definida com o cliente antes do go-live. Impacto incremental calculado sobre a base de 4,5M.
+    </div>
+  </div>
+
+  <!-- OBJETIVO ESPERADO -->
+  <div style="background:linear-gradient(135deg,#fff8e1,#fff3cd); border:2px solid #f5c800; border-radius:10px; padding:16px 20px;">
+    <div style="font-size:13px; font-weight:700; color:#7a5c00; margin-bottom:10px;">⭐ Objetivo esperado — Go-Live 23/12</div>
+    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+      <span style="background:#f5c800; color:#3a2d00; border-radius:20px; padding:4px 12px; font-size:11px; font-weight:600;">📣 1 canal ativo (a definir)</span>
+      <span style="background:#f5c800; color:#3a2d00; border-radius:20px; padding:4px 12px; font-size:11px; font-weight:600;">⚡ Entrada de dados via Segment Activation DC</span>
+    </div>
+  </div>
+
+</div>
+</div><!-- /tab-uc1 -->
+
+<!-- ===== ABA: PONTOS CRÍTICOS ===== -->
+<div id="tab-criticos" class="tab-pane">
+  <div style="margin:16px 0; padding:12px 20px; background:#fdf0f0; border-left:4px solid #c0392b; border-radius:0 8px 8px 0;">
+    <strong style="color:#c0392b; font-size:15px;">🚨 Pontos Críticos — UC1 Limite de Crédito</strong>
+    <p style="margin-top:6px; font-size:13px; color:#7a1a1a; line-height:1.6;">Três dependências que, se atrasarem, impactam as atividades listadas em cada caixa.</p>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; align-items:start;">
+    <div style="background:#fff; border:1px solid #f0c4c0; border-top:5px solid #c0392b; border-radius:8px; padding:16px 18px;">
+      <div style="font-size:11px; font-weight:700; color:#c0392b; letter-spacing:.5px;">CRÍTICO 1</div>
+      <h3 style="margin:4px 0 8px; font-size:17px; color:#7a1a1a;">Integração de dados</h3>
+      <p style="font-size:12px; color:#5a5a5a; line-height:1.6; margin-bottom:12px;">Conexão técnica entre o Azure Blob Storage e o Data Cloud (connector, credenciais e permissões IAM), necessária para o segmento de entrada da UC1.</p>
+      <div style="font-size:12px; font-weight:700; color:#333; margin-bottom:6px;">Atividades dependentes:</div>
+      <div style="font-size:11px; font-weight:700; color:#c0392b; margin:10px 0 3px;">Fundação e Setup</div>
+      <ul style="margin:0 0 0 18px; padding:0; font-size:12px; color:#333; line-height:1.55;">
+        <li>Configuração do connector Azure Blob Storage no Data Cloud</li>
+        <li>Fornecer credenciais Azure (Storage Account, SAS Token, Container, schema)</li>
+        <li>Configurar permissões de acesso no Azure (IAM / SAS Token com leitura)</li>
+        <li>Integração de bundles no Data Cloud (SFMC, Personalization, Azure)</li>
+      </ul>
+      <div style="font-size:11px; font-weight:700; color:#c0392b; margin:10px 0 3px;">Data Cloud — Ingestão e Unificação</div>
+      <ul style="margin:0 0 0 18px; padding:0; font-size:12px; color:#333; line-height:1.55;">
+        <li>Configuração dos Data Streams a partir do Azure Blob Storage</li>
+        <li>Mapeamento dos campos para DMOs</li>
+        <li>Ativação dos segmentos para o SFMC via Data Cloud Connector</li>
+      </ul>
+      <div style="font-size:11px; font-weight:700; color:#c0392b; margin:10px 0 3px;">UC1 — Limite de Crédito</div>
+      <ul style="margin:0 0 0 18px; padding:0; font-size:12px; color:#333; line-height:1.55;">
+        <li>Criação da jornada — Entry via Segment Activation do Data Cloud</li>
+      </ul>
+    </div>
+    <div style="background:#fff; border:1px solid #f0c4c0; border-top:5px solid #c0392b; border-radius:8px; padding:16px 18px;">
+      <div style="font-size:11px; font-weight:700; color:#c0392b; letter-spacing:.5px;">CRÍTICO 2</div>
+      <h3 style="margin:4px 0 8px; font-size:17px; color:#7a1a1a;">Disponibilização de dados</h3>
+      <p style="font-size:12px; color:#5a5a5a; line-height:1.6; margin-bottom:12px;">Dados do cliente disponíveis, com qualidade e schema acordados, para ingestão no Data Cloud. Sem eles não há unificação nem segmento para a UC1.</p>
+      <div style="font-size:12px; font-weight:700; color:#333; margin-bottom:6px;">Atividades dependentes:</div>
+      <div style="font-size:11px; font-weight:700; color:#c0392b; margin:10px 0 3px;">Data Cloud — Ingestão e Unificação</div>
+      <ul style="margin:0 0 0 18px; padding:0; font-size:12px; color:#333; line-height:1.55;">
+                <li>Disponibilização dos arquivos no Azure Blob Storage (até 04/12)</li>
+        <li>Configuração dos Data Streams (batch/scheduled)</li>
+        <li>Mapeamento dos campos para DMOs (Individual, Contact Point Email, Phone)</li>
+        <li>Configuração de Identity Resolution (email, CPF, phone)</li>
+        <li>Criação dos primeiros Segments no Data Cloud</li>
+        <li>Publicação dos segmentos como Data Extensions no SFMC</li>
+      </ul>
+      <div style="font-size:11px; font-weight:700; color:#c0392b; margin:10px 0 3px;">UC1 — Limite de Crédito</div>
+      <ul style="margin:0 0 0 18px; padding:0; font-size:12px; color:#333; line-height:1.55;">
+        <li>Ingestão de dados do caso de uso 1 (até 08/12)</li>
+        <li>Criação da jornada — Entry via Segment Activation do Data Cloud</li>
+        <li>Teste em Test Mode</li>
+        <li>Ativação para grupo reduzido (soft launch)</li>
+      </ul>
+    </div>
+    <div style="background:#fff; border:1px solid #f0c4c0; border-top:5px solid #c0392b; border-radius:8px; padding:16px 18px;">
+      <div style="font-size:11px; font-weight:700; color:#c0392b; letter-spacing:.5px;">CRÍTICO 3</div>
+      <h3 style="margin:4px 0 8px; font-size:17px; color:#7a1a1a;">Habilitação de um canal</h3>
+      <p style="font-size:12px; color:#5a5a5a; line-height:1.6; margin-bottom:12px;">Canal Email habilitado (domínio, IP e templates) para que a UC1 possa disparar o D+0 e o repique.</p>
+      <div style="font-size:12px; font-weight:700; color:#333; margin-bottom:6px;">Atividades dependentes:</div>
+      <div style="font-size:11px; font-weight:700; color:#c0392b; margin:10px 0 3px;">Email</div>
+      <ul style="margin:0 0 0 18px; padding:0; font-size:12px; color:#333; line-height:1.55;">
+        <li>Setup de domínio de envio e autenticação (SPF, DKIM, DMARC)</li>
+        <li>Configuração de SAP e IPs dedicados</li>
+        <li>Criação de templates de email</li>
+        <li>Planejamento de IP Warming</li>
+      </ul>
+      <div style="font-size:11px; font-weight:700; color:#c0392b; margin:10px 0 3px;">UC1 — Limite de Crédito</div>
+      <ul style="margin:0 0 0 18px; padding:0; font-size:12px; color:#333; line-height:1.55;">
+        <li>Configuração de 1 canal com repique — Email D+0</li>
+        <li>Ativação para grupo reduzido (soft launch — Email)</li>
+        <li>Monitoramento: bounce, deliverability, opt-out</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ABA: FEATURES ATIVADAS ===== -->
+<div id="tab-features" class="tab-pane">
+<style>
+  .feat-page { max-width: 1100px; margin: 0 auto; padding: 36px 40px 60px; }
+  .feat-section { margin-bottom: 40px; }
+  .feat-platform-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 24px; border-radius: 12px 12px 0 0;
+    color: white; font-weight: 700;
+  }
+  .feat-platform-header .plat-icon { font-size: 22px; }
+  .feat-platform-header h2 { font-size: 17px; font-weight: 700; margin: 0; }
+  .feat-platform-header .plat-sub { font-size: 12px; font-weight: 400; opacity: .8; margin-top: 2px; }
+  .ph-sfmc { background: linear-gradient(135deg, #0070d2, #032d60); }
+  .ph-dc   { background: linear-gradient(135deg, #00a1e0, #006199); }
+  .ph-ein  { background: linear-gradient(135deg, #ff6b35, #c04000); }
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px; background: #e0e6ed;
+    border: 1px solid #e0e6ed; border-top: none; border-radius: 0 0 12px 12px; overflow: hidden;
+  }
+  .feat-card {
+    background: white; padding: 18px 20px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .feat-card-top { display: flex; align-items: flex-start; gap: 10px; }
+  .feat-status-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .feat-name { font-size: 14px; font-weight: 700; color: #032d60; line-height: 1.3; }
+  .feat-desc { font-size: 12px; color: #5a6a85; line-height: 1.5; }
+  .feat-tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .feat-tag {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+    padding: 2px 8px; border-radius: 10px;
+  }
+  .ft-core    { background: #e8f4ff; color: #0070d2; }
+  .ft-opt     { background: #fff3e0; color: #c04000; }
+  .ft-dep     { background: #fce8ff; color: #7b2d8b; }
+  .ft-active  { background: #e6f9f0; color: #1a7a4a; }
+  .feat-badge-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+    width: fit-content; margin-top: 2px;
+  }
+  .pill-done    { background: #e6f9f0; color: #1a7a4a; }
+  .pill-progress{ background: #fff8e0; color: #a06000; }
+  .pill-todo    { background: #f0f4fa; color: #5a6a85; }
+  .pill-opt     { background: #fff3e0; color: #c04000; }
+  .feat-legend-row {
+    display: flex; gap: 20px; flex-wrap: wrap; padding: 16px 0 8px;
+    font-size: 12px; color: #5a6a85; align-items: center;
+  }
+  .feat-legend-row span { display: flex; align-items: center; gap: 5px; }
+  .feat-intro {
+    background: #f0f5ff; border: 1px solid #c8d8f5; border-radius: 10px;
+    padding: 16px 20px; margin-bottom: 28px; font-size: 13px; color: #2a3a5e; line-height: 1.6;
+  }
+  .feat-intro strong { color: #0070d2; }
+</style>
+
+<div class="feat-page">
+
+  <div class="feat-intro">
+    <strong>Escopo desta entrega (30 dias):</strong> ativação e configuração das plataformas para suportar a primeira jornada operacional (UC1 — Limite de Crédito, Go-Live 23/12). Itens marcados como <em>opcional</em> dependem de validação comercial de licença ou prioridade do projeto.
+  </div>
+
+  <div class="feat-legend-row">
+    <span>✅ Concluído / Ativo</span>
+    <span>🔄 Em configuração</span>
+    <span>⬜ A configurar</span>
+    <span>⚠️ Crítico para Go-Live</span>
+    <span>🔶 Opcional</span>
+  </div>
+
+  <!-- SFMC -->
+  <div class="feat-section">
+    <div class="feat-platform-header ph-sfmc">
+      <span class="plat-icon">☁</span>
+      <div>
+        <h2>Salesforce Marketing Cloud (SFMC)</h2>
+        <div class="plat-sub">BU provisionada · Canal multicanal (Email, SMS, WhatsApp)</div>
+      </div>
+    </div>
+    <div class="feat-grid">
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">✅</span>
+          <span class="feat-name">Business Unit (BU) Provisionada</span>
+        </div>
+        <div class="feat-desc">Unidade de negócio criada e configurada. Ponto de partida para todos os canais e jornadas.</div>
+        <span class="feat-badge-pill pill-done">● Concluído</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-active">Ativo</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">🔄</span>
+          <span class="feat-name">Estrutura de Pastas e Data Extensions</span>
+        </div>
+        <div class="feat-desc">Organização de DEs, conteúdos e jornadas. Inclui DEs de audiência, controle e supressão para UC1.</div>
+        <span class="feat-badge-pill pill-progress">● Em Andamento</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Usuários e Perfis de Acesso</span>
+        </div>
+        <div class="feat-desc">Criação de perfis de acesso para times de marketing, operação e Salesforce. Prazo: 02/12.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Email Studio — Canal Email</span>
+        </div>
+        <div class="feat-desc">Configuração de IP dedicado, autenticação SPF/DKIM/DMARC, domain setup. Prazo: 26/11.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">MobileConnect — SMS</span>
+        </div>
+        <div class="feat-desc">Configuração de shortcode/longcode, opt-in/opt-out, mensagens transacionais e de marketing. Prazo: 26/11.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">WhatsApp — Canal HSM</span>
+        </div>
+        <div class="feat-desc">Configuração via parceiro BSP, templates HSM, aprovação Meta. Inclui botões de ação (CTA + opt-out). Prazo: 26/11.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Journey Builder</span>
+        </div>
+        <div class="feat-desc">Construção de jornadas multicanal. Entry via Segment Activation (Data Cloud), decisões, repiques e saídas. Prazo: 15/12.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Content Builder</span>
+        </div>
+        <div class="feat-desc">Templates responsivos de email com AMPscript para personalização dinâmica (nome, produto). Prazo: 02/12.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DATA CLOUD -->
+  <div class="feat-section">
+    <div class="feat-platform-header ph-dc">
+      <span class="plat-icon">☁</span>
+      <div>
+        <h2>Salesforce Data Cloud</h2>
+        <div class="plat-sub">Tenant ativo · Integração Azure Blob Storage · 2 Data Spaces</div>
+      </div>
+    </div>
+    <div class="feat-grid">
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">✅</span>
+          <span class="feat-name">Tenant Ativado</span>
+        </div>
+        <div class="feat-desc">Tenant do Data Cloud provisionado e conectado à BU do SFMC. Configuração inicial concluída.</div>
+        <span class="feat-badge-pill pill-done">● Concluído</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-active">Ativo</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">🔄</span>
+          <span class="feat-name">Data Model Objects (DMO)</span>
+        </div>
+        <div class="feat-desc">Mapeamento dos objetos base: Individual, ContactPointEmail, ContactPointPhone, objeto customizado Limite de Crédito. Prazo: 10/12.</div>
+        <span class="feat-badge-pill pill-progress">● Em Andamento</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Connector Azure Blob Storage</span>
+        </div>
+        <div class="feat-desc">Conexão batch/scheduled com o container Azure. Depende de credenciais e permissões IAM do cliente. Prazo: 23/11.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Integração de Bundles</span>
+        </div>
+        <div class="feat-desc">Ativação dos pacotes de integração nativos: SFMC Bundle, Personalization Bundle, Azure Bundle. Prazo: 26/11.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Data Space 1 — Marketing</span>
+        </div>
+        <div class="feat-desc">Espaço de dados para segmentação e ativação. Contém perfis unificados, segmentos e objetos de ativação. Prazo: 02/12.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Data Space 2 — Private</span>
+        </div>
+        <div class="feat-desc">Espaço segregado para Data Views de engajamento (Sent, Bounce, Open, Click, Unsub) e relatórios históricos. Prazo: 02/12.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Data Streams (Azure → DC)</span>
+        </div>
+        <div class="feat-desc">Ingestão batch dos arquivos Azure: cadastro de clientes, histórico de crédito, score. Mapeamento para DMOs. Prazo: 10/12.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Identity Resolution</span>
+        </div>
+        <div class="feat-desc">Regras de unificação de perfil via email, CPF e telefone. Gera o perfil único Individual. Prazo: 10/12.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Segmentação e Segment Activation</span>
+        </div>
+        <div class="feat-desc">Criação de segmentos no Data Cloud e ativação para SFMC via Data Cloud Connector como Data Extensions. Prazo: 15/12.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-core">Core</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EINSTEIN -->
+  <div class="feat-section">
+    <div class="feat-platform-header ph-ein">
+      <span class="plat-icon">🤖</span>
+      <div>
+        <h2>Einstein — Features de IA</h2>
+        <div class="plat-sub">Funcionalidades opcionais · Dependem de validação de licença</div>
+      </div>
+    </div>
+    <div class="feat-grid">
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">🔶</span>
+          <span class="feat-name">Einstein Send Time Optimization (STO)</span>
+        </div>
+        <div class="feat-desc">Otimiza automaticamente o horário de envio por perfil de engajamento individual. Aumenta taxas de abertura sem mudança de conteúdo. Prazo: 02/12.</div>
+        <span class="feat-badge-pill pill-opt">◇ Opcional</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-opt">Opcional</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">🔶</span>
+          <span class="feat-name">Einstein Engagement Scoring</span>
+        </div>
+        <div class="feat-desc">Score de propensão de abertura e clique por contato. Permite segmentar audiências de alta e baixa propensão para testes A/B. Prazo: 02/12.</div>
+        <span class="feat-badge-pill pill-opt">◇ Opcional</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-opt">Opcional</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">🔶</span>
+          <span class="feat-name">Einstein Messaging Insights</span>
+        </div>
+        <div class="feat-desc">Alertas automáticos de anomalias de entrega, picos de bounce e opt-out. Monitoramento proativo de saúde das campanhas. Prazo: 02/12.</div>
+        <span class="feat-badge-pill pill-opt">◇ Opcional</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-opt">Opcional</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PERSONALIZATION -->
+  <div class="feat-section">
+    <div class="feat-platform-header" style="background: linear-gradient(135deg, #7b2d8b, #4a1060);">
+      <span class="plat-icon">🎯</span>
+      <div>
+        <h2>Salesforce Personalization (Interaction Studio)</h2>
+        <div class="plat-sub">Server-side · 1 área de conteúdo no app · Dependência: time do app</div>
+      </div>
+    </div>
+    <div class="feat-grid">
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Personalization Bundle no Data Cloud</span>
+        </div>
+        <div class="feat-desc">Integração do Personalization Bundle com o Data Cloud para compartilhamento de perfis unificados. Prazo: 26/11.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-dep">Depende DC</span></div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-card-top">
+          <span class="feat-status-icon">⬜</span>
+          <span class="feat-name">Campanha Server-Side (App)</span>
+        </div>
+        <div class="feat-desc">1 área de conteúdo no app para exibição contextual de limite de crédito. Requer integração do time de desenvolvimento do app. Prazo: 15/12.</div>
+        <span class="feat-badge-pill pill-todo">○ A Configurar</span>
+        <div class="feat-tag-row"><span class="feat-tag ft-dep">Dep. Time App</span><span class="feat-tag ft-dep">⚠️ Crítico</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RESUMO DE STATUS -->
+  <div style="background: white; border: 1px solid #e0e6ed; border-radius: 12px; padding: 24px 28px; margin-top: 8px;">
+    <h3 style="font-size: 15px; font-weight: 700; color: #032d60; margin-bottom: 16px;">Resumo de Ativação — Primeira Entrega</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px;">
+      <div style="text-align: center; padding: 16px; background: #e6f9f0; border-radius: 10px;">
+        <div style="font-size: 28px; font-weight: 800; color: #1a7a4a;">2</div>
+        <div style="font-size: 12px; color: #1a7a4a; font-weight: 600; margin-top: 4px;">Concluídos</div>
+        <div style="font-size: 11px; color: #5a6a85; margin-top: 2px;">BU · Tenant DC</div>
+      </div>
+      <div style="text-align: center; padding: 16px; background: #fff8e0; border-radius: 10px;">
+        <div style="font-size: 28px; font-weight: 800; color: #a06000;">2</div>
+        <div style="font-size: 12px; color: #a06000; font-weight: 600; margin-top: 4px;">Em Andamento</div>
+        <div style="font-size: 11px; color: #5a6a85; margin-top: 2px;">DE Estrutura · DMO</div>
+      </div>
+      <div style="text-align: center; padding: 16px; background: #f0f4fa; border-radius: 10px;">
+        <div style="font-size: 28px; font-weight: 800; color: #3a4a6e;">14</div>
+        <div style="font-size: 12px; color: #3a4a6e; font-weight: 600; margin-top: 4px;">A Configurar</div>
+        <div style="font-size: 11px; color: #5a6a85; margin-top: 2px;">Canais · DC · PZ</div>
+      </div>
+      <div style="text-align: center; padding: 16px; background: #fff3e0; border-radius: 10px;">
+        <div style="font-size: 28px; font-weight: 800; color: #c04000;">3</div>
+        <div style="font-size: 12px; color: #c04000; font-weight: 600; margin-top: 4px;">Opcionais</div>
+        <div style="font-size: 11px; color: #5a6a85; margin-top: 2px;">Einstein features</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /feat-page -->
+</div><!-- /tab-features -->
+
+<script>
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
