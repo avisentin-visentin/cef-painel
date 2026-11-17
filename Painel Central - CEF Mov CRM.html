@@ -623,7 +623,7 @@
   }
   .cal-cell-day {
     border: 1px solid #d1d9e0; padding: 4px; background: #fafbfc;
-    height: 72px; position: relative;
+    height: 42px; position: relative;
   }
   .cal-cell-day.today { background: #fffbf0; border-color: #e6b800; }
   .cal-cell-day.holiday { background: #e8e8e8; border-color: #bbb; }
@@ -633,6 +633,15 @@
     border-radius: 5px; padding: 5px 7px; line-height: 1.35;
     position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px;
     overflow: hidden; box-sizing: border-box;
+  }
+  /* Quando há múltiplos cards no mesmo slot: layout paralelo lado a lado */
+  .cal-cards-row {
+    position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px;
+    display: flex; gap: 3px;
+  }
+  .cal-cards-row .cal-meeting-card {
+    position: relative; top: auto; left: auto; right: auto; bottom: auto;
+    flex: 1; min-width: 0;
   }
   .cal-meeting-card.done { background: #d4edda; border-left: 3px solid #28a745; }
   .cal-meeting-card.pending { background: #fff3cd; border-left: 3px solid #ffc107; }
@@ -2052,17 +2061,24 @@ const CAL_MEETINGS = [
   { id:'8.29', status:'done',    date:'12/11/2026', time:'11h00', week:3, name:'Salesforce — Trackamento no Super App', ataFile:'ATA 2026-11-12 11h - Salesforce - Trackamento no Superapp.docx' },
   { id:'8.30', status:'done',    date:'13/11/2026', time:'15h00', week:3, name:'Salesforce — Arquitetura de Conectividade', duration:'1h25', ataFile:'ATA 2026-11-13 15h - Salesforce - Arquitetura de Conectividade @ Fri, Nov 13, 2026 3_00pm – 3_30pm (GMT-3).pdf' },
   { id:'8.31', status:'done',    date:'16/11/2026', time:'09h00', week:4, name:'PC — Projeto Caixa (Status Report Semanal)', duration:'1h14', ataFile:'ATA 2026-11-16 09h - PC - Projeto Caixa (Status Report Semanal).md' },
-  { id:'8.38', status:'done',    date:'16/11/2026', time:'11h00', week:4, name:'Personas/Grupos (Financial Services)', duration:'2h14', ataFile:'ATA 2026-11-16 11h - Personas e Grupos (Financial Services Cloud - Private Banking).md' },
+  { id:'8.38', status:'done',    date:'16/11/2026', time:'11h00', week:4, name:'Personas/Grupos (Financial Services)', duration:'1h00', ataFile:'ATA 2026-11-16 11h - Personas e Grupos (Financial Services Cloud - Private Banking).md' },
   { id:'8.34', status:'future',  date:'16/11/2026', time:'15h00', week:4, name:'Docs Entrega do Marco 2 (Avaliação Técnica + Change Management)', ataFile:'' },
   { id:'8.39', status:'future',  date:'16/11/2026', time:'16h00', week:4, name:'Conectividade CAIXA (Urgente)', ataFile:'' },
   { id:'8.32', status:'future',  date:'16/11/2026', time:'16h00', week:4, name:'Agenda Diária — UC2 Carrinho Abandonado (Tamie + Fábio)', ataFile:'' },
   { id:'8.37', status:'future',  date:'17/11/2026', time:'09h30', week:4, name:'Plano de Implantação — Caso de Uso 1 (Fabio, Bruno, Karina)', ataFile:'' },
   { id:'8.43', status:'future',  date:'17/11/2026', time:'10h30', week:4, name:'FS Acessos / Encarteiramento', ataFile:'' },
   { id:'8.41', status:'future',  date:'17/11/2026', time:'14h00', week:4, name:'Exploração do CCP (Fabio + Samuel, Renan, Maciel)', ataFile:'' },
+  { id:'8.48', status:'future',  date:'17/11/2026', time:'14h00', week:4, name:'FSC — 5 GCN (Lino)', ataFile:'' },
+  { id:'8.49', status:'future',  date:'17/11/2026', time:'14h30', week:4, name:'FSC — Superintendente e Private BR (Lino)', ataFile:'' },
   { id:'8.44', status:'future',  date:'17/11/2026', time:'15h00', week:4, name:'Detalhamento APIs de Personalização APP (Samuel + Fábio)', ataFile:'' },
   { id:'8.33', status:'future',  date:'17/11/2026', time:'16h00', week:4, name:'Arquitetura Business Unit — Cross Todos os Casos de Uso (Bruno + Fábio)', ataFile:'' },
+  { id:'8.54', status:'future',  date:'17/11/2026', time:'16h00', week:4, name:'FSC — Superintendente Private BR e Equipe (Lino)', ataFile:'' },
   { id:'8.45', status:'future',  date:'17/11/2026', time:'17h00', week:4, name:'Kickoff Estrutura de Squads', ataFile:'' },
+  { id:'8.50', status:'future',  date:'18/11/2026', time:'10h00', week:4, name:'FSC — Grupo #1 3ESP (Lino)', ataFile:'' },
+  { id:'8.51', status:'future',  date:'18/11/2026', time:'14h00', week:4, name:'FSC — Estratégia Matriz (Lino)', ataFile:'' },
   { id:'8.36', status:'future',  date:'18/11/2026', time:'16h00', week:4, name:'Agenda Diária — Caso de Uso 1 (Outros Tipos)', ataFile:'' },
+  { id:'8.52', status:'future',  date:'18/11/2026', time:'16h00', week:4, name:'FSC — Grupo #2 4ESP (Lino)', ataFile:'' },
+  { id:'8.53', status:'future',  date:'19/11/2026', time:'09h00', week:4, name:'FSC — Visita Presencial Private SP Capital (09h–17h)', ataFile:'' },
   { id:'8.46', status:'future',  date:'19/11/2026', time:'10h30', week:4, name:'Apresentação SF MC com foco no Journey Builder (Samuel, CS — Renata e Cleyton)', ataFile:'' },
   { id:'8.47', status:'future',  date:'19/11/2026', time:'14h00', week:4, name:'Agenda Fixa Financial com Lino (seg e qui)', ataFile:'' },
   { id:'8.35', status:'future',  date:'19/11/2026', time:'16h00', week:4, name:'Agenda Diária — UC3 Exploração do Caso Onboarding', ataFile:'' }
@@ -2187,6 +2203,10 @@ function calRenderWeek(week) {
         const cellClass = isHoliday ? 'cal-cell-day holiday' : (isToday ? 'cal-cell-day today' : 'cal-cell-day');
         html += `<td class="${cellClass}"${rsAttr}>${isHoliday && slotIdx===0?`<div class="cal-holiday-label">${d.holiday}</div>`:''}`;
 
+        if (mtgs.length > 1) {
+          // Múltiplos cards no mesmo slot: exibir lado a lado
+          html += `<div class="cal-cards-row">`;
+        }
         mtgs.forEach(m => {
           const cc = m.status==='done'?'done':m.status==='pending'?'pending':'future';
           const nc = m.status==='future'?'cal-mc-name future-name':'cal-mc-name';
@@ -2203,6 +2223,9 @@ function calRenderWeek(week) {
           }
           html += `</div>`;
         });
+        if (mtgs.length > 1) {
+          html += `</div>`;
+        }
         html += '</td>';
       });
       html += '</tr>';
