@@ -1921,6 +1921,11 @@
           <option value="8.30">8.30 – Arquitetura de Conectividade</option>
           <option value="8.31">8.31 – PC Projeto Caixa (Status Report)</option>
           <option value="8.38">8.38 – Personas e Grupos (FSC)</option>
+          <option value="8.34">8.34 – Docs Entrega Marco 2</option>
+          <option value="8.32">8.32 – UC2 Carrinho Abandonado</option>
+          <option value="8.39">8.39 – Conectividade CAIXA (Urgente)</option>
+          <option value="8.37">8.37 – Plano de Implantação CU1</option>
+          <option value="8.43">8.43 – Acessos e Encarteiramento FSC</option>
         </select>
       </div>
       <div class="ac-filter-group">
@@ -2062,11 +2067,11 @@ const CAL_MEETINGS = [
   { id:'8.30', status:'done',    date:'13/11/2026', time:'15h00', week:3, name:'Salesforce — Arquitetura de Conectividade', duration:'1h25', ataFile:'ATA 2026-11-13 15h - Salesforce - Arquitetura de Conectividade @ Fri, Nov 13, 2026 3_00pm – 3_30pm (GMT-3).pdf' },
   { id:'8.31', status:'done',    date:'16/11/2026', time:'09h00', week:4, name:'PC — Projeto Caixa (Status Report Semanal)', duration:'1h14', ataFile:'ATA 2026-11-16 09h - PC - Projeto Caixa (Status Report Semanal).md' },
   { id:'8.38', status:'done',    date:'16/11/2026', time:'11h00', week:4, name:'Personas/Grupos (Financial Services)', duration:'1h00', ataFile:'ATA 2026-11-16 11h - Personas e Grupos (Financial Services Cloud - Private Banking).md' },
-  { id:'8.34', status:'future',  date:'16/11/2026', time:'15h00', week:4, name:'Docs Entrega do Marco 2 (Avaliação Técnica + Change Management)', ataFile:'' },
-  { id:'8.39', status:'future',  date:'16/11/2026', time:'16h00', week:4, name:'Conectividade CAIXA (Urgente)', ataFile:'' },
-  { id:'8.32', status:'future',  date:'16/11/2026', time:'16h00', week:4, name:'Agenda Diária — UC2 Carrinho Abandonado (Tamie + Fábio)', ataFile:'' },
-  { id:'8.37', status:'future',  date:'17/11/2026', time:'09h30', week:4, name:'Plano de Implantação — Caso de Uso 1 (Fabio, Bruno, Karina)', ataFile:'' },
-  { id:'8.43', status:'future',  date:'17/11/2026', time:'10h30', week:4, name:'FS Acessos / Encarteiramento', ataFile:'' },
+  { id:'8.34', status:'done',    date:'16/11/2026', time:'15h00', week:4, name:'Docs Entrega do Marco 2 (Avaliação Técnica + Change Management)', duration:'1h00', ataFile:'ATA 2026-11-16 15h - Apresentação dos Docs da Entrega do Marco 2.md' },
+  { id:'8.39', status:'done',    date:'16/11/2026', time:'16h00', week:4, name:'Conectividade CAIXA (Urgente)', duration:'1h27', ataFile:'ATA 2026-11-16 16h - Salesforce - Conectividade CAIXA (Urgente).md' },
+  { id:'8.32', status:'done',    date:'16/11/2026', time:'16h00', week:4, name:'Agenda Diária — UC2 Carrinho Abandonado (Tamie + Fábio)', duration:'1h02', ataFile:'ATA 2026-11-16 16h - Agenda Diária UC2 - Carrinho Abandonado (Crédito do Trabalhador).md' },
+  { id:'8.37', status:'done',    date:'17/11/2026', time:'09h30', week:4, name:'Plano de Implantação — Caso de Uso 1 (Fabio, Bruno, Karina)', duration:'1h00', ataFile:'ATA 2026-11-17 09h - Salesforce - Plano de Implantação Caso de Uso 1.md' },
+  { id:'8.43', status:'done',    date:'17/11/2026', time:'10h30', week:4, name:'FS Acessos / Encarteiramento (Lino, Camila)', duration:'1h10', ataFile:'ATA 2026-11-17 10h - Salesforce - Acessos e Encarteiramento (FSC Private).md' },
   { id:'8.41', status:'future',  date:'17/11/2026', time:'14h00', week:4, name:'Exploração do CCP (Fabio + Samuel, Renan, Maciel)', ataFile:'' },
   { id:'8.48', status:'future',  date:'17/11/2026', time:'14h00', week:4, name:'FSC — 5 GCN (Lino)', ataFile:'' },
   { id:'8.49', status:'future',  date:'17/11/2026', time:'14h30', week:4, name:'FSC — Superintendente e Private BR (Lino)', ataFile:'' },
@@ -2129,9 +2134,17 @@ function calGetMeetings(dayFull, slot) {
 }
 
 function calOpenAta(ataFile) {
-  const base = 'https://avisentin-visentin.github.io/cef-painel/atas/';
+  let url;
+  if (ataFile.endsWith('.md') || ataFile.endsWith('.docx')) {
+    // Arquivos locais: abrir da pasta ATAs/ relativa ao painel
+    const base = window.location.href.replace(/\/[^\/]*$/, '/ATAs/');
+    url = base + encodeURIComponent(ataFile);
+  } else {
+    // PDFs publicados no GitHub Pages
+    url = 'https://avisentin-visentin.github.io/cef-painel/atas/' + encodeURIComponent(ataFile);
+  }
   const a = document.createElement('a');
-  a.href = base + encodeURIComponent(ataFile);
+  a.href = url;
   a.target = '_blank'; a.rel = 'noopener';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
@@ -2491,7 +2504,34 @@ const AC_ACOES = [
   {id:94,reuniaoId:'8.38',reuniaoNome:'Personas e Grupos (Financial Services Cloud)',reuniaoData:'16/11/2026',acao:'Confirmar e conduzir visita presencial na agência da Paulista para Bankers e Assistentes SP.',resp:'Mariana Izukawa (Salesforce) / Lino Muffato (Caixa)',respOrg:'Salesforce + Caixa',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Futuro'},
   {id:95,reuniaoId:'8.38',reuniaoNome:'Personas e Grupos (Financial Services Cloud)',reuniaoData:'16/11/2026',acao:'Agendar grupos focais com Superintendentes Regionais (3 grupos: 4+3+1) e agenda com Estratégico do Segmento às 14h.',resp:'Lino Muffato (Caixa)',respOrg:'Caixa',prazo:'2026-11-18',prazoDisplay:'18/Nov/2026',status:'Futuro'},
   {id:96,reuniaoId:'8.38',reuniaoNome:'Personas e Grupos (Financial Services Cloud)',reuniaoData:'16/11/2026',acao:'Enviar recorrência da agenda fixa FSC (segundas e quintas às 14h) a partir da próxima semana.',resp:'Adriana Visentin (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
-  {id:97,reuniaoId:'8.38',reuniaoNome:'Personas e Grupos (Financial Services Cloud)',reuniaoData:'16/11/2026',acao:'Levantar e compartilhar benchmarks de FSC em Wealth Management/Private Banking de outras IFs.',resp:'Camila Pacheco / Mariana Izukawa (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Futuro'}
+  {id:97,reuniaoId:'8.38',reuniaoNome:'Personas e Grupos (Financial Services Cloud)',reuniaoData:'16/11/2026',acao:'Levantar e compartilhar benchmarks de FSC em Wealth Management/Private Banking de outras IFs.',resp:'Camila Pacheco / Mariana Izukawa (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-19',prazoDisplay:'19/Nov/2026',status:'Futuro'},
+  {id:98,reuniaoId:'8.34',reuniaoNome:'Docs Entrega do Marco 2',reuniaoData:'16/11/2026',acao:'Evoluir documento de CM com framework replicável de atividades aplicado ao UC1/GSRM ("X dias antes do Go Live: ação A, Y dias antes: ação B").',resp:'Mariana Izukawa (Salesforce — CM)',respOrg:'Salesforce',prazo:'2026-11-23',prazoDisplay:'23/Nov/2026',status:'Futuro'},
+  {id:99,reuniaoId:'8.34',reuniaoNome:'Docs Entrega do Marco 2',reuniaoData:'16/11/2026',acao:'Atualizar documento de Avaliação Técnica para refletir novo modelo de conectividade MuleSoft RTF on-premise (substituindo CloudHub + Equinix).',resp:'Bruno Aniceto de Araújo (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-21',prazoDisplay:'21/Nov/2026',status:'Futuro'},
+  {id:100,reuniaoId:'8.34',reuniaoNome:'Docs Entrega do Marco 2',reuniaoData:'16/11/2026',acao:'Atualizar Smartsheet com cronograma completo das atividades de gestão de mudança e próximos passos da Fase Zero.',resp:'Andryelle Verissimo (Orange)',respOrg:'Orange',prazo:'2026-11-20',prazoDisplay:'20/Nov/2026',status:'Futuro'},
+  {id:101,reuniaoId:'8.34',reuniaoNome:'Docs Entrega do Marco 2',reuniaoData:'16/11/2026',acao:'Ler os documentos do Marco 2 e enviar dúvidas pontuais à equipe.',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:'2026-11-23',prazoDisplay:'23/Nov/2026',status:'Futuro'},
+  {id:102,reuniaoId:'8.32',reuniaoNome:'UC2 Carrinho Abandonado',reuniaoData:'16/11/2026',acao:'Enviar prints e fluxo completo das telas da jornada de Crédito do Trabalhador (Figma), incluindo mapeamento detalhado dos pontos de abandono e regras negociais de reprovação.',resp:'Tamie Silva Takeda (Caixa)',respOrg:'Caixa',prazo:'2026-11-16',prazoDisplay:'16/Nov/2026',status:'Futuro'},
+  {id:103,reuniaoId:'8.32',reuniaoNome:'UC2 Carrinho Abandonado',reuniaoData:'16/11/2026',acao:'Verificar quais telas da jornada de Crédito do Trabalhador não estão tagueadas no Firebase e compartilhar o catálogo/dicionário de eventos antes das férias.',resp:'Tamie Silva Takeda (Caixa)',respOrg:'Caixa',prazo:'2026-11-21',prazoDisplay:'21/Nov/2026',status:'Futuro'},
+  {id:104,reuniaoId:'8.32',reuniaoNome:'UC2 Carrinho Abandonado',reuniaoData:'16/11/2026',acao:'Reorganizar o material do UC2 e fazer double check com Gabriel (substituto de Tamie) no início da próxima semana para fechar a proposta do caso de uso.',resp:'Karina Curvina (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-23',prazoDisplay:'23/Nov/2026',status:'Futuro'},
+  {id:105,reuniaoId:'8.32',reuniaoNome:'UC2 Carrinho Abandonado',reuniaoData:'16/11/2026',acao:'Agendar reunião específica para apresentar ao time SF o conceito e estrutura dos campos da base de scoring de e-mail.',resp:'Fábio Netto Pinheiro Grande (Caixa)',respOrg:'Caixa',prazo:'2026-11-23',prazoDisplay:'23/Nov/2026',status:'Futuro'},
+  {id:106,reuniaoId:'8.39',reuniaoNome:'Conectividade CAIXA (Urgente)',reuniaoData:'16/11/2026',acao:'Identificar o dono do Blob Storage (possivelmente área Gegod) e obter autorização formal para exposição do storage e geração do SAS token.',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:107,reuniaoId:'8.39',reuniaoNome:'Conectividade CAIXA (Urgente)',reuniaoData:'16/11/2026',acao:'Enviar e-mail formal contextualizando a necessidade de publicação do Blob Storage com IP público e abrir chamado W para a equipe CSTI-35 operacionalizar a exposição.',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:108,reuniaoId:'8.39',reuniaoNome:'Conectividade CAIXA (Urgente)',reuniaoData:'16/11/2026',acao:'Alinhar com Lindoso (Redes/CSTI-35) o fluxo correto para abertura do chamado W referente à publicação do Blob Storage.',resp:'Bruno Aprigio e Silva + Lindoso (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:109,reuniaoId:'8.39',reuniaoNome:'Conectividade CAIXA (Urgente)',reuniaoData:'16/11/2026',acao:'Abrir demanda de Arquitetura de Referência com o time de André para o desenho da solução RTF/MuleSoft.',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:110,reuniaoId:'8.39',reuniaoNome:'Conectividade CAIXA (Urgente)',reuniaoData:'16/11/2026',acao:'Articular excepcionalização junto à área de Operações para acelerar o processo de arquitetura fora do rito padrão, dado o prazo crítico de dezembro/2026.',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:111,reuniaoId:'8.39',reuniaoNome:'Conectividade CAIXA (Urgente)',reuniaoData:'16/11/2026',acao:'Confirmar oficialmente com o time de produtos Salesforce o suporte do RTF ao OKD (OpenShift Community/free).',resp:'Bruno Aniceto de Araújo (Salesforce)',respOrg:'Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:112,reuniaoId:'8.39',reuniaoNome:'Conectividade CAIXA (Urgente)',reuniaoData:'16/11/2026',acao:'Preparar e compartilhar a arquitetura detalhada do RTF (componentes, clusters, requisitos) para submissão ao processo de aprovação interna da Caixa.',resp:'Bruno Aniceto de Araújo (Salesforce)',respOrg:'Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:113,reuniaoId:'8.37',reuniaoNome:'Plano de Implantação CU1',reuniaoData:'17/11/2026',acao:'Consultar Eugênio (Segurança) sobre prazo estimado para disponibilização do SAS token e informar a Salesforce via WhatsApp.',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:114,reuniaoId:'8.37',reuniaoNome:'Plano de Implantação CU1',reuniaoData:'17/11/2026',acao:'Acionar Jeyson para movimentar internamente a autorização formal para consumo do dado do Blob Storage na internet.',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:115,reuniaoId:'8.37',reuniaoNome:'Plano de Implantação CU1',reuniaoData:'17/11/2026',acao:'Revisar o plano de implantação do CU1 com novas datas (~23/12 como limite), destacar itens críticos em vermelho e enviar para Bruno ao final do dia.',resp:'Karina Curvina (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:116,reuniaoId:'8.37',reuniaoNome:'Plano de Implantação CU1',reuniaoData:'17/11/2026',acao:'Enviar relatório técnico dos canais (e-mail, SMS, WhatsApp) para Bruno ao final do dia.',resp:'Andreas Miller (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:117,reuniaoId:'8.37',reuniaoNome:'Plano de Implantação CU1',reuniaoData:'17/11/2026',acao:'Tratar com Fábio (Caixa) na reunião da tarde: status da aprovação de layout de e-mail, delegação de domínio DNS e andamento da conversa com Jambeiro sobre canais.',resp:'Karina Curvina (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:118,reuniaoId:'8.37',reuniaoNome:'Plano de Implantação CU1',reuniaoData:'17/11/2026',acao:'Solicitar imediatamente aprovação do layout das campanhas (e-mail, SMS, WhatsApp) para o CU1 — não aguardar resolução dos bloqueios técnicos.',resp:'Bruno Aprigio e Silva (Caixa) + Karina Curvina (Salesforce)',respOrg:'Caixa + Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:119,reuniaoId:'8.37',reuniaoNome:'Plano de Implantação CU1',reuniaoData:'17/11/2026',acao:'Confirmar se a fonte dos dados dos casos de uso 2 e 3 está no Databricks como pré-requisito para decidir se avança o planejamento desses casos.',resp:'Karina Curvina (Salesforce) + Fábio Grande (Caixa)',respOrg:'Caixa + Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:120,reuniaoId:'8.37',reuniaoNome:'Plano de Implantação CU1',reuniaoData:'17/11/2026',acao:'Quando a data de Go Live do CU1 estiver confirmada, acionar Andreas para atualizar rapidamente a apresentação para submissão ao Comitê Diretivo.',resp:'Bruno Aprigio e Silva (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A confirmar',status:'Futuro'},
+  {id:121,reuniaoId:'8.43',reuniaoNome:'Acessos e Encarteiramento FSC',reuniaoData:'17/11/2026',acao:'Montar matriz de acesso (perfil × tipo de dado × visibilidade) para definição formal dos níveis de acesso no FSC e retornar à Salesforce.',resp:'Lino Raphael Brancaglion Muffato (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:122,reuniaoId:'8.43',reuniaoNome:'Acessos e Encarteiramento FSC',reuniaoData:'17/11/2026',acao:'Confirmar com área interna da Caixa como funciona o fluxo de cobertura de férias — se o assistente muda de grupo de função no sistema ao assumir a substituição.',resp:'Lino Raphael Brancaglion Muffato (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:123,reuniaoId:'8.43',reuniaoNome:'Acessos e Encarteiramento FSC',reuniaoData:'17/11/2026',acao:'Incluir habilitação do Shield como requisito funcional para rastreamento de acessos a clientes PEP e investigação de incidentes.',resp:'Camila Pacheco (Salesforce)',respOrg:'Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:124,reuniaoId:'8.43',reuniaoNome:'Acessos e Encarteiramento FSC',reuniaoData:'17/11/2026',acao:'Incluir Diego Lima de Freitas (Orange) na agenda presencial de quinta-feira, 19/11/2026, às 14h (continuação do discovery de Acessos/Encarteiramento).',resp:'Adriana Corsino Visentin (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'}
 ];
 acLoadStorage();
 
