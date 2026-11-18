@@ -1033,6 +1033,18 @@
     <button class="back-btn" onclick="goHome()">← Voltar</button>
     <span class="detail-title">Casos de Uso Prioritários — Meta: Janeiro/2027</span>
   </div>
+  <!-- Tab bar -->
+  <div style="display:flex;gap:4px;padding:10px 20px 0;border-bottom:2px solid #e2e8f0;background:#f8fafd;">
+    <div id="tab-squads" onclick="showView('squads')" style="padding:8px 20px;border-radius:8px 8px 0 0;background:#fff;color:#003087;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #c5d3e8;border-bottom:2px solid #fff;margin-bottom:-2px;transition:background .15s;" onmouseenter="this.style.background='#eef3fb'" onmouseleave="this.style.background='#fff'">
+      👥 Squads
+    </div>
+    <div id="tab-casos" style="padding:8px 20px;border-radius:8px 8px 0 0;background:#003087;color:#fff;font-size:13px;font-weight:700;cursor:pointer;border:1px solid #003087;border-bottom:2px solid #003087;margin-bottom:-2px;">
+      📋 Casos de Uso
+    </div>
+    <div onclick="showView('statusucs')" style="padding:8px 20px;border-radius:8px 8px 0 0;background:#fff;color:#003087;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #c5d3e8;border-bottom:2px solid #fff;margin-bottom:-2px;transition:background .15s;" onmouseenter="this.style.background='#eef3fb'" onmouseleave="this.style.background='#fff'">
+      📊 Status UCs
+    </div>
+  </div>
   <div style="flex:1;overflow:auto;">
     <div class="cu-grid">
 
@@ -1053,8 +1065,11 @@
 
           <!-- 1.1 Crédito Pessoal -->
           <div style="background:#f0f4fa;border:1px solid #c5d3e8;border-radius:8px;padding:10px;cursor:pointer;transition:box-shadow .2s,border-color .2s;" onclick="(function(){const base=window.location.href.replace(/\/[^\/]*$/,'/');window.location.href=base+'Plano_Implementacao.html';})()" onmouseenter="this.style.boxShadow='0 4px 12px rgba(0,48,135,.18)';this.style.borderColor='#003087'" onmouseleave="this.style.boxShadow='';this.style.borderColor='#c5d3e8'">
-            <div style="font-size:10px;font-weight:700;color:#003087;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">1.1</div>
-            <div style="font-size:12px;font-weight:600;color:#1a2a4a;margin-bottom:10px;line-height:1.3;">Limite Disponível — Crédito Pessoal <span style="font-size:9px;color:#003087;font-weight:400;">↗</span></div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:10px;font-weight:700;color:#003087;text-transform:uppercase;letter-spacing:.5px;">1.1</span>
+              <span style="font-size:12px;font-weight:600;color:#1a2a4a;line-height:1.3;">Limite Disponível — Crédito Pessoal <span style="font-size:9px;color:#003087;font-weight:400;">↗</span></span>
+            </div>
+            <div style="font-size:10px;font-weight:700;color:#003087;background:#e8eef8;border:1px solid #c5d3e8;border-radius:4px;padding:2px 7px;display:inline-block;margin-bottom:8px;">🎯 Meta: 16/Dez/2026</div>
             <div style="margin-bottom:5px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
                 <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Planejado</span>
@@ -1077,8 +1092,11 @@
 
           <!-- 1.2 Cartão de Crédito -->
           <div style="background:#f0f4fa;border:1px solid #c5d3e8;border-radius:8px;padding:10px;">
-            <div style="font-size:10px;font-weight:700;color:#003087;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">1.2</div>
-            <div style="font-size:12px;font-weight:600;color:#1a2a4a;margin-bottom:10px;line-height:1.3;">Cartão de Crédito</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:10px;font-weight:700;color:#003087;text-transform:uppercase;letter-spacing:.5px;">1.2</span>
+              <span style="font-size:12px;font-weight:600;color:#1a2a4a;line-height:1.3;">Cartão de Crédito</span>
+            </div>
+            <div style="font-size:10px;font-weight:700;color:#7a8aaa;background:#f0f4fa;border:1px solid #c5d3e8;border-radius:4px;padding:2px 7px;display:inline-block;margin-bottom:8px;">🎯 Meta: TBD</div>
             <div style="margin-bottom:5px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
                 <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Planejado</span>
@@ -1101,8 +1119,11 @@
 
           <!-- 1.3 Limite de Conta -->
           <div style="background:#f0f4fa;border:1px solid #c5d3e8;border-radius:8px;padding:10px;">
-            <div style="font-size:10px;font-weight:700;color:#003087;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">1.3</div>
-            <div style="font-size:12px;font-weight:600;color:#1a2a4a;margin-bottom:10px;line-height:1.3;">Limite de Conta</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:10px;font-weight:700;color:#003087;text-transform:uppercase;letter-spacing:.5px;">1.3</span>
+              <span style="font-size:12px;font-weight:600;color:#1a2a4a;line-height:1.3;">Limite de Conta</span>
+            </div>
+            <div style="font-size:10px;font-weight:700;color:#7a8aaa;background:#f0f4fa;border:1px solid #c5d3e8;border-radius:4px;padding:2px 7px;display:inline-block;margin-bottom:8px;">🎯 Meta: TBD</div>
             <div style="margin-bottom:5px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
                 <span style="font-size:9px;font-weight:700;color:#555;text-transform:uppercase;">Planejado</span>
@@ -1149,8 +1170,11 @@
 
           <!-- 2.1 Carrinho Abandonado -->
           <div style="background:#f0faf4;border:1px solid #b2d8c0;border-radius:8px;padding:10px;">
-            <div style="font-size:10px;font-weight:700;color:#1a7f4e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">2.1</div>
-            <div style="font-size:12px;font-weight:600;color:#1a2a4a;margin-bottom:4px;line-height:1.3;">Carrinho Abandonado</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:10px;font-weight:700;color:#1a7f4e;text-transform:uppercase;letter-spacing:.5px;">2.1</span>
+              <span style="font-size:12px;font-weight:600;color:#1a2a4a;line-height:1.3;">Carrinho Abandonado</span>
+            </div>
+            <div style="font-size:10px;font-weight:700;color:#1a7f4e;background:#eaf5ef;border:1px solid #b2d8c0;border-radius:4px;padding:2px 7px;display:inline-block;margin-bottom:5px;">🎯 Meta: 28/Fev/2027</div>
             <div style="font-size:11px;color:#556;margin-bottom:10px;line-height:1.4;">Recuperação de clientes que iniciaram e abandonaram uma contratação no Super App.</div>
             <div style="margin-bottom:5px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
@@ -1174,8 +1198,11 @@
 
           <!-- 2.2 Oferta de Investimento -->
           <div style="background:#f0faf4;border:1px solid #b2d8c0;border-radius:8px;padding:10px;">
-            <div style="font-size:10px;font-weight:700;color:#1a7f4e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;">2.2</div>
-            <div style="font-size:12px;font-weight:600;color:#1a2a4a;margin-bottom:4px;line-height:1.3;">Oferta de Investimento / Depósito</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:10px;font-weight:700;color:#1a7f4e;text-transform:uppercase;letter-spacing:.5px;">2.2</span>
+              <span style="font-size:12px;font-weight:600;color:#1a2a4a;line-height:1.3;">Oferta de Investimento / Depósito</span>
+            </div>
+            <div style="font-size:10px;font-weight:700;color:#1a7f4e;background:#eaf5ef;border:1px solid #b2d8c0;border-radius:4px;padding:2px 7px;display:inline-block;margin-bottom:5px;">🎯 Meta: 17/Jan/2027</div>
             <div style="font-size:11px;color:#556;margin-bottom:10px;line-height:1.4;">Campanhas near real-time baseadas em eventos de depósito em conta corrente.</div>
             <div style="margin-bottom:5px;">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
@@ -1208,9 +1235,13 @@
       </div>
 
       <!-- CU3 -->
+      <!-- CU3 -->
       <div class="cu-card" style="border-top:4px solid #c75000;">
         <div class="cu-header">
-          <div class="cu-num" style="background:#c75000;">3</div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;">
+            <div class="cu-num" style="background:#c75000;">3</div>
+            <div style="font-size:9px;font-weight:700;color:#c75000;background:#fdf0e8;border:1px solid #f5c6a0;border-radius:4px;padding:2px 6px;white-space:nowrap;">🎯 28/Fev/2027</div>
+          </div>
           <div>
             <div class="cu-name">Onboarding Digital — Jornada Ponta a Ponta</div>
             <div class="cu-id">Caso de Uso 3 · Marketing Cloud · Régua de Relacionamento</div>
@@ -1241,7 +1272,10 @@
       <!-- CU4 -->
       <div class="cu-card" style="border-top:4px solid #5c2d91;">
         <div class="cu-header">
-          <div class="cu-num" style="background:#5c2d91;">4</div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;">
+            <div class="cu-num" style="background:#5c2d91;">4</div>
+            <div style="font-size:9px;font-weight:700;color:#5c2d91;background:#f2edf9;border:1px solid #d4b8f0;border-radius:4px;padding:2px 6px;white-space:nowrap;">🎯 30/Abr/2027</div>
+          </div>
           <div>
             <div class="cu-name">Financial Services Cloud para Gerentes Private</div>
             <div class="cu-id">Caso de Uso 4 · FSC · Private Banking</div>
@@ -1272,6 +1306,405 @@
     </div>
   </div>
 </div>
+
+<!-- ── INLINE VIEW — SQUADS ───────────────────────────── -->
+<div id="squadsView" class="inline-view" style="display:none;">
+  <div class="detail-topbar">
+    <button class="back-btn" onclick="goHome()">← Voltar</button>
+    <span class="detail-title">Squads do Projeto — CEF Mov CRM</span>
+  </div>
+  <!-- Tab bar (mesmo padrão, aba Squads ativa) -->
+  <div style="display:flex;gap:4px;padding:10px 20px 0;border-bottom:2px solid #e2e8f0;background:#f8fafd;">
+    <div style="padding:8px 20px;border-radius:8px 8px 0 0;background:#003087;color:#fff;font-size:13px;font-weight:700;cursor:default;border:1px solid #003087;border-bottom:2px solid #003087;margin-bottom:-2px;">
+      👥 Squads
+    </div>
+    <div onclick="showView('casos')" style="padding:8px 20px;border-radius:8px 8px 0 0;background:#fff;color:#003087;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #c5d3e8;border-bottom:2px solid #fff;margin-bottom:-2px;transition:background .15s;" onmouseenter="this.style.background='#eef3fb'" onmouseleave="this.style.background='#fff'">
+      📋 Casos de Uso
+    </div>
+    <div onclick="showView('statusucs')" style="padding:8px 20px;border-radius:8px 8px 0 0;background:#fff;color:#003087;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #c5d3e8;border-bottom:2px solid #fff;margin-bottom:-2px;transition:background .15s;" onmouseenter="this.style.background='#eef3fb'" onmouseleave="this.style.background='#fff'">
+      📊 Status UCs
+    </div>
+  </div>
+  <div style="flex:1;overflow:auto;padding:20px 24px 32px;">
+    <!-- Squad 1 — full width -->
+    <div style="margin-bottom:6px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#8a98b8;padding-left:2px;">Coordenação</div>
+    <div style="background:#fff;border-radius:10px;border:1px solid #dde3ef;overflow:hidden;display:flex;flex-direction:row;align-items:stretch;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:14px;">
+      <div style="background:#003087;color:#fff;min-width:200px;max-width:220px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,.15);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.5px;background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;margin-bottom:5px;display:inline-block;text-transform:uppercase;">Squad 1</div>
+        <div style="font-size:13px;font-weight:700;line-height:1.3;">Núcleo Coordenação / Core</div>
+      </div>
+      <div style="display:flex;flex-direction:row;flex:1;">
+        <div style="flex:1;padding:10px 12px 8px;border-right:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Caixa</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Bruno Aprigio<br>Fábio Netto<br>Jeyson</div>
+        </div>
+        <div style="flex:1;padding:10px 12px 8px;border-right:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Salesforce</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Adriana / Juliana<br>Andreas<br>Renata Dezan <span style="font-size:10px;color:#8a98b8;">CSM Lead</span></div>
+        </div>
+        <div style="flex:1;padding:10px 12px 8px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">OrangeDoor</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Andryelle<br>Diego<br>Hudson</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Squads 2–5 — 4 colunas -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px;">
+
+      <!-- Squad 2 -->
+      <div style="background:#fff;border-radius:10px;border:1px solid #dde3ef;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;flex-direction:column;">
+        <div style="background:#1a5e9e;color:#fff;padding:10px 12px 8px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.5px;background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;margin-bottom:5px;display:inline-block;text-transform:uppercase;">Squad 2</div>
+          <div style="font-size:13px;font-weight:700;">Campanhas Batch</div>
+        </div>
+        <div style="padding:10px 12px 8px;border-bottom:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Caixa</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Josie <span style="font-size:10px;color:#8a98b8;">PO · GECRM</span><br>Luciana Arruda <span style="font-size:10px;color:#8a98b8;">Mesa VIVAR</span></div>
+        </div>
+        <div style="padding:10px 12px 8px;border-bottom:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Salesforce</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Karina Curvina<br>Flávia Adrieli<br>Clayton Kohiyama <span style="font-size:10px;color:#8a98b8;">CSM</span></div>
+        </div>
+        <div style="padding:10px 12px 8px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">OrangeDoor</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Andryelle<br>Bruno Correia <span style="font-size:10px;color:#8a98b8;">Arquiteto</span></div>
+        </div>
+      </div>
+
+      <!-- Squad 3 -->
+      <div style="background:#fff;border-radius:10px;border:1px solid #dde3ef;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;flex-direction:column;">
+        <div style="background:#1a7f4e;color:#fff;padding:10px 12px 8px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.5px;background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;margin-bottom:5px;display:inline-block;text-transform:uppercase;">Squad 3</div>
+          <div style="font-size:13px;font-weight:700;">Campanhas NRT ou RT</div>
+        </div>
+        <div style="padding:10px 12px 8px;border-bottom:1px solid #eef0f5;background:#f8fdf9;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#1a7f4e;margin-bottom:4px;">3.1 — Carrinho Abandonado</div>
+          <div style="font-size:9px;font-weight:700;color:#8a98b8;letter-spacing:.8px;margin-bottom:3px;margin-top:4px;">CAIXA</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;margin-bottom:5px;">Tamie <span style="font-size:10px;color:#8a98b8;">PO · GECRM</span><br>Isnaldo <span style="font-size:10px;color:#8a98b8;">Mesa VIVAR</span></div>
+          <div style="font-size:9px;font-weight:700;color:#8a98b8;letter-spacing:.8px;margin-bottom:3px;">SALESFORCE</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;margin-bottom:5px;">Karina Curvina<br>Maciel / Renan<br>Clayton Kohiyama <span style="font-size:10px;color:#8a98b8;">CSM</span></div>
+          <div style="font-size:9px;font-weight:700;color:#8a98b8;letter-spacing:.8px;margin-bottom:3px;">ORANGEDOOR</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Diego · Andryelle<br>Mauro <span style="font-size:10px;color:#8a98b8;">Desenv. MC</span></div>
+        </div>
+        <div style="padding:10px 12px 8px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#1a7f4e;margin-bottom:4px;">3.2 — Oferta de Investimento</div>
+          <div style="font-size:9px;font-weight:700;color:#8a98b8;letter-spacing:.8px;margin-bottom:3px;margin-top:4px;">CAIXA</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;margin-bottom:5px;">Eduardo <span style="font-size:10px;color:#8a98b8;">PO · GECRM</span></div>
+          <div style="font-size:9px;font-weight:700;color:#8a98b8;letter-spacing:.8px;margin-bottom:3px;">SALESFORCE</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;margin-bottom:5px;">Karina Curvina<br>Maciel / Renan<br>Clayton Kohiyama <span style="font-size:10px;color:#8a98b8;">CSM</span></div>
+          <div style="font-size:9px;font-weight:700;color:#8a98b8;letter-spacing:.8px;margin-bottom:3px;">ORANGEDOOR</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Diego · Andryelle<br>Mauro <span style="font-size:10px;color:#8a98b8;">Desenv. MC</span></div>
+        </div>
+      </div>
+
+      <!-- Squad 4 -->
+      <div style="background:#fff;border-radius:10px;border:1px solid #dde3ef;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;flex-direction:column;">
+        <div style="background:#c75000;color:#fff;padding:10px 12px 8px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.5px;background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;margin-bottom:5px;display:inline-block;text-transform:uppercase;">Squad 4</div>
+          <div style="font-size:13px;font-weight:700;">Onboarding / Boas-vindas</div>
+        </div>
+        <div style="padding:10px 12px 8px;border-bottom:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Caixa</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Suellen Cristina <span style="font-size:10px;color:#8a98b8;">PO · Mesa VIVAR</span><br>Jacques Moreira <span style="font-size:10px;color:#8a98b8;">GECRM</span></div>
+        </div>
+        <div style="padding:10px 12px 8px;border-bottom:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Salesforce</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Samuel Sena<br>Clayton Kohiyama <span style="font-size:10px;color:#8a98b8;">CSM</span></div>
+        </div>
+        <div style="padding:10px 12px 8px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">OrangeDoor</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Andryelle</div>
+        </div>
+      </div>
+
+      <!-- Squad 5 -->
+      <div style="background:#fff;border-radius:10px;border:1px solid #dde3ef;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;flex-direction:column;">
+        <div style="background:#5c2d91;color:#fff;padding:10px 12px 8px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.5px;background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;margin-bottom:5px;display:inline-block;text-transform:uppercase;">Squad 5</div>
+          <div style="font-size:13px;font-weight:700;">Financials</div>
+        </div>
+        <div style="padding:10px 12px 8px;border-bottom:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Caixa</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Lino <span style="font-size:10px;color:#8a98b8;">PO · GEEPF</span><br>Paulo Roberto <span style="font-size:10px;color:#8a98b8;">GECRM</span><br>Fred <span style="font-size:10px;color:#8a98b8;">BOX CRM</span></div>
+        </div>
+        <div style="padding:10px 12px 8px;border-bottom:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Salesforce</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Camila Pacheco<br>Karina Santos<br>Clayton Kohiyama <span style="font-size:10px;color:#8a98b8;">CSM</span></div>
+        </div>
+        <div style="padding:10px 12px 8px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">OrangeDoor</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Diego</div>
+        </div>
+      </div>
+
+    </div><!-- fim 4 colunas -->
+
+    <!-- Label cross -->
+    <div style="margin-bottom:6px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#8a98b8;padding-left:2px;">Cross — Squads de Suporte Transversal</div>
+
+    <!-- Squad 6 — full width cross -->
+    <div style="background:#fff;border-radius:10px;border:1px solid #dde3ef;overflow:hidden;display:flex;flex-direction:row;align-items:stretch;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:14px;">
+      <div style="background:#0a6e8a;color:#fff;min-width:200px;max-width:220px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,.15);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.5px;background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;margin-bottom:5px;display:inline-block;text-transform:uppercase;">Squad 6</div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:.5px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:4px;padding:2px 7px;margin-bottom:6px;display:inline-block;">🔀 Cross</div>
+        <div style="font-size:13px;font-weight:700;line-height:1.3;">Integração de Canais</div>
+      </div>
+      <div style="display:flex;flex-direction:row;flex:1;">
+        <div style="flex:1;padding:10px 12px 8px;border-right:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Caixa</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Fábio Netto <span style="font-size:10px;color:#8a98b8;">PO · GECRM</span><br>Emerson <span style="font-size:10px;color:#8a98b8;">GECRM</span><br>Eduardo <span style="font-size:10px;color:#8a98b8;">GECRM</span><br>Paulo Roberto <span style="font-size:10px;color:#8a98b8;">GECRM</span><br>Josie <span style="font-size:10px;color:#8a98b8;">GECRM</span><br>Bruno <span style="font-size:10px;color:#8a98b8;">PO · TI</span><br>Fred <span style="font-size:10px;color:#8a98b8;">TI</span></div>
+        </div>
+        <div style="flex:1;padding:10px 12px 8px;border-right:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Salesforce</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Renan Polonio<br>Clayton Kohiyama <span style="font-size:10px;color:#8a98b8;">CSM</span></div>
+        </div>
+        <div style="flex:1;padding:10px 12px 8px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">OrangeDoor</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Diego</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Squad 7 — full width cross -->
+    <div style="background:#fff;border-radius:10px;border:1px solid #dde3ef;overflow:hidden;display:flex;flex-direction:row;align-items:stretch;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:14px;">
+      <div style="background:#7a3a00;color:#fff;min-width:200px;max-width:220px;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(255,255,255,.15);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.5px;background:rgba(255,255,255,.18);border-radius:4px;padding:2px 7px;margin-bottom:5px;display:inline-block;text-transform:uppercase;">Squad 7</div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:.5px;color:rgba(255,255,255,.8);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:4px;padding:2px 7px;margin-bottom:6px;display:inline-block;">🔀 Cross</div>
+        <div style="font-size:13px;font-weight:700;line-height:1.3;">Integrações / Fundação</div>
+      </div>
+      <div style="display:flex;flex-direction:row;flex:1;">
+        <div style="flex:1;padding:10px 12px 8px;border-right:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Caixa</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Bruno Aprigio <span style="font-size:10px;color:#8a98b8;">PO</span><br>Juan <span style="font-size:10px;color:#8a98b8;">GECRM</span><br>Jacques <span style="font-size:10px;color:#8a98b8;">GECRM</span><br>Leonardo Blandim <span style="font-size:10px;color:#8a98b8;">GECRM</span><br>Thiago Farias <span style="font-size:10px;color:#8a98b8;">GEGOD</span></div>
+        </div>
+        <div style="flex:1;padding:10px 12px 8px;border-right:1px solid #eef0f5;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">Salesforce</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Bruno Aniceto<br>Wanderley Lobianco <span style="font-size:10px;color:#8a98b8;">CSM</span></div>
+        </div>
+        <div style="flex:1;padding:10px 12px 8px;">
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8a98b8;margin-bottom:6px;">OrangeDoor</div>
+          <div style="font-size:11.5px;color:#2a3a5a;line-height:1.6;">Bruno Correia</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- fim scroll -->
+</div><!-- fim squadsView -->
+
+<!-- ── INLINE VIEW — STATUS UCs ───────────────────────── -->
+<div id="statusUCsView" class="inline-view" style="display:none;">
+  <div class="detail-topbar">
+    <button class="back-btn" onclick="goHome()">← Voltar</button>
+    <span class="detail-title">Status dos Casos de Uso — CEF Mov CRM</span>
+  </div>
+  <!-- Tab bar (aba Status UCs ativa) -->
+  <div style="display:flex;gap:4px;padding:10px 20px 0;border-bottom:2px solid #e2e8f0;background:#f8fafd;">
+    <div onclick="showView('squads')" style="padding:8px 20px;border-radius:8px 8px 0 0;background:#fff;color:#003087;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #c5d3e8;border-bottom:2px solid #fff;margin-bottom:-2px;transition:background .15s;" onmouseenter="this.style.background='#eef3fb'" onmouseleave="this.style.background='#fff'">👥 Squads</div>
+    <div onclick="showView('casos')" style="padding:8px 20px;border-radius:8px 8px 0 0;background:#fff;color:#003087;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #c5d3e8;border-bottom:2px solid #fff;margin-bottom:-2px;transition:background .15s;" onmouseenter="this.style.background='#eef3fb'" onmouseleave="this.style.background='#fff'">📋 Casos de Uso</div>
+    <div style="padding:8px 20px;border-radius:8px 8px 0 0;background:#003087;color:#fff;font-size:13px;font-weight:700;cursor:default;border:1px solid #003087;border-bottom:2px solid #003087;margin-bottom:-2px;">📊 Status UCs</div>
+  </div>
+  <!-- Conteúdo do status -->
+  <div style="flex:1;overflow:auto;">
+    <style>
+      #statusUCsView { --ink:#1c1c1a;--muted:#5c5a54;--line:#e4e1d8;--paper:#f7f6f2;--card:#ffffff;--warn:#8a5a12;--warn-bg:#f8f1e3;--info:#1d4e89;--info-bg:#e8f0f8;--danger:#8d2b2b;--danger-bg:#f8eaea; }
+      #statusUCsView main { max-width:980px;margin:0 auto;padding:32px 24px 72px; font:16px/1.5 "Iowan Old Style",Palatino,"Palatino Linotype",Georgia,serif;color:var(--ink); }
+      #statusUCsView .overview{width:100%;border-collapse:collapse;margin:24px 0 8px;background:var(--card);}
+      #statusUCsView .overview th,#statusUCsView .overview td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;}
+      #statusUCsView .overview th{font:12px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+      #statusUCsView .overview tr:last-child td{border-bottom:0;}
+      #statusUCsView .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:1px;}
+      #statusUCsView .dot.warn{background:var(--warn);}#statusUCsView .dot.info{background:var(--info);}#statusUCsView .dot.danger{background:var(--danger);}
+      #statusUCsView .uc-tabs{display:flex;gap:4px;margin:28px 0 0;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+      #statusUCsView .uc-tab{appearance:none;background:none;border:1px solid transparent;border-bottom:0;border-radius:6px 6px 0 0;padding:10px 16px;margin-bottom:-1px;font:600 14px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted);cursor:pointer;}
+      #statusUCsView .uc-tab:hover{color:var(--ink);}
+      #statusUCsView .uc-tab.active{background:var(--card);border-color:var(--line);border-bottom:1px solid var(--card);color:var(--ink);}
+      #statusUCsView .uc-panel{display:none;padding-top:8px;}
+      #statusUCsView .uc-panel.active{display:block;}
+      #statusUCsView .group{margin:24px 0 0;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);}
+      #statusUCsView section h2{margin:0 0 12px;font-size:22px;font-weight:600;}
+      #statusUCsView section+section{margin-top:36px;padding-top:28px;border-top:1px solid var(--line);}
+      #statusUCsView .squares{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 16px;}
+      #statusUCsView .sq{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);padding:12px;}
+      #statusUCsView .swatch{width:36px;height:36px;flex:none;}
+      #statusUCsView .swatch.discovery{background:var(--info);}#statusUCsView .swatch.design{background:var(--warn);}#statusUCsView .swatch.setup{background:#c8c4ba;}
+      #statusUCsView .sq .k{font:600 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);}
+      #statusUCsView .sq .v{margin-top:2px;font:600 16px/1.2 ui-sans-serif,system-ui,sans-serif;}
+      #statusUCsView .sq .v.idle{color:var(--muted);font-weight:500;font-size:14px;}
+      #statusUCsView .banner{padding:12px 14px;margin-bottom:18px;}
+      #statusUCsView .banner strong{display:block;font:600 14px/1.4 ui-sans-serif,system-ui,sans-serif;margin-bottom:2px;}
+      #statusUCsView .banner p{margin:0;}
+      #statusUCsView .banner.warn{background:var(--warn-bg);color:var(--warn);}
+      #statusUCsView .banner.info{background:var(--info-bg);color:var(--info);}
+      #statusUCsView .banner.danger{background:var(--danger-bg);color:var(--danger);}
+      #statusUCsView .phases{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:0 0 20px;padding:14px 16px;background:var(--card);border:1px solid var(--line);}
+      #statusUCsView .phase-meta{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font:600 12px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.03em;text-transform:uppercase;}
+      #statusUCsView .phase-meta span:last-child{font-weight:500;letter-spacing:0;text-transform:none;color:var(--muted);}
+      #statusUCsView .track{height:8px;background:#ebe8e0;}
+      #statusUCsView .fill{height:100%;background:var(--ink);}
+      #statusUCsView .phase-sub{margin:6px 0 0;font:12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted);}
+      #statusUCsView .cols{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;}
+      #statusUCsView .lanes{display:grid;grid-template-columns:1.3fr 1.1fr 0.8fr;gap:28px;align-items:start;}
+      #statusUCsView .lane+.lane h3,#statusUCsView .block{margin-top:18px;}
+      #statusUCsView .lane .lead{margin:-4px 0 10px;font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);}
+      #statusUCsView .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 0;}
+      #statusUCsView .trio-item{background:var(--card);border:1px solid var(--line);padding:14px;}
+      #statusUCsView .trio-item.on{background:var(--info-bg);border-color:var(--info);}
+      #statusUCsView .trio-item.blocked{background:var(--danger-bg);border-color:var(--danger);}
+      #statusUCsView .trio-item .k{font:600 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);}
+      #statusUCsView .trio-item.on .k{color:var(--info);}#statusUCsView .trio-item.blocked .k{color:var(--danger);}
+      #statusUCsView .trio-item .v{margin-top:6px;font-weight:600;}
+      #statusUCsView h3{margin:0 0 10px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);}
+      #statusUCsView ul{margin:0;padding-left:18px;}#statusUCsView li{margin:6px 0;}
+      #statusUCsView li.in-progress{font-weight:600;}#statusUCsView li.done{color:var(--ink);}
+      #statusUCsView .note{margin:12px 0 0;padding-left:12px;border-left:2px solid var(--line);color:var(--ink);}
+    </style>
+    <main>
+      <header>
+        <h1>Status dos casos de uso</h1>
+        <p>Atualizado em 16/11/2026.</p>
+      </header>
+
+      <table class="overview">
+        <thead>
+          <tr><th>Caso de uso</th><th>Status</th><th>Bloqueio principal</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="dot warn"></span>1.1 Limite disponível · crédito pessoal</td><td>Discovery 70% · Design 50% · Setup não iniciado</td><td>Mapeamento no Salesforce em execução. Falta conexão (Databricks, GCP ou Azure), tabelas, data da conexão, origem de telefone e e-mail, e o aceite da estratégia.</td></tr>
+          <tr><td><span class="dot danger"></span>1.2 Cartão de crédito</td><td>Não iniciado</td><td>Ainda não começou. A oferta de crédito está em 1 de 3.</td></tr>
+          <tr><td><span class="dot danger"></span>1.3 Limite de conta</td><td>Não iniciado</td><td>Ainda não começou. A oferta de crédito está em 1 de 3.</td></tr>
+          <tr><td><span class="dot danger"></span>2.1 Oferta de investimento para clientes com depósito recente</td><td>Bloqueado até decisão do MuleSoft · Discovery 70% · Design 50%</td><td>Validar tabelas, estratégia de comunicação e origem de e-mail e telefone. Faltam definições técnicas do Mule e da fila MQ, e a modelagem no Data Cloud.</td></tr>
+          <tr><td><span class="dot danger"></span>2.2 Repescagem de clientes que abandonaram o carrinho do app</td><td>Bloqueado até decisão do MuleSoft · Discovery 50% · Design em andamento</td><td>Regras de abandono, aptidão para contratação, oferta alternativa e se o caminho é personalization em tempo real</td></tr>
+          <tr><td><span class="dot danger"></span>2.3 Benefícios do cartão para clientes que compraram passagem aérea</td><td>Não iniciado, sem contexto ainda</td><td>Entender o contexto e o objetivo do benefício</td></tr>
+          <tr><td><span class="dot danger"></span>3. Jornada de onboarding</td><td>Não iniciado</td><td>Reunião com a mesa de performance ainda não agendada</td></tr>
+        </tbody>
+      </table>
+
+      <nav class="uc-tabs" role="tablist" aria-label="Casos de uso">
+        <button class="uc-tab active" role="tab" aria-selected="true" aria-controls="st1" data-uctab="st1">Caso 1 · Oferta de crédito</button>
+        <button class="uc-tab" role="tab" aria-selected="false" aria-controls="st2" data-uctab="st2">Caso 2 · Campanhas real time</button>
+        <button class="uc-tab" role="tab" aria-selected="false" aria-controls="st3" data-uctab="st3">Caso 3 · Onboarding</button>
+      </nav>
+
+      <!-- ABA 1 -->
+      <div class="uc-panel active" id="st1" role="tabpanel">
+        <p class="group">Caso de uso 1 · Oferta de crédito · 1 de 3</p>
+        <div class="trio">
+          <div class="trio-item on"><div class="k">1.1 Em andamento</div><div class="v">Limite disponível · crédito pessoal</div></div>
+          <div class="trio-item"><div class="k">1.2 Não iniciado</div><div class="v">Cartão de crédito</div></div>
+          <div class="trio-item"><div class="k">1.3 Não iniciado</div><div class="v">Limite de conta</div></div>
+        </div>
+        <section>
+          <h2>1.1 Oferta de crédito para cliente com limite disponível</h2>
+          <div class="squares">
+            <div class="sq"><span class="swatch discovery"></span><div><div class="k">Discovery</div><div class="v">70%</div></div></div>
+            <div class="sq"><span class="swatch design"></span><div><div class="k">Design</div><div class="v">50%</div></div></div>
+            <div class="sq"><span class="swatch setup"></span><div><div class="k">Setup</div><div class="v idle">Não iniciado</div></div></div>
+          </div>
+          <div class="banner warn"><strong>Discovery em 70%, design em 50%</strong><p>Os documentos já chegaram. O mapeamento no Salesforce está em execução. O aceite da estratégia do caso 1 estava previsto para envio em 13/11.</p></div>
+          <div class="phases">
+            <div class="phase"><div class="phase-meta"><span>Discovery</span><span>70%</span></div><div class="track"><div class="fill" style="width:70%"></div></div></div>
+            <div class="phase"><div class="phase-meta"><span>Design</span><span>50%</span></div><div class="track"><div class="fill" style="width:50%"></div></div></div>
+            <div class="phase"><div class="phase-meta"><span>Setup</span><span>Não iniciado</span></div><div class="track"><div class="fill" style="width:0%"></div></div></div>
+          </div>
+          <div class="lanes">
+            <div class="lane">
+              <h3>Documentos recebidos</h3>
+              <ul><li class="done">Esquema do dicionário de tabelas de marcas</li><li class="done">Esquema do dicionário de tabelas de limite de crédito</li><li class="done">Esquema do dicionário de tabelas de clientes</li><li class="done">Data sample de limite de crédito</li></ul>
+              <h3 class="block">Em execução</h3>
+              <ul><li class="in-progress">Mapeamento dos dados, do lado do Salesforce</li></ul>
+              <h3 class="block">Ainda precisamos</h3>
+              <ul><li>Definição da conexão: Databricks, GCP ou Azure</li><li>Quais tabelas vêm de cada conexão</li><li>Data para fazer essa conexão</li><li>De onde consumir telefone e e-mail para a comunicação</li><li>Formalização do aceite da estratégia do caso de uso 1</li></ul>
+            </div>
+            <div class="lane"><h3>Design</h3><p class="lead">O que precisa estar pronto para começar o setup e a implementação.</p><ul><li class="done">Desenho das sugestões das jornadas</li><li>Definição e formalização dos canais de comunicação nativos para o início</li></ul></div>
+            <div class="lane"><h3>Setup</h3><p class="lead">Não iniciado. A implementação começa depois que o design estiver fechado.</p></div>
+          </div>
+        </section>
+        <section>
+          <h2>1.2 Cartão de crédito</h2>
+          <div class="squares"><div class="sq"><span class="swatch discovery"></span><div><div class="k">Discovery</div><div class="v idle">Não iniciado</div></div></div><div class="sq"><span class="swatch design"></span><div><div class="k">Design</div><div class="v idle">Não iniciado</div></div></div><div class="sq"><span class="swatch setup"></span><div><div class="k">Setup</div><div class="v idle">Não iniciado</div></div></div></div>
+          <div class="banner danger"><strong>Não iniciado</strong><p>Ainda não começou. A oferta de crédito está em 1 de 3: só o limite disponível, crédito pessoal, está em mapeamento.</p></div>
+        </section>
+        <section>
+          <h2>1.3 Limite de conta</h2>
+          <div class="squares"><div class="sq"><span class="swatch discovery"></span><div><div class="k">Discovery</div><div class="v idle">Não iniciado</div></div></div><div class="sq"><span class="swatch design"></span><div><div class="k">Design</div><div class="v idle">Não iniciado</div></div></div><div class="sq"><span class="swatch setup"></span><div><div class="k">Setup</div><div class="v idle">Não iniciado</div></div></div></div>
+          <div class="banner danger"><strong>Não iniciado</strong><p>Ainda não começou. A oferta de crédito está em 1 de 3: só o limite disponível, crédito pessoal, está em mapeamento.</p></div>
+        </section>
+      </div>
+
+      <!-- ABA 2 -->
+      <div class="uc-panel" id="st2" role="tabpanel">
+        <p class="group">Caso de uso 2 · Campanhas real time · 2 de 3</p>
+        <div class="trio">
+          <div class="trio-item blocked"><div class="k">2.1 Bloqueado</div><div class="v">Oferta de investimento</div></div>
+          <div class="trio-item blocked"><div class="k">2.2 Bloqueado</div><div class="v">Repescagem do carrinho</div></div>
+          <div class="trio-item"><div class="k">2.3 Não iniciado</div><div class="v">Benefício de passagem aérea</div></div>
+        </div>
+        <section>
+          <h2>2.1 Oferta de investimento para clientes com depósito recente</h2>
+          <div class="squares"><div class="sq"><span class="swatch discovery"></span><div><div class="k">Discovery</div><div class="v">70%</div></div></div><div class="sq"><span class="swatch design"></span><div><div class="k">Design</div><div class="v">50%</div></div></div><div class="sq"><span class="swatch setup"></span><div><div class="k">Setup</div><div class="v idle">Não iniciado</div></div></div></div>
+          <div class="banner danger"><strong>Bloqueado até decisão do MuleSoft</strong><p>O desenho da jornada existe, mas ainda precisa ser validado. Setup não iniciado.</p></div>
+          <div class="phases">
+            <div class="phase"><div class="phase-meta"><span>Discovery</span><span>70%</span></div><div class="track"><div class="fill" style="width:70%"></div></div></div>
+            <div class="phase"><div class="phase-meta"><span>Design</span><span>50%</span></div><div class="track"><div class="fill" style="width:50%"></div></div><p class="phase-sub">Desenho parcial, ainda precisa validar</p></div>
+            <div class="phase"><div class="phase-meta"><span>Setup</span><span>Não iniciado</span></div><div class="track"><div class="fill" style="width:0%"></div></div></div>
+          </div>
+          <div class="lanes">
+            <div class="lane">
+              <h3>Discovery — já feito</h3><ul><li class="done">Campos da fila MQ</li><li class="done">Alguns dados de clientes, inclusive dados de canal</li></ul>
+              <h3 class="block">Discovery — ainda precisamos</h3><ul><li>Validar todas as tabelas necessárias</li><li>Verificar de onde vêm os dados de comunicação (e-mail e telefone)</li><li>Definições técnicas da integração com o Mule e da fila MQ</li><li>Modelagem no Data Cloud</li></ul>
+            </div>
+            <div class="lane"><h3>Design — 50%</h3><p class="lead">Desenho parcial. Ainda precisa validar para começar o setup.</p><ul><li class="in-progress">Desenho da jornada, ainda em validação</li><li>Validar a nova estratégia de comunicação com os novos canais</li></ul></div>
+            <div class="lane"><h3>Setup</h3><p class="lead">Não iniciado. A implementação começa depois da validação do design.</p></div>
+          </div>
+        </section>
+        <section>
+          <h2>2.2 Repescagem de clientes que abandonaram o carrinho do app (jornada de crédito trabalhador)</h2>
+          <div class="squares"><div class="sq"><span class="swatch discovery"></span><div><div class="k">Discovery</div><div class="v">50%</div></div></div><div class="sq"><span class="swatch design"></span><div><div class="k">Design</div><div class="v idle">Em andamento</div></div></div><div class="sq"><span class="swatch setup"></span><div><div class="k">Setup</div><div class="v idle">Não iniciado</div></div></div></div>
+          <div class="banner danger"><strong>Bloqueado até decisão do MuleSoft</strong><p>Discovery em 50%. Design já começou. Ainda falta validar as regras de negócio. Setup não iniciado.</p></div>
+          <div class="phases">
+            <div class="phase"><div class="phase-meta"><span>Discovery</span><span>50%</span></div><div class="track"><div class="fill" style="width:50%"></div></div><p class="phase-sub">Discovery de negócio</p></div>
+            <div class="phase"><div class="phase-meta"><span>Design</span><span>Em andamento</span></div><div class="track"><div class="fill" style="width:35%"></div></div><p class="phase-sub">Já começou. Regras ainda precisam ser validadas.</p></div>
+            <div class="phase"><div class="phase-meta"><span>Setup</span><span>Não iniciado</span></div><div class="track"><div class="fill" style="width:0%"></div></div></div>
+          </div>
+          <div class="lanes">
+            <div class="lane"><h3>Design — ainda precisamos definir</h3><ul><li>Momento exato em que a pessoa abandona</li><li>Se ela está apta para a contratação</li><li>De onde pegar essa informação</li><li>Estratégia para quem não está apta àquele crédito, ou oferecer outro produto</li></ul></div>
+            <div class="lane"><h3>Caminho em aberto</h3><ul><li>Seguir com personalization e rastreamento em tempo real</li><li>Ou seguir por outro caminho</li></ul><p class="note">Depende da decisão do MuleSoft e de onde essas informações vão ser obtidas.</p></div>
+            <div class="lane"><h3>Setup</h3><p class="lead">Não iniciado.</p></div>
+          </div>
+        </section>
+        <section>
+          <h2>2.3 Benefícios do cartão para clientes que compraram passagem aérea</h2>
+          <div class="squares"><div class="sq"><span class="swatch discovery"></span><div><div class="k">Discovery</div><div class="v idle">Não iniciado</div></div></div><div class="sq"><span class="swatch design"></span><div><div class="k">Design</div><div class="v idle">Não iniciado</div></div></div><div class="sq"><span class="swatch setup"></span><div><div class="k">Setup</div><div class="v idle">Não iniciado</div></div></div></div>
+          <div class="banner danger"><strong>Não iniciado, sem contexto ainda</strong><p>Ainda não temos o contexto desse benefício. Precisamos entender a necessidade antes de começar o discovery.</p></div>
+          <div class="phases">
+            <div class="phase"><div class="phase-meta"><span>Discovery</span><span>Não iniciado</span></div><div class="track"><div class="fill" style="width:0%"></div></div></div>
+            <div class="phase"><div class="phase-meta"><span>Design</span><span>Não iniciado</span></div><div class="track"><div class="fill" style="width:0%"></div></div></div>
+            <div class="phase"><div class="phase-meta"><span>Setup</span><span>Não iniciado</span></div><div class="track"><div class="fill" style="width:0%"></div></div></div>
+          </div>
+          <div class="cols"><div><h3>Precisamos entender</h3><ul><li>Contexto e objetivo do benefício de cartão para quem comprou passagem aérea</li></ul></div><div><h3>Dependências</h3><ul><li>Discovery do produto de cartão de crédito</li></ul></div></div>
+        </section>
+      </div>
+
+      <!-- ABA 3 -->
+      <div class="uc-panel" id="st3" role="tabpanel">
+        <p class="group">Caso de uso 3 · Jornada de onboarding</p>
+        <section>
+          <h2>Jornada de onboarding</h2>
+          <div class="squares"><div class="sq"><span class="swatch discovery"></span><div><div class="k">Discovery</div><div class="v idle">Não iniciado</div></div></div><div class="sq"><span class="swatch design"></span><div><div class="k">Design</div><div class="v idle">Não iniciado</div></div></div><div class="sq"><span class="swatch setup"></span><div><div class="k">Setup</div><div class="v idle">Não iniciado</div></div></div></div>
+          <div class="banner danger"><strong>Não iniciado</strong><p>Falta a reunião com a mesa de performance. Já foi solicitada algumas vezes e ainda não foi agendada.</p></div>
+          <div class="phases">
+            <div class="phase"><div class="phase-meta"><span>Discovery</span><span>Não iniciado</span></div><div class="track"><div class="fill" style="width:0%"></div></div></div>
+            <div class="phase"><div class="phase-meta"><span>Design</span><span>Não iniciado</span></div><div class="track"><div class="fill" style="width:0%"></div></div></div>
+            <div class="phase"><div class="phase-meta"><span>Setup</span><span>Não iniciado</span></div><div class="track"><div class="fill" style="width:0%"></div></div></div>
+          </div>
+          <div class="cols"><div><h3>Precisamos receber</h3><ul><li>Agendar reunião com a mesa de performance</li></ul></div><div><h3>Dependências</h3><ul><li>Início depende da reunião com a mesa de performance</li></ul></div></div>
+        </section>
+      </div>
+
+    </main>
+  </div><!-- fim scroll -->
+</div><!-- fim statusUCsView -->
 
 <!-- ── INLINE VIEW — CRONOGRAMA ───────────────────────── -->
 <div id="cronogramaView" class="inline-view">
@@ -2032,6 +2465,7 @@
           <option value="8.39">8.39 – Conectividade CAIXA (Urgente)</option>
           <option value="8.37">8.37 – Plano de Implantação CU1</option>
           <option value="8.43">8.43 – Acessos e Encarteiramento FSC</option>
+          <option value="DOC-Canais-MC">Doc – Relatório Técnico Canais MC</option>
         </select>
       </div>
       <div class="ac-filter-group">
@@ -2096,6 +2530,8 @@
   const detailView       = document.getElementById('detailView');
   const entregaveisView  = document.getElementById('entregaveisView');
   const casosView        = document.getElementById('casosView');
+  const squadsView       = document.getElementById('squadsView');
+  const statusUCsView    = document.getElementById('statusUCsView');
   const cronogramaView   = document.getElementById('cronogramaView');
   const riscosView       = document.getElementById('riscosView');
   const detailFrame      = document.getElementById('detailFrame');
@@ -2106,6 +2542,8 @@
     detailView.style.display      = 'none';
     entregaveisView.style.display = 'none';
     casosView.style.display       = 'none';
+    squadsView.style.display      = 'none';
+    statusUCsView.style.display   = 'none';
     cronogramaView.style.display  = 'none';
     riscosView.style.display      = 'none';
     reunioesView.style.display   = 'none';
@@ -2130,6 +2568,22 @@
       return;
     } else if (view === 'entregaveis') {
       entregaveisView.style.display = 'flex';
+    } else if (view === 'squads') {
+      squadsView.style.display = 'flex';
+    } else if (view === 'statusucs') {
+      statusUCsView.style.display = 'flex';
+      // Ativa o JS das abas internas do status (lazy init)
+      if (!statusUCsView._tabsInit) {
+        statusUCsView._tabsInit = true;
+        var tabs = statusUCsView.querySelectorAll('.uc-tab');
+        var panels = statusUCsView.querySelectorAll('.uc-panel');
+        tabs.forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            tabs.forEach(function(b) { var on=b===btn; b.classList.toggle('active',on); b.setAttribute('aria-selected',on?'true':'false'); });
+            panels.forEach(function(p) { p.classList.toggle('active', p.id===btn.getAttribute('data-uctab')); });
+          });
+        });
+      }
     } else if (view === 'casos') {
       casosView.style.display = 'flex';
     } else if (view === 'cronograma') {
@@ -2637,7 +3091,14 @@ const AC_ACOES = [
   {id:121,reuniaoId:'8.43',reuniaoNome:'Acessos e Encarteiramento FSC',reuniaoData:'17/11/2026',acao:'Montar matriz de acesso (perfil × tipo de dado × visibilidade) para definição formal dos níveis de acesso no FSC e retornar à Salesforce.',resp:'Lino Raphael Brancaglion Muffato (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
   {id:122,reuniaoId:'8.43',reuniaoNome:'Acessos e Encarteiramento FSC',reuniaoData:'17/11/2026',acao:'Confirmar com área interna da Caixa como funciona o fluxo de cobertura de férias — se o assistente muda de grupo de função no sistema ao assumir a substituição.',resp:'Lino Raphael Brancaglion Muffato (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
   {id:123,reuniaoId:'8.43',reuniaoNome:'Acessos e Encarteiramento FSC',reuniaoData:'17/11/2026',acao:'Incluir habilitação do Shield como requisito funcional para rastreamento de acessos a clientes PEP e investigação de incidentes.',resp:'Camila Pacheco (Salesforce)',respOrg:'Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
-  {id:124,reuniaoId:'8.43',reuniaoNome:'Acessos e Encarteiramento FSC',reuniaoData:'17/11/2026',acao:'Incluir Diego Lima de Freitas (Orange) na agenda presencial de quinta-feira, 19/11/2026, às 14h (continuação do discovery de Acessos/Encarteiramento).',resp:'Adriana Corsino Visentin (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'}
+  {id:124,reuniaoId:'8.43',reuniaoNome:'Acessos e Encarteiramento FSC',reuniaoData:'17/11/2026',acao:'Incluir Diego Lima de Freitas (Orange) na agenda presencial de quinta-feira, 19/11/2026, às 14h (continuação do discovery de Acessos/Encarteiramento).',resp:'Adriana Corsino Visentin (Salesforce)',respOrg:'Salesforce',prazo:'2026-11-17',prazoDisplay:'17/Nov/2026',status:'Futuro'},
+  {id:125,reuniaoId:'DOC-Canais-MC',reuniaoNome:'Relatório Técnico — Canais MC',reuniaoData:'17/11/2026',acao:'Decisões de e-mail urgentes: definir subdomínio, remetente (@caixa.gov.br ou subdomínio), DNS (delegado ou gerenciado pela Caixa), respostas (RMM), certificados e HSTS. Impacta diretamente o cronograma de campanhas (aquecimento de ~31 dias após publicação do DNS).',resp:'Arquitetura + Marketing + Infra + Segurança (Caixa)',respOrg:'Caixa',prazo:'2026-11-30',prazoDisplay:'Nov/2026',status:'Futuro'},
+  {id:126,reuniaoId:'DOC-Canais-MC',reuniaoNome:'Relatório Técnico — Canais MC',reuniaoData:'17/11/2026',acao:'Definir textos, palavras-chave (incluindo palavras em português como SAIR), links e janelas de envio do SMS. Configurar as palavras-chave de descadastro em português no MobileConnect.',resp:'Responsável pelo SMS (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:127,reuniaoId:'DOC-Canais-MC',reuniaoNome:'Relatório Técnico — Canais MC',reuniaoData:'17/11/2026',acao:'Abrir procedimento especial com operadoras para habilitar remetente nomeado de SMS (nome "CAIXA" no lugar do número). Prazo do processo: 3–4 meses. Quanto antes iniciar, melhor.',resp:'Caixa + Salesforce',respOrg:'Caixa/Salesforce',prazo:null,prazoDisplay:'A definir — urgente',status:'Futuro'},
+  {id:128,reuniaoId:'DOC-Canais-MC',reuniaoNome:'Relatório Técnico — Canais MC',reuniaoData:'17/11/2026',acao:'Definir número de WhatsApp de marketing por BU (PF e Private) e portfólio da Meta (compartilhado ou separado). Número precisa receber SMS/voz e nunca ter sido usado no WhatsApp Business. Decisão antes do primeiro envio de campanha.',resp:'Responsável pelo WhatsApp (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:129,reuniaoId:'DOC-Canais-MC',reuniaoNome:'Relatório Técnico — Canais MC',reuniaoData:'17/11/2026',acao:'Definir desenho e ferramenta da integração entre o MCE e o contact center da Caixa (referência: Anexo I-B, item 1.8.3 do edital).',resp:'Caixa + Salesforce',respOrg:'Caixa/Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'},
+  {id:130,reuniaoId:'DOC-Canais-MC',reuniaoNome:'Relatório Técnico — Canais MC',reuniaoData:'17/11/2026',acao:'Executar piloto do SDK do MCE no Super App da Caixa (iOS e Android), em convivência com o serviço atual de notificações. Detalhes no Relatório Técnico de Push.',resp:'Arquitetura + Engenharia Mobile (Caixa)',respOrg:'Caixa',prazo:null,prazoDisplay:'Conforme rel. técnico de push',status:'Futuro'},
+  {id:131,reuniaoId:'DOC-Canais-MC',reuniaoNome:'Relatório Técnico — Canais MC',reuniaoData:'17/11/2026',acao:'Definir estratégia de contact key único para os 4 canais (e-mail, SMS, push, WhatsApp). Decisão de arquitetura de dados — relacionada ao CCP mapeado na reunião de 17/11/2026.',resp:'Arquitetura de Dados (Salesforce + Caixa)',respOrg:'Caixa/Salesforce',prazo:null,prazoDisplay:'A definir',status:'Futuro'}
 ];
 acLoadStorage();
 
